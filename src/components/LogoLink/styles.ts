@@ -4,7 +4,7 @@ export const Wrapper = styled.div`
 	${({ theme }) => css`
 		& picture,
 		img {
-			height: ${theme.fonts.sizes.xsmall};
+			height: ${theme.fonts.sizes.small};
 		}
 	`}
 `;

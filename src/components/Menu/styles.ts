@@ -12,7 +12,7 @@ export const Ul = styled.ul`
 	${({ theme }) => css`
 		display: flex;
 		justify-content: space-between;
-		gap: ${theme.spacings.mediumSmall};
+		gap: ${theme.spacings.medium};
 		margin: 0;
 		padding: 0;
 	`}

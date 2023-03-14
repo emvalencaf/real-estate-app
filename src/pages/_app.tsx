@@ -1,6 +1,3 @@
-// comonents
-import Header from "../components/Header";
-
 // context
 import { ThemeProvider } from "styled-components";
 import { theme } from "../styles/theme";
