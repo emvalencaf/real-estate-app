@@ -12,6 +12,8 @@ export const Ul = styled.ul`
 	${({ theme }) => css`
 		display: flex;
 		justify-content: space-between;
-		align-items: center;
+		gap: ${theme.spacings.mediumSmall};
+		margin: 0;
+		padding: 0;
 	`}
 `;

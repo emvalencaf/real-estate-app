@@ -1,7 +1,12 @@
-import styled, { css } from "styled-components";
+import styled, { css, DefaultTheme } from "styled-components";
 
-export const Achor = styled.a`
-	${({ theme }) => css`
+type AchorProps = {
+	theme: DefaultTheme;
+	disabled?: boolean;
+};
+
+export const Achor = styled.a<AchorProps>`
+	${({ theme, disabled = false }) => css`
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -11,7 +16,7 @@ export const Achor = styled.a`
 		font-size: ${theme.fonts.sizes.normal};
 		text-decoration: none;
 		transition: all ${theme.transitions.normal} ease-in-out;
-
+		${disabled && "pointer-events: none;"};
 		> svg {
 			height: ${theme.fonts.sizes.medium};
 			width: ${theme.fonts.sizes.medium};

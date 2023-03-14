@@ -1,3 +1,6 @@
+// hooks
+import { useRouter } from "next/router";
+
 // components
 import MenuLink, { MenuLinkProps } from "../MenuLink";
 
@@ -10,6 +13,10 @@ export type MenuProps = {
 };
 
 const Menu = ({ links = [] }: MenuProps) => {
+	// get the location href
+	const router = useRouter();
+	const { pathname } = router;
+
 	return (
 		<Styled.Wrapper>
 			<Styled.Nav>
@@ -19,6 +26,7 @@ const Menu = ({ links = [] }: MenuProps) => {
 							key={`${index} - ${link.children}`}
 							link={link.link}
 							newTab={false}
+							isActive={link.link === pathname ? true : false}
 						>
 							{link.children}
 						</MenuLink>

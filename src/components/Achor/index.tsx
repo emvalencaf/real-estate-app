@@ -9,6 +9,7 @@ export type AchorProps = {
 	isImage?: boolean;
 	link: string;
 	target?: "_blank" | "_self" | "_parent" | "_top";
+	disabled?: boolean;
 };
 
 const Achor = ({
@@ -17,13 +18,13 @@ const Achor = ({
 	link,
 	target = "_blank",
 	isImage = false,
+	disabled = false,
 }: AchorProps) => {
 	const nextLink = link.match(/^\//) ? true : false;
-	console.log("in achor: ", children);
 	if (nextLink)
 		return (
 			<Link href={link} legacyBehavior passHref>
-				<Styled.Achor target={target}>
+				<Styled.Achor target={target} disabled={disabled}>
 					{!!icon && icon}
 					{isImage ? (
 						<picture>{children}</picture>
@@ -35,7 +36,7 @@ const Achor = ({
 		);
 
 	return (
-		<Styled.Achor href={link} target={target}>
+		<Styled.Achor href={link} target={target} disabled={disabled}>
 			{!!icon && icon}
 			{isImage ? <picture>{children}</picture> : <span>{children}</span>}
 		</Styled.Achor>

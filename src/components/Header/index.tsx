@@ -12,7 +12,6 @@ export type HeaderProps = {
 };
 
 const Header = ({ logo, menu }: HeaderProps) => {
-	console.log("in headers: ", logo);
 	return (
 		<Styled.Header>
 			{!!logo && <LogoLink {...logo} />}

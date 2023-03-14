@@ -16,6 +16,7 @@ const LogoLink = ({
 	srcImg,
 	newTab = false,
 }: LogoLinkProps) => {
+	// check achor target
 	const target: "_blank" | "_self" = newTab ? "_blank" : "_self";
 	return (
 		<Styled.Wrapper>

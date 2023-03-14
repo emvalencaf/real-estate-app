@@ -12,7 +12,7 @@ export default {
 			links: [
 				{
 					children: "Home",
-					link: "#",
+					link: "/",
 					newTab: false,
 				},
 				{
