@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 
-export const Wrapper = styled.div`
+export const ListMenu = styled.li`
 	${({ theme }) => css`
-		height: 100vh;
+		list-style: none;
 	`}
 `;

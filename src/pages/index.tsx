@@ -1,6 +1,6 @@
 // templates
-import Home from "../templates/Home";
+import HomeTemplate from "../templates/Home";
 
 export default function Index() {
-	return <Home />;
+	return <HomeTemplate />;
 }
