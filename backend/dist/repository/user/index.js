@@ -12,37 +12,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// repository
-const user_1 = __importDefault(require("../../repository/user"));
-class UserController {
-    // log in an user
-    static signIn(req, res) {
+const auth_1 = require("firebase/auth");
+const auth_2 = __importDefault(require("../../auth"));
+class UserRepository {
+    static signIn() {
         return __awaiter(this, void 0, void 0, function* () {
-            const { email, password } = req.body;
-            try {
-            }
-            catch (err) {
-            }
         });
     }
-    // register an user
-    static signUp(req, res) {
+    static signUp({ name, email, password }) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { name, email, password } = req.body;
-            try {
-                const response = yield user_1.default.signUp({ name, email, password });
-                res.status(201).json({
-                    response,
-                    message: "your account was successufully created",
-                });
-            }
-            catch (err) {
-                console.log(err);
-                res.status(500).send({
-                    message: "something went wrong in server"
-                });
-            }
+            const userCredentials = yield (0, auth_1.createUserWithEmailAndPassword)(auth_2.default, email, password);
+            return userCredentials.user;
         });
     }
 }
-exports.default = UserController;
+exports.default = UserRepository;

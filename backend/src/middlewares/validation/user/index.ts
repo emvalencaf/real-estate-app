@@ -1,11 +1,11 @@
 import { body } from "express-validator";
 
 // Users validation
-const userCreateValidation = () => {
+export const userCreateValidation = () => {
     return [
         body("name")
             .isString().withMessage("user's name is required")
-            .isLength({min:3}).withMessage("user's must has at least 3 caracters"),
+            .isLength({min:3}).withMessage("user's name must has at least 3 caracters"),
         body("email")
             .isString().withMessage("user's email is required")
             .isEmail().withMessage("user's email must be a valid email"),
@@ -20,5 +20,3 @@ const userCreateValidation = () => {
             })
     ];
 }
-
-export default userCreateValidation;

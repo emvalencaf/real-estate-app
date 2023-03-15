@@ -9,6 +9,9 @@ const express_1 = __importDefault(require("express"));
 // routers
 const router = (0, express_1.default)();
 exports.Router = router;
+const user_1 = require("./user");
+// user routes
+router.use("/api/users", user_1.userRouter);
 // test routes
 router.get("/api", (req, res) => {
     res.send("API is working!!");

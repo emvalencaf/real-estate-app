@@ -17,10 +17,11 @@ app.use(express.json());
     // config FormData
 app.use(express.urlencoded({ extended: false }));
     // solve CORS
+/*
 app.use(cors({
     credentials: true,
     origin: `${process.env.FRONTEND_URL}`,
-}));
+}));*/
 
 // cutom router
 import { Router } from "./routes";
