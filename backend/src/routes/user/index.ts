@@ -8,6 +8,7 @@ import UserController from "../../controllers/user";
     // validation
 import validate from "../../middlewares/validation";
 import { userCreateValidation } from "../../middlewares/validation/user";
+
 // types
 import { Router } from "express";
 
