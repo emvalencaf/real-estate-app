@@ -41,13 +41,19 @@ const SignForm = ({
 									<>
 										<p>
 											Don&#39;t have an account?
-											<Achor link={`/sign-up`}>
+											<Achor
+												link={`/sign-up`}
+												target="_self"
+											>
 												Register
 											</Achor>
 										</p>
 										<p>
 											Fogot password?
-											<Achor link={`/fogot-password`}>
+											<Achor
+												link={`/fogot-password`}
+												target="_self"
+											>
 												click here
 											</Achor>
 										</p>
@@ -57,13 +63,19 @@ const SignForm = ({
 									<>
 										<p>
 											Have an account?
-											<Achor link={`/sign-in`}>
+											<Achor
+												link={`/sign-in`}
+												target="_self"
+											>
 												Sign in
 											</Achor>
 										</p>
 										<p>
 											Fogot password?
-											<Achor link={`/fogot-password`}>
+											<Achor
+												link={`/fogot-password`}
+												target="_self"
+											>
 												click here
 											</Achor>
 										</p>
@@ -73,13 +85,19 @@ const SignForm = ({
 									<>
 										<p>
 											Don&#39;t have an account?
-											<Achor link={`/sign-up`}>
+											<Achor
+												link={`/sign-up`}
+												target="_self"
+											>
 												Register
 											</Achor>
 										</p>
 										<p>
 											Have an account?
-											<Achor link={`/sign-in`}>
+											<Achor
+												link={`/sign-in`}
+												target="_self"
+											>
 												sign in instead
 											</Achor>
 										</p>

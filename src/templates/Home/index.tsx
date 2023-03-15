@@ -4,19 +4,12 @@ import * as Styled from "./styles";
 import Header from "../../components/Header";
 
 // types
-import { LogoLinkProps } from "../../components/LogoLink";
-import { MenuProps } from "../../components/Menu";
-export type HomeTemplateProps = {
-	settings: {
-		logo: LogoLinkProps;
-		menu: MenuProps;
-	};
-};
+import { HomePageProps } from "../../shared-types/pages";
 
 // mock
 import mock from "./mock";
 
-const HomeTemplate = ({ settings }: HomeTemplateProps) => {
+const HomeTemplate = ({ settings }: HomePageProps) => {
 	console.log(mock.settings.logo);
 	return (
 		<Styled.Wrapper>

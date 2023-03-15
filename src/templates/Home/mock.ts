@@ -1,5 +1,5 @@
 // types
-import { HomeTemplateProps } from "./";
+import { HomePageProps } from "../../shared-types/pages";
 
 export default {
 	settings: {
@@ -28,4 +28,4 @@ export default {
 			],
 		},
 	},
-} as HomeTemplateProps;
+} as HomePageProps;
