@@ -11,5 +11,9 @@ export const Header = styled.header`
 		background-color: ${theme.colors.deepWhite};
 		border-bottom: 1px solid transparent;
 		box-shadow: 0px 0px 10px black;
+		top: 0;
+		right: 0;
+		left: 0;
+		z-index: ${theme.layers.layer6};
 	`}
 `;

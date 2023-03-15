@@ -7,13 +7,12 @@ type AchorProps = {
 
 export const Achor = styled.a<AchorProps>`
 	${({ theme, disabled = false }) => css`
-		display: flex;
+		display: inline-flex;
 		flex-direction: row;
 		align-items: center;
 		justify-content: center;
 		gap: ${theme.spacings.tiny};
 		color: ${theme.colors.secondary};
-		font-size: ${theme.fonts.sizes.normal};
 		text-decoration: none;
 		transition: all ${theme.transitions.normal} ease-in-out;
 		${disabled && "pointer-events: none;"};

@@ -23,6 +23,11 @@ export default {
 					link: "/sign-in",
 					newTab: false,
 				},
+				{
+					children: "Sign up",
+					link: "/sign-up",
+					newTab: false,
+				},
 			],
 		},
 	},

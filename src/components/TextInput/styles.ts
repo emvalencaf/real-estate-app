@@ -41,6 +41,7 @@ export const InputWrapper = styled.div<Pick<TextInputProps, "errorMessage">>`
 			css`
 				color: ${theme.colors.warning};
 			`}
+			pointer-events: auto;
 		}
 		*:focus ~ svg {
 			color: ${theme.colors.primary};

@@ -11,6 +11,7 @@ export type TextInputProps = {
 	name: string;
 	type?: string;
 	onInputChange?: (value: string) => void;
+	onIconClick?: () => void;
 	disabled?: boolean;
 	errorMessage?: string;
 	value?: string;
@@ -24,6 +25,7 @@ const TextInput = ({
 	name,
 	type = "text",
 	onInputChange,
+	onIconClick,
 	disabled = false,
 	errorMessage = "",
 	value = "",
@@ -49,7 +51,7 @@ const TextInput = ({
 	};
 
 	return (
-		<Styled.Wrapper>
+		<Styled.Wrapper onClick={onIconClick}>
 			<Styled.InputWrapper errorMessage={errorMessage}>
 				<Styled.Input
 					type={type}
