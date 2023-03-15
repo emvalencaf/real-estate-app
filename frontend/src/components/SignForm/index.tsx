@@ -21,6 +21,11 @@ const SignForm = ({
 	srcImg = "",
 	action = "signIn",
 }: SignFormProps) => {
+	// onSubmit handle
+	const handleSubmit = () => {
+		console.log("submmit");
+	};
+
 	return (
 		<Styled.Wrapper>
 			<Styled.Section>
@@ -34,7 +39,7 @@ const SignForm = ({
 						<Picture srcImg={srcImg} altText="a picture of a key" />
 					</Styled.PictureContainer>
 					<Styled.LoginContainer>
-						<Form btnText={btnSubmitText}>
+						<Form btnText={btnSubmitText} onSubmit={handleSubmit}>
 							{children}
 							<Styled.LinksContainer>
 								{action === "signIn" && (
