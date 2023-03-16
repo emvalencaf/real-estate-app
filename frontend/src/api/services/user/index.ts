@@ -25,6 +25,7 @@ export default class UserService {
 			body: JSON.stringify(data),
 		});
 	}
+	// sign up an user with email and password
 	static async signUp({
 		name,
 		email,
@@ -48,5 +49,9 @@ export default class UserService {
 				body: JSON.stringify(data),
 			}
 		);
+	}
+	// sign up an user with google auth
+	static async signUpWithGoogle() {
+		return;
 	}
 }

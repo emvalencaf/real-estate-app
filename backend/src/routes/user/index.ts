@@ -22,5 +22,5 @@ router.post("/sign-up",
     UserController.signUp
 );
 
-
+router.post("/sign-up-with-google", UserController.signUpWithGoogle);
 export { router as userRouter };

@@ -9,6 +9,7 @@ export default class UserController {
 	}: Pick<UserFormData, "email" | "password">) {
 		return await UserService.signIn({ email, password });
 	}
+	// sign up an user with email and password
 	static async signUp({
 		name,
 		email,
@@ -51,6 +52,15 @@ export default class UserController {
 			});
 
 			return response;
+		} catch (err) {
+			console.log(err);
+			throw new Error(err.message);
+		}
+	}
+	// sign up an user with google auth
+	static async signUpWithGoogle() {
+		try {
+			return await UserService.signUpWithGoogle();
 		} catch (err) {
 			console.log(err);
 			throw new Error(err.message);

@@ -36,4 +36,17 @@ export default class UserController{
             });
         }
     }
+
+    // register an user with google
+    static async signUpWithGoogle(req: Request, res: Response) {
+        try {
+            const responseAuth = await UserRepository.signUpWithGoogleAuth();
+        } catch (err) {
+            console.log(err);
+            res.status(500).send({
+                success: false,
+                message: "server wasn't authorized to sign up with google"
+            })
+        };
+    }
 }

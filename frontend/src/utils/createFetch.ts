@@ -3,7 +3,7 @@ type JSONError = {
 };
 
 export default class CreateFetch {
-	static async dispatch<T>(url: string, options: RequestInit): Promise<T> {
+	static async dispatch<T>(url: string, options?: RequestInit): Promise<T> {
 		try {
 			const response = await fetch(url, options);
 			console.log(response.body);

@@ -1,5 +1,5 @@
 // db auths functions
-import { Auth, createUserWithEmailAndPassword, updateProfile, User } from "firebase/auth";
+import { Auth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, updateProfile, User } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import auth from "../../auth";
 import { db } from "../../db";
@@ -32,10 +32,21 @@ export default class UserRepository{
         
         return await setDoc(refDoc, data);
     }
+
+    // update a user name
     static async update(name: string) {
         if (!auth || !auth.currentUser) throw new Error("server error");
         await updateProfile(auth.currentUser, {
             displayName: name,
         })
+    }
+
+    // sign up auth with google
+    static async signUpWithGoogleAuth() {
+        
+        const provider = new GoogleAuthProvider();
+        const result = await signInWithPopup(auth, provider);
+
+        const { user } = result;
     }
 }
