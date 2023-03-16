@@ -12,7 +12,10 @@ type SignFormProps = {
 	children: React.ReactNode;
 	srcImg?: string;
 	btnSubmitText?: string;
+	handleSubmit?: <T>() => Promise<T>;
 	action?: "signIn" | "signUp" | "fogotPassword";
+	redirect?: boolean;
+	redirectUrl?: string;
 };
 
 const SignForm = ({
@@ -20,12 +23,8 @@ const SignForm = ({
 	btnSubmitText = "sign in",
 	srcImg = "",
 	action = "signIn",
+	handleSubmit,
 }: SignFormProps) => {
-	// onSubmit handle
-	const handleSubmit = () => {
-		console.log("submmit");
-	};
-
 	return (
 		<Styled.Wrapper>
 			<Styled.Section>
@@ -39,7 +38,11 @@ const SignForm = ({
 						<Picture srcImg={srcImg} altText="a picture of a key" />
 					</Styled.PictureContainer>
 					<Styled.LoginContainer>
-						<Form btnText={btnSubmitText} onSubmit={handleSubmit}>
+						<Form
+							btnText={btnSubmitText}
+							onSubmit={handleSubmit}
+							asyncOnSubmit
+						>
 							{children}
 							<Styled.LinksContainer>
 								{action === "signIn" && (

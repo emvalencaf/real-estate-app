@@ -1,7 +1,8 @@
 // db auths functions
 import { Auth, createUserWithEmailAndPassword, updateProfile, User } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 import auth from "../../auth";
-import { db } from "../../db/firestore";
+import { db } from "../../db";
 
 // interfaces
 import { IUserFormData, IUserRepositoryDeps } from "../../shared-type/user";
@@ -22,10 +23,14 @@ export default class UserRepository{
 
     // create a new user in firestore
     static async signUp({name, email}: Pick<IUserFormData,"email" | "name">, uid: string) {
-        const docRef = db.collection("users").doc(uid);
-        await docRef.set({name, email});
-        const response = await docRef.get();
-        return response;
+        const refDoc = doc(db, "users", uid);
+
+        const data = {
+            name,
+            email,
+        };
+        
+        return await setDoc(refDoc, data);
     }
     static async update(name: string) {
         if (!auth || !auth.currentUser) throw new Error("server error");

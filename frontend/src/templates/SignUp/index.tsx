@@ -1,9 +1,13 @@
 // hooks
 import { useState } from "react";
 
+// components
 import Header from "../../components/Header";
 import SignForm from "../../components/SignForm";
 import TextInput from "../../components/TextInput";
+
+// controller api
+import UserController from "../../api/controllers/user";
 
 // styles
 import * as Styled from "./styles";
@@ -12,7 +16,7 @@ import * as Styled from "./styles";
 import { EyeFill, EyeSlash } from "@styled-icons/bootstrap";
 
 // types
-import { FormDataSignUpProps } from "../../shared-types/formDataSign";
+import { UserFormData, UserSignUpFn } from "../../shared-types/user";
 
 // mock
 import mock from "./mock";
@@ -22,14 +26,36 @@ const SignUpTemplate = () => {
 	const [showPassword, setShowPassword] = useState<boolean>(false);
 	const [showConfirmPassword, setShowConfirmPassword] =
 		useState<boolean>(false);
-	const [formData, setFormData] = useState<FormDataSignUpProps>({
+	const [formData, setFormData] = useState<UserFormData>({
 		name: "",
 		email: "",
 		password: "",
 		confirmPassword: "",
 	});
 	const { name, email, password, confirmPassword } = formData;
+	console.log(process.env.NEXT_PUBLIC_API_URL);
+	// onSubmit handle
+	const handleSubmit = async () => {
+		console.log(formData);
 
+		const response = await UserController.signUp({
+			name,
+			email,
+			password,
+			confirmPassword,
+		});
+
+		if (response.success)
+			setFormData(() => ({
+				name: "",
+				email: "",
+				password: "",
+				confirmPassword: "",
+			}));
+
+		return response;
+	};
+	console.log(formData);
 	return (
 		<Styled.Wrapper>
 			<Header logo={mock.settings.logo} menu={mock.settings.menu} />
@@ -37,6 +63,9 @@ const SignUpTemplate = () => {
 				btnSubmitText="sign up"
 				srcImg={mock.srcImg}
 				action="signUp"
+				handleSubmit={handleSubmit as UserSignUpFn}
+				redirect
+				redirectUrl="/"
 			>
 				<TextInput
 					label="set your your name"
@@ -45,8 +74,8 @@ const SignUpTemplate = () => {
 					name="name"
 					onInputChange={(v: string) =>
 						setFormData((state) => ({
-							name: v,
 							...state,
+							name: v,
 						}))
 					}
 				/>
@@ -57,8 +86,8 @@ const SignUpTemplate = () => {
 					name="email"
 					onInputChange={(v: string) =>
 						setFormData((state) => ({
-							email: v,
 							...state,
+							email: v,
 						}))
 					}
 				/>
@@ -71,8 +100,8 @@ const SignUpTemplate = () => {
 					onIconClick={() => setShowPassword((state) => !state)}
 					onInputChange={(v: string) =>
 						setFormData((state) => ({
-							password: v,
 							...state,
+							password: v,
 						}))
 					}
 				/>
@@ -87,8 +116,8 @@ const SignUpTemplate = () => {
 					}
 					onInputChange={(v: string) =>
 						setFormData((state) => ({
-							confirmPassword: v,
 							...state,
+							confirmPassword: v,
 						}))
 					}
 				/>

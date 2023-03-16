@@ -12,7 +12,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// repository
 const user_1 = __importDefault(require("../../repository/user"));
 class UserController {
     // log in an user
@@ -30,16 +29,19 @@ class UserController {
         return __awaiter(this, void 0, void 0, function* () {
             const { name, email, password } = req.body;
             try {
-                const response = yield user_1.default.signUp({ name, email, password });
+                const responseAuth = yield user_1.default.signUpAuth({ name, email, password });
+                const response = yield user_1.default.signUp({ name, email }, responseAuth.uid);
                 res.status(201).json({
                     response,
+                    success: true,
                     message: "your account was successufully created",
                 });
             }
             catch (err) {
                 console.log(err);
-                res.status(500).send({
-                    message: "something went wrong in server"
+                res.status(500).json({
+                    success: false,
+                    message: "something went wrong on the server",
                 });
             }
         });

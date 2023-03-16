@@ -18,10 +18,13 @@ export type FormProps = {
 	) => Promise<T> | void;
 	asyncOnSubmit?: boolean;
 	reference?: HTMLFormElement;
+	redirect?: boolean;
+	redirectUrl?: string;
 };
 
 // icon
 import { Timer } from "@styled-icons/material-outlined";
+import { useRouter } from "next/router";
 
 const Form = ({
 	children,
@@ -30,6 +33,8 @@ const Form = ({
 	reference,
 	onSubmit,
 	asyncOnSubmit = false,
+	redirect = false,
+	redirectUrl = "",
 }: FormProps) => {
 	// ref
 	const formRef = useRef<HTMLFormElement | null>(reference);
@@ -38,6 +43,9 @@ const Form = ({
 	const [errorMessage, setErrorMessage] = useState("");
 	const [loading, setLoading] = useState(false);
 	const [visible, setVisible] = useState(!!errorMessage);
+
+	// router
+	const router = useRouter();
 
 	// handle events
 	const handleSubmit = (event: SyntheticEvent) => {
@@ -54,6 +62,7 @@ const Form = ({
 						setVisible(true);
 					}
 					setLoading(false);
+					if (redirect) router.push(redirectUrl);
 					return;
 				}
 			};

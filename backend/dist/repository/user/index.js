@@ -12,17 +12,44 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+// db auths functions
 const auth_1 = require("firebase/auth");
+const firestore_1 = require("firebase/firestore");
 const auth_2 = __importDefault(require("../../auth"));
+const db_1 = require("../../db");
 class UserRepository {
-    static signIn() {
+    static signIn({ email, password }) {
         return __awaiter(this, void 0, void 0, function* () {
         });
     }
-    static signUp({ name, email, password }) {
+    // create a new user in auth firebase
+    static signUpAuth({ name, email, password }) {
         return __awaiter(this, void 0, void 0, function* () {
             const userCredentials = yield (0, auth_1.createUserWithEmailAndPassword)(auth_2.default, email, password);
-            return userCredentials.user;
+            UserRepository;
+            yield UserRepository.update(name);
+            const { user } = userCredentials;
+            return user;
+        });
+    }
+    // create a new user in firestore
+    static signUp({ name, email }, uid) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const refDoc = (0, firestore_1.doc)(db_1.db, "users", uid);
+            const data = {
+                name,
+                email,
+            };
+            return yield (0, firestore_1.setDoc)(refDoc, data);
+        });
+    }
+    static update(name) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!auth_2.default || !auth_2.default.currentUser)
+                throw new Error("server error");
+            yield (0, auth_1.updateProfile)(auth_2.default.currentUser, {
+                displayName: name,
+            });
         });
     }
 }

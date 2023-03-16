@@ -32,7 +32,7 @@ export default class UserController{
             console.log(err);
             res.status(500).json({
                 success: false,
-                message:"something went wrong in server",
+                message:"something went wrong on the server",
             });
         }
     }

@@ -17,5 +17,5 @@ const firebaseConfig = {
 };
 // Initialize Firebase
 exports.firebaseApp = (0, app_1.initializeApp)(firebaseConfig);
-// initialize firestore
-exports.db = (0, firestore_1.getFirestore)();
+exports.db = (0, firestore_1.getFirestore)(exports.firebaseApp);
+console.log(exports.db);

@@ -1,5 +1,4 @@
 import { Auth, getAuth } from "firebase/auth";
-
 // firebaseapp
 import { firebaseApp } from "../db";
 
