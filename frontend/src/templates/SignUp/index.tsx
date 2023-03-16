@@ -36,7 +36,6 @@ const SignUpTemplate = () => {
 
 	// onSubmit handle
 	const handleSubmit = async () => {
-
 		const response = await UserController.signUp({
 			name,
 			email,

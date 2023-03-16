@@ -24,6 +24,8 @@ const SignForm = ({
 	srcImg = "",
 	action = "signIn",
 	handleSubmit,
+	redirect = false,
+	redirectUrl,
 }: SignFormProps) => {
 	return (
 		<Styled.Wrapper>
@@ -42,6 +44,8 @@ const SignForm = ({
 							btnText={btnSubmitText}
 							onSubmit={handleSubmit}
 							asyncOnSubmit
+							redirect={redirect}
+							redirectUrl={redirectUrl}
 						>
 							{children}
 							<Styled.LinksContainer>
