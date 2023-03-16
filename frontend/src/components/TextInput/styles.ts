@@ -28,7 +28,7 @@ export const Wrapper = styled.div`
 export const InputWrapper = styled.div<Pick<TextInputProps, "errorMessage">>`
 	${({ theme, errorMessage }) => css`
 		position: relative;
-		> svg {
+		span > svg {
 			position: absolute;
 			top: 50%;
 			transform: translate(0, -50%);

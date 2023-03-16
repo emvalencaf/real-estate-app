@@ -51,7 +51,7 @@ const TextInput = ({
 	};
 
 	return (
-		<Styled.Wrapper onClick={onIconClick}>
+		<Styled.Wrapper>
 			<Styled.InputWrapper errorMessage={errorMessage}>
 				<Styled.Input
 					type={type}
@@ -70,7 +70,9 @@ const TextInput = ({
 				<Styled.Label htmlFor={name} element={as}>
 					{label}
 				</Styled.Label>
-				{!!icon && as !== "textarea" && icon}
+				{!!icon && as !== "textarea" && (
+					<span onClick={onIconClick}>{icon}</span>
+				)}
 				{maxLength !== 524288 && (
 					<CharacterCounter
 						currentLeng={counter}

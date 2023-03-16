@@ -33,10 +33,9 @@ const SignUpTemplate = () => {
 		confirmPassword: "",
 	});
 	const { name, email, password, confirmPassword } = formData;
-	console.log(process.env.NEXT_PUBLIC_API_URL);
+
 	// onSubmit handle
 	const handleSubmit = async () => {
-		console.log(formData);
 
 		const response = await UserController.signUp({
 			name,
@@ -55,7 +54,6 @@ const SignUpTemplate = () => {
 
 		return response;
 	};
-	console.log(formData);
 	return (
 		<Styled.Wrapper>
 			<Header logo={mock.settings.logo} menu={mock.settings.menu} />
