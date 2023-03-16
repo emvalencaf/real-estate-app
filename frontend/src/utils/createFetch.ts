@@ -5,9 +5,8 @@ type JSONError = {
 export default class CreateFetch {
 	static async dispatch<T>(url: string, options: RequestInit): Promise<T> {
 		try {
-			console.log(options);
 			const response = await fetch(url, options);
-
+			console.log(response.body);
 			if (!response.ok) {
 				// error message from the API
 				const json: JSONError = await response.json();

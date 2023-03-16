@@ -1,5 +1,4 @@
 // hooks
-import { Close } from "@styled-icons/material-outlined";
 import { MutableRefObject, SyntheticEvent, useRef, useState } from "react";
 
 // components
@@ -26,6 +25,9 @@ export type FormProps = {
 import { Timer } from "@styled-icons/material-outlined";
 import { useRouter } from "next/router";
 
+// utils
+import { toast } from "react-toastify";
+
 const Form = ({
 	children,
 	btnIcon,
@@ -40,9 +42,7 @@ const Form = ({
 	const formRef = useRef<HTMLFormElement | null>(reference);
 
 	// states
-	const [errorMessage, setErrorMessage] = useState("");
 	const [loading, setLoading] = useState(false);
-	const [visible, setVisible] = useState(!!errorMessage);
 
 	// router
 	const router = useRouter();
@@ -57,12 +57,12 @@ const Form = ({
 					setLoading(true);
 					try {
 						await onSubmit(formRef);
+						if (redirect) router.push(redirectUrl);
 					} catch (err) {
-						setErrorMessage(err.message);
-						setVisible(true);
+						console.log(err);
+						toast.error(err.message);
 					}
 					setLoading(false);
-					if (redirect) router.push(redirectUrl);
 					return;
 				}
 			};
@@ -79,12 +79,6 @@ const Form = ({
 			ref={formRef}
 		>
 			{children}
-			<Styled.Alert visible={visible} isSuccess={!!errorMessage}>
-				{<span>{!!errorMessage && errorMessage}</span>}
-				<Styled.CloseButton onClick={() => setVisible(false)}>
-					{<Close />}
-				</Styled.CloseButton>
-			</Styled.Alert>
 			<Button
 				disabled={loading}
 				icon={!!btnIcon && loading ? <Timer /> : btnIcon}

@@ -1,5 +1,9 @@
 // types
-import { UserFormData, UserSignUpData } from "../../../shared-types/user";
+import {
+	UserFormData,
+	UserSignUpData,
+	UserSignUpResponse,
+} from "../../../shared-types/user";
 
 // utils
 import CreateFetch from "../../../utils/createFetch";
@@ -26,14 +30,14 @@ export default class UserService {
 		email,
 		password,
 		confirmPassword,
-	}: UserFormData): Promise<UserSignUpData> {
+	}: UserFormData): Promise<UserSignUpResponse> {
 		const data: UserFormData = {
 			password,
 			confirmPassword,
 			email,
 			name,
 		};
-		console.log(data);
+
 		return await CreateFetch.dispatch<UserSignUpData>(
 			`${process.env.NEXT_PUBLIC_API_URL}/api/users/sign-up`,
 			{
