@@ -1,12 +1,16 @@
 // service
-import { UserFormData, UserSignUpResponse } from "../../../shared-types/user";
+import {
+	UserFormData,
+	UserSignInResponse,
+	UserSignUpResponse,
+} from "../../../shared-types/user";
 import UserService from "../../services/user";
 
 export default class UserController {
 	static async signIn({
 		email,
 		password,
-	}: Pick<UserFormData, "email" | "password">) {
+	}: Pick<UserFormData, "email" | "password">): Promise<UserSignInResponse> {
 		return await UserService.signIn({ email, password });
 	}
 	// sign up an user with email and password
@@ -58,9 +62,9 @@ export default class UserController {
 		}
 	}
 	// sign up an user with google auth
-	static async signUpWithGoogle() {
+	static async signInWithGoogle(id_token: string) {
 		try {
-			return await UserService.signUpWithGoogle();
+			return await UserService.signInWithGoogle(id_token);
 		} catch (err) {
 			console.log(err);
 			throw new Error(err.message);

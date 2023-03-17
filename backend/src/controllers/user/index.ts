@@ -38,14 +38,20 @@ export default class UserController{
     }
 
     // register an user with google
-    static async signUpWithGoogle(req: Request, res: Response) {
+    static async signInWithGoogle(req: Request, res: Response) {
+        const { id_token } = req.body;
         try {
-            const responseAuth = await UserRepository.signUpWithGoogleAuth();
+            const responseAuth = await UserRepository.signInWithGoogleAuth(id_token);
+            res.status(200).send({
+                responseAuth,
+                success: true,
+                message: "you successfully log in with google",
+            });
         } catch (err) {
             console.log(err);
             res.status(500).send({
                 success: false,
-                message: "server wasn't authorized to sign up with google"
+                message: "server wasn't authorized to sign in with google"
             })
         };
     }

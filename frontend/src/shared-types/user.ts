@@ -1,5 +1,10 @@
 import { ServerResponse } from "./server-response";
 
+// user data
+export type User = {
+	name: string;
+};
+
 // request body
 export type UserFormData = {
 	name: string;
@@ -17,3 +22,10 @@ export type UserSignUpData = {
 export type UserSignUpFn = <UserSignUpData>() => Promise<UserSignUpData>;
 
 export type UserSignUpResponse = ServerResponse<null>;
+
+// sign in method
+export type UserSignInFn = <
+	UserSignInResponse
+>() => Promise<UserSignInResponse>;
+
+export type UserSignInResponse = ServerResponse<User>;

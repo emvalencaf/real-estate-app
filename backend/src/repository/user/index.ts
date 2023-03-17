@@ -1,5 +1,5 @@
 // db auths functions
-import { Auth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, updateProfile, User } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, updateProfile, User, signInWithCredential } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import auth from "../../auth";
 import { db } from "../../db";
@@ -42,11 +42,12 @@ export default class UserRepository{
     }
 
     // sign up auth with google
-    static async signUpWithGoogleAuth() {
+    static async signInWithGoogleAuth(id_token: string) {
         
-        const provider = new GoogleAuthProvider();
-        const result = await signInWithPopup(auth, provider);
+        const credential = GoogleAuthProvider.credential(
+            id_token
+        );
 
-        const { user } = result;
+        return await signInWithCredential(auth, credential);
     }
 }

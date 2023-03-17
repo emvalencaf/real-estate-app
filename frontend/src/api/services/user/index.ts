@@ -1,6 +1,7 @@
 // types
 import {
 	UserFormData,
+	UserSignInResponse,
 	UserSignUpData,
 	UserSignUpResponse,
 } from "../../../shared-types/user";
@@ -12,12 +13,12 @@ export default class UserService {
 	static async signIn({
 		email,
 		password,
-	}: Pick<UserFormData, "email" | "password">) {
+	}: Pick<UserFormData, "email" | "password">): Promise<UserSignInResponse> {
 		const data = {
 			email,
 			password,
 		};
-		return await CreateFetch.dispatch(``, {
+		return await CreateFetch.dispatch<UserSignInResponse>(``, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -51,7 +52,18 @@ export default class UserService {
 		);
 	}
 	// sign up an user with google auth
-	static async signUpWithGoogle() {
-		return;
+	static async signInWithGoogle(id_token: string) {
+		return await CreateFetch.dispatch(
+			`${process.env.NEXT_PUBLIC_API_URL}/api/users/sign-in-with-google`,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					id_token,
+				}),
+			}
+		);
 	}
 }

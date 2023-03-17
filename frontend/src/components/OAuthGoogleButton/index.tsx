@@ -1,9 +1,3 @@
-// hooks
-import { useState } from "react";
-
-// next auth
-import { signIn } from "next-auth/react";
-
 // components
 import Button from "../Button";
 
@@ -14,11 +8,8 @@ import * as Styled from "./styles";
 import { Google } from "@styled-icons/bootstrap";
 
 const OAuthGoogleButton = () => {
-	// states
-	const [loading, setLoading] = useState<boolean>(false);
-
 	// popupCenter
-	const popupCenter = (url, title) => {
+	const popupCenter = (url: string, title: string) => {
 		const dualScreenLeft = window.screenLeft ?? window.screenX;
 		const dualScreenTop = window.screenTop ?? window.screenY;
 
@@ -52,7 +43,6 @@ const OAuthGoogleButton = () => {
 		<Styled.Wrapper>
 			<Button
 				icon={<Google />}
-				disabled={loading}
 				onClick={() => popupCenter("/google-sign-in", "Google Auth")}
 			>
 				Continue with google

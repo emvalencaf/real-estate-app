@@ -1,11 +1,19 @@
 // next auth
 import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
-import { FirestoreAdapter } from "@next-auth/firebase-adapter";
+
+// UserController
+import UserController from "../../../api/controllers/user";
 
 // firebase
-import { getApp, getApps, initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+/*
+import { initializeApp } from "firebase/app";
+import {
+	getAuth,
+	signInWithCredential,
+	GoogleAuthProvider,
+} from "firebase/auth";
+import UserController from "../../../api/controllers/user";
 
 const firebaseConfig = {
 	apiKey: process.env.DB_API_KEY,
@@ -16,18 +24,33 @@ const firebaseConfig = {
 	appId: process.env.DB_API_APP_ID,
 };
 
-const firebaseApp = !getApps().length
-	? initializeApp(firebaseConfig)
-	: getApp();
-
-const firestore = getFirestore(firebaseApp);
-
+initializeApp(firebaseConfig);
+*/
 export default NextAuth({
+	secret: process.env.NEXTAUTH_SECRET,
+	session: {
+		maxAge: 7 * 24 * 60 * 60,
+		strategy: "jwt",
+	},
+	callbacks: {
+		async signIn({ account }) {
+			if (account.provider === "google") {
+				/*
+				const auth = getAuth();
+				const credential = GoogleAuthProvider.credential(
+					account.id_token
+				);
+				await signInWithCredential(auth, credential);*/
+				await UserController.signInWithGoogle(account.id_token);
+			}
+
+			return true;
+		},
+	},
 	providers: [
 		GoogleProvider({
 			clientId: process.env.GOOGLE_CLIENT_ID,
 			clientSecret: process.env.GOOGLE_CLIENT_SECRET,
 		}),
 	],
-	adapter: FirestoreAdapter(firestore),
 });

@@ -13,10 +13,11 @@ import * as Styled from "./styles";
 import { EyeFill, EyeSlash } from "@styled-icons/bootstrap";
 
 // types
-import { UserFormData } from "../../shared-types/user";
+import { UserFormData, UserSignInFn } from "../../shared-types/user";
 
 // mock
 import mock from "./mock";
+import UserController from "../../api/controllers/user";
 
 const SignInTemplate = () => {
 	// states
@@ -28,11 +29,31 @@ const SignInTemplate = () => {
 		password: "",
 	});
 	const { email, password } = formData;
+	// onSubmit handle
+	const handleSubmit = async () => {
+		const response = await UserController.signIn({
+			email,
+			password,
+		});
 
+		if (response.success)
+			setFormData(() => ({
+				name: "",
+				email: "",
+				password: "",
+				confirmPassword: "",
+			}));
+
+		return response;
+	};
 	return (
 		<Styled.Wrapper>
 			<Header logo={mock.settings.logo} menu={mock.settings.menu} />
-			<SignForm btnSubmitText="sign in" srcImg={mock.srcImg}>
+			<SignForm
+				btnSubmitText="sign in"
+				srcImg={mock.srcImg}
+				handleSubmit={handleSubmit as UserSignInFn}
+			>
 				<TextInput
 					label="set your user's email adress"
 					type="email"

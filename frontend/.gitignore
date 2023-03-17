@@ -30,6 +30,6 @@ yarn-error.log*
 
 # local env files
 .env*.local
-
+real-state-app-fb536-firebase-adminsdk-u7llv-686c06204f.json
 # vercel
 .vercel
