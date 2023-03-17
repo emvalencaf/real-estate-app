@@ -13,24 +13,27 @@ import "react-toastify/dist/ReactToastify.css";
 
 // types
 import { AppProps } from "next/app";
+import { SessionProvider } from "next-auth/react";
 
 export default function App({ Component, pageProps }: AppProps) {
 	return (
-		<ThemeProvider theme={theme}>
-			<Component {...pageProps} />
-			<GlobalStyles />
-			<ToastContainer
-				position="bottom-center"
-				autoClose={5000}
-				hideProgressBar={false}
-				newestOnTop={false}
-				closeOnClick
-				rtl={false}
-				pauseOnFocusLoss
-				draggable
-				pauseOnHover
-				theme="dark"
-			/>
-		</ThemeProvider>
+		<SessionProvider session={pageProps.session}>
+			<ThemeProvider theme={theme}>
+				<Component {...pageProps} />
+				<GlobalStyles />
+				<ToastContainer
+					position="bottom-center"
+					autoClose={5000}
+					hideProgressBar={false}
+					newestOnTop={false}
+					closeOnClick
+					rtl={false}
+					pauseOnFocusLoss
+					draggable
+					pauseOnHover
+					theme="dark"
+				/>
+			</ThemeProvider>
+		</SessionProvider>
 	);
 }
