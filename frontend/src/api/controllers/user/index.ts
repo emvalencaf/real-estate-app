@@ -1,5 +1,6 @@
 // service
 import {
+	UserFogotPasswordResponse,
 	UserFormData,
 	UserSignInResponse,
 	UserSignUpResponse,
@@ -7,11 +8,35 @@ import {
 import UserService from "../../services/user";
 
 export default class UserController {
+	// sign in an user with an email and password
 	static async signIn({
 		email,
 		password,
 	}: Pick<UserFormData, "email" | "password">): Promise<UserSignInResponse> {
-		return await UserService.signIn({ email, password });
+		try {
+			// eslint-disable-next-line no-useless-escape
+			const regexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+			if (!email) throw new Error("you must fill email field");
+
+			if (!password) throw new Error("you must field password field");
+
+			if (!regexEmail.test(email))
+				throw new Error("you must fill a valid email at email field");
+
+			const response = await UserService.signIn({ email, password });
+
+			return response;
+		} catch (err) {
+			console.log(err);
+			throw new Error(err.message);
+		}
+	}
+
+	// fogot password
+	static async fogotPassword(
+		email: string
+	): Promise<UserFogotPasswordResponse> {
+		return await UserService.fogotPassword(email);
 	}
 	// sign up an user with email and password
 	static async signUp({

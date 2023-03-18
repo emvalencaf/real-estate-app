@@ -1,31 +1,11 @@
 // next auth
 import NextAuth from "next-auth/next";
+import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 
 // UserController
 import UserController from "../../../api/controllers/user";
 
-// firebase
-/*
-import { initializeApp } from "firebase/app";
-import {
-	getAuth,
-	signInWithCredential,
-	GoogleAuthProvider,
-} from "firebase/auth";
-import UserController from "../../../api/controllers/user";
-
-const firebaseConfig = {
-	apiKey: process.env.DB_API_KEY,
-	authDomain: process.env.DB_API_AUTH_DOMAIN,
-	projectId: process.env.DB_API_PROJECT_ID,
-	storageBucket: process.env.DB_API_STORAGE_BUCKET,
-	messagingSenderId: process.env.DB_API_MESSAGING_SENDER_ID,
-	appId: process.env.DB_API_APP_ID,
-};
-
-initializeApp(firebaseConfig);
-*/
 export default NextAuth({
 	secret: process.env.NEXTAUTH_SECRET,
 	session: {
@@ -48,6 +28,39 @@ export default NextAuth({
 		},
 	},
 	providers: [
+		CredentialsProvider({
+			name: "Credentials",
+			credentials: {
+				username: {
+					label: "Username",
+					type: "text",
+					placeholder: "username",
+				},
+				password: {
+					label: "Password",
+					type: "password",
+					placeholder: "password",
+				},
+			},
+			async authorize(credentials) {
+				if (!credentials?.username || !credentials?.password)
+					return null;
+
+				try {
+					const body = {
+						email: credentials.username,
+						password: credentials.password,
+					};
+
+					const login = await UserController.signIn(body);
+
+					if (!login.success) throw new Error("No login");
+				} catch (err) {
+					console.log(err);
+					return null;
+				}
+			},
+		}),
 		GoogleProvider({
 			clientId: process.env.GOOGLE_CLIENT_ID,
 			clientSecret: process.env.GOOGLE_CLIENT_SECRET,

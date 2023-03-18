@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { Auth, User, UserCredential } from "firebase/auth";
+import { IServerResponse } from "./server-response";
 
 // request body
 export interface IUserFormData {
@@ -8,8 +9,16 @@ export interface IUserFormData {
     password: string;
 };
 
+// response server
+export interface IUserServerResponse extends IServerResponse {
+    user: IUserModel | null;
+}
+
 // user model interface
 export interface IUserModel {
+    uid: string;
+    displayName: string;
+    email: string;
 }
 
 // user repository deps

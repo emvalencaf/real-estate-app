@@ -29,3 +29,10 @@ export type UserSignInFn = <
 >() => Promise<UserSignInResponse>;
 
 export type UserSignInResponse = ServerResponse<User>;
+
+// fogotPassword method
+export type UserFogotPasswordFn = <
+	UserFogotPasswordResponse
+>() => Promise<UserFogotPasswordResponse>;
+
+export type UserFogotPasswordResponse = ServerResponse<string>;

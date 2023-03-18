@@ -3,6 +3,6 @@ import ProfileTemplate from "../../templates/Profile";
 
 // types
 
-export default function Profile() {
+export default function ProfilePage() {
 	return <ProfileTemplate />;
 }

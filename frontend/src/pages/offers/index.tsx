@@ -3,6 +3,6 @@ import OffersTemplate from "../../templates/Offers";
 
 // types
 
-export default function Offers() {
+export default function OffersPage() {
 	return <OffersTemplate />;
 }

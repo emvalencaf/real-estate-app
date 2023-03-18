@@ -1,5 +1,6 @@
 // hooks
 import { useState } from "react";
+import { signIn } from "next-auth/react";
 
 // components
 import TextInput from "../../components/TextInput";
@@ -17,7 +18,6 @@ import { UserFormData, UserSignInFn } from "../../shared-types/user";
 
 // mock
 import mock from "./mock";
-import UserController from "../../api/controllers/user";
 
 const SignInTemplate = () => {
 	// states
@@ -31,20 +31,10 @@ const SignInTemplate = () => {
 	const { email, password } = formData;
 	// onSubmit handle
 	const handleSubmit = async () => {
-		const response = await UserController.signIn({
+		await signIn("credentials", {
 			email,
 			password,
 		});
-
-		if (response.success)
-			setFormData(() => ({
-				name: "",
-				email: "",
-				password: "",
-				confirmPassword: "",
-			}));
-
-		return response;
 	};
 	return (
 		<Styled.Wrapper>
@@ -52,6 +42,7 @@ const SignInTemplate = () => {
 			<SignForm
 				btnSubmitText="sign in"
 				srcImg={mock.srcImg}
+				action="signIn"
 				handleSubmit={handleSubmit as UserSignInFn}
 			>
 				<TextInput

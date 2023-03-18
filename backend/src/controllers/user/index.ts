@@ -1,7 +1,7 @@
 // interface
 import { Request, Response } from "express";
 import UserRepository from "../../repository/user";
-import { IUserController, IUserControllerDeps } from "../../shared-type/user";
+import { IUserController, IUserControllerDeps, IUserServerResponse } from "../../shared-type/user";
 
 export default class UserController{
 
@@ -9,9 +9,24 @@ export default class UserController{
     static async signIn(req: Request, res: Response) {
         const { email, password } = req.body;
         try {
+            const response = await UserRepository.signIn({email, password});
+
+            if (!response) throw new Error("no ");
+
+            const { success, user } = response;
+
+            res.status(200).send({
+                user,
+                success,
+                message: success ? "you successfully login" : "you failed to login",
+            });
 
         } catch (err) {
-
+            console.log(err);
+            res.status(500).send({
+                success: false,
+                message: "something went wrong on the server",
+            });
         }
     }
 
@@ -54,5 +69,25 @@ export default class UserController{
                 message: "server wasn't authorized to sign in with google"
             })
         };
+    }
+
+    // send an email to redefine a new password
+    static async fogotPassword(req: Request, res: Response) {
+        const { email } = req.body;
+        try {
+
+            await UserRepository.fogotPassword(email);
+
+            res.status(200).send({
+                success: true,
+                message: "an email has been sent to the user's email",
+            });
+        } catch (err) {
+            console.log(err);
+            res.status(500).json({
+                success: false,
+                message:"something went wrong on the server",
+            });
+        }
     }
 }

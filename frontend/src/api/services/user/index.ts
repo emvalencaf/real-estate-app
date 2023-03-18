@@ -1,5 +1,6 @@
 // types
 import {
+	UserFogotPasswordResponse,
 	UserFormData,
 	UserSignInResponse,
 	UserSignUpData,
@@ -18,13 +19,16 @@ export default class UserService {
 			email,
 			password,
 		};
-		return await CreateFetch.dispatch<UserSignInResponse>(``, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(data),
-		});
+		return await CreateFetch.dispatch<UserSignInResponse>(
+			`${process.env.NEXT_PUBLIC_API_URL}/api/users/sign-in`,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(data),
+			}
+		);
 	}
 	// sign up an user with email and password
 	static async signUp({
@@ -62,6 +66,23 @@ export default class UserService {
 				},
 				body: JSON.stringify({
 					id_token,
+				}),
+			}
+		);
+	}
+	// fogot password
+	static async fogotPassword(
+		email: string
+	): Promise<UserFogotPasswordResponse> {
+		return await CreateFetch.dispatch(
+			`${process.env.NEXT_PUBLIC_API_URL}/api/users/fogot-password`,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					email,
 				}),
 			}
 		);

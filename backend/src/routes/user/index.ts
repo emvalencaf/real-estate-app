@@ -7,7 +7,7 @@ import UserController from "../../controllers/user";
 // middlewares
     // validation
 import validate from "../../middlewares/validation";
-import { userCreateValidation } from "../../middlewares/validation/user";
+import { userCreateValidation, userLoginValidation } from "../../middlewares/validation/user";
 
 // types
 import { Router } from "express";
@@ -19,7 +19,13 @@ const router: Router = express.Router();
 router.post("/sign-up",
     userCreateValidation(),
     validate,
-    UserController.signUp
+    UserController.signUp,
+);
+
+router.post("/sign-in",
+    userLoginValidation(),
+    validate,
+    UserController.signIn,
 );
 
 router.post("/sign-in-with-google", UserController.signInWithGoogle);
