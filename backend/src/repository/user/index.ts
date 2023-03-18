@@ -22,12 +22,14 @@ export default class UserRepository {
 
         const { displayName, email: userEmail, uid: id } = userCredentials.user;
 
+		const token = await userCredentials.user.getIdToken();
+
         return {
             user: {
                 name: displayName || "",
                 email: userEmail || "",
                 id,
-                accessToken: "",
+                accessToken: token,
             },
         };
     }
@@ -96,6 +98,7 @@ export default class UserRepository {
                 name: user.displayName,
                 email: user.email,
                 id: user.uid,
+				accessToken: await user.getIdToken(),
             }
         }
     }

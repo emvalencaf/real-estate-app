@@ -58,9 +58,13 @@ export default class UserController{
     static async signInWithGoogle(req: Request, res: Response) {
         const { id_token } = req.body;
         try {
-            const responseAuth = await UserRepository.signInWithGoogleAuth(id_token);
+            const responseAuth = await UserRepository.signInWithGoogleAuth
+			(id_token);
+
+			const { user } = responseAuth;
+
             res.status(200).send({
-                data: null,
+                data: user,
                 success: true,
                 message: "you successfully log in with google",
             });
