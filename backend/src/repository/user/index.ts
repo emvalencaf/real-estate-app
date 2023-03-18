@@ -1,11 +1,11 @@
 // db auths functions
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, updateProfile, User, signInWithCredential } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, DocumentData, DocumentReference, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
 import auth from "../../auth";
 import { db } from "../../db";
 
 // interfaces
-import { IUserFormData, IUserRepositoryDeps } from "../../shared-type/user";
+import { IUserFormData } from "../../shared-type/user";
 
 export default class UserRepository{
     static async signIn({email, password}: Pick<IUserFormData, "email" | "password">) {
@@ -28,6 +28,7 @@ export default class UserRepository{
         const data = {
             name,
             email,
+            timestamp: serverTimestamp(),
         };
         
         return await setDoc(refDoc, data);
@@ -48,6 +49,26 @@ export default class UserRepository{
             id_token
         );
 
-        return await signInWithCredential(auth, credential);
+        const response = await signInWithCredential(auth, credential);
+        console.log("response firebase auth: ", response.user);
+        const { user } = response;
+
+        const docRef = doc(db, "users", user.uid);
+
+        const data = {
+            name: user.displayName,
+            email: user.email,
+            timestamp: serverTimestamp(),
+        };
+
+        if (!await UserRepository.isUserExists(docRef)) await setDoc(docRef, data);
+    }
+
+    // check if there is an user with the same uid
+    static async isUserExists(docRef: DocumentReference<DocumentData>): Promise<boolean> {
+
+        const docSnap = await getDoc(docRef);
+
+        return docSnap.exists();
     }
 }
