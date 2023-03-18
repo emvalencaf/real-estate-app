@@ -1,40 +1,35 @@
 // db auths functions
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, updateProfile, User, signInWithCredential, UserCredential, sendPasswordResetEmail } from "firebase/auth";
-import { collection, doc, DocumentData, DocumentReference, getDoc, getDocs, Query, query, QueryDocumentSnapshot, QuerySnapshot, serverTimestamp, setDoc, where } from "firebase/firestore";
+import { collection, doc, DocumentData, DocumentReference, getDoc, getDocs, query, QueryDocumentSnapshot, QuerySnapshot, serverTimestamp, setDoc, where } from "firebase/firestore";
 import auth from "../../auth";
 import { db } from "../../db";
 
 // interfaces
-import { IUserFormData, IUserServerResponse } from "../../shared-type/user";
+import { IUserFormData, IUserSignInResponse } from "../../shared-type/user";
 
 export default class UserRepository {
-    static async signIn({ email, password }: Pick<IUserFormData, "email" | "password">) {
+    static async signIn({ email, password }: Pick<IUserFormData, "email" | "password">): Promise<IUserSignInResponse> {
 
 
         // will check if there is any user in the firestore with the same email
-        const getUser: DocumentData = await (await UserRepository.getUserByEmail(email));
+        const getUser: DocumentData = (await UserRepository.getUserByEmail(email));
 
-        const userCredentials: UserCredential | null = !!getUser.length ? await signInWithEmailAndPassword(auth, email, password) : null;
+        const userCredentials: UserCredential | null = !!getUser ? await signInWithEmailAndPassword(auth, email, password) : null;
 
-        if (!userCredentials) return {
+        if (!userCredentials || !userCredentials?.user) return {
             user: null,
-            success: false,
-            message: "",
         }
 
-        const { displayName, email: userEmail, uid } = userCredentials.user;
+        const { displayName, email: userEmail, uid: id } = userCredentials.user;
 
-        if (userCredentials?.user) return {
+        return {
             user: {
-                displayName,
-                email: userEmail,
-                uid,
+                name: displayName || "",
+                email: userEmail || "",
+                id,
+                accessToken: "",
             },
-            success: true,
         };
-
-
-
     }
 
     // create a new user in auth firebase
@@ -48,7 +43,7 @@ export default class UserRepository {
     }
 
     // create a new user in firestore
-    static async signUp({ name, email }: Pick<IUserFormData, "email" | "name">, uid: string) {
+    static async signUp({ name, email }: Pick<IUserFormData, "email" | "name">, uid: string): Promise<void> {
         const refDoc = doc(db, "users", uid);
 
         const data = {
@@ -57,18 +52,18 @@ export default class UserRepository {
             timestamp: serverTimestamp(),
         };
 
-        return await setDoc(refDoc, data);
+        await setDoc(refDoc, data);
     }
 
     // fogot password
-    static async fogotPassword(email: string) {
+    static async sendPasswordResetEmail(email: string): Promise<void> {
 
         await sendPasswordResetEmail(auth, email);
-        
+
     }
 
     // update a user name
-    static async update(name: string) {
+    static async update(name: string): Promise<void> {
         if (!auth || !auth.currentUser) throw new Error("server error");
         await updateProfile(auth.currentUser, {
             displayName: name,
@@ -95,6 +90,14 @@ export default class UserRepository {
         };
 
         if (!await UserRepository.isUserExists(docRef)) await setDoc(docRef, data);
+
+        return {
+            user: {
+                name: user.displayName,
+                email: user.email,
+                id: user.uid,
+            }
+        }
     }
 
     // check if there is an user with the same uid
@@ -105,13 +108,13 @@ export default class UserRepository {
         return docSnap.exists();
     }
 
-    static async getUserByEmail(email: string): Promise<QueryDocumentSnapshot<DocumentData>[]> {
+    static async getUserByEmail(email: string): Promise<QueryDocumentSnapshot<DocumentData>> {
         const collectionRef = collection(db, "users");
 
         const q = query(collectionRef, where("email", "==", email));
 
         const querySnap = await getDocs(q);
 
-        return querySnap.docs;
+        return querySnap.docs[0];
     }
 }

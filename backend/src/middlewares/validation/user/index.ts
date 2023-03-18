@@ -30,3 +30,11 @@ export const userLoginValidation = () => {
             .isString().withMessage("user's password is required")
     ]
 }
+
+export const userSendPasswordResetEmailValidation = () => {
+    return [
+        body("email")
+        .isString().withMessage("user's email is required")
+        .isEmail().withMessage("user's email must be a valid email"),
+    ];
+}

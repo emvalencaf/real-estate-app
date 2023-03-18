@@ -7,7 +7,7 @@ import UserController from "../../controllers/user";
 // middlewares
     // validation
 import validate from "../../middlewares/validation";
-import { userCreateValidation, userLoginValidation } from "../../middlewares/validation/user";
+import { userCreateValidation, userLoginValidation, userSendPasswordResetEmailValidation } from "../../middlewares/validation/user";
 
 // types
 import { Router } from "express";
@@ -26,6 +26,12 @@ router.post("/sign-in",
     userLoginValidation(),
     validate,
     UserController.signIn,
+);
+
+router.post("/fogot-password",
+    userSendPasswordResetEmailValidation(),
+    validate,
+    UserController.sendPasswordResetEmail,
 );
 
 router.post("/sign-in-with-google", UserController.signInWithGoogle);

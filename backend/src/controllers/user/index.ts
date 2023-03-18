@@ -13,17 +13,18 @@ export default class UserController{
 
             if (!response) throw new Error("no ");
 
-            const { success, user } = response;
+            const { user } = response;
 
             res.status(200).send({
-                user,
-                success,
-                message: success ? "you successfully login" : "you failed to login",
+                data: user,
+                success: !!user,
+                message: !!user ? "you've successfully login" : "you've failed to login",
             });
 
         } catch (err) {
             console.log(err);
             res.status(500).send({
+                data: null,
                 success: false,
                 message: "something went wrong on the server",
             });
@@ -39,13 +40,14 @@ export default class UserController{
             const response = await UserRepository.signUp({name, email}, responseAuth.uid);
 
             res.status(201).json({
-                response,
+                data: null,
                 success: true,
                 message: "your account was successufully created",
             })
         } catch (err) {
             console.log(err);
             res.status(500).json({
+                data: null,
                 success: false,
                 message:"something went wrong on the server",
             });
@@ -58,13 +60,14 @@ export default class UserController{
         try {
             const responseAuth = await UserRepository.signInWithGoogleAuth(id_token);
             res.status(200).send({
-                responseAuth,
+                data: null,
                 success: true,
                 message: "you successfully log in with google",
             });
         } catch (err) {
             console.log(err);
             res.status(500).send({
+                data: null,
                 success: false,
                 message: "server wasn't authorized to sign in with google"
             })
@@ -72,19 +75,21 @@ export default class UserController{
     }
 
     // send an email to redefine a new password
-    static async fogotPassword(req: Request, res: Response) {
+    static async sendPasswordResetEmail(req: Request, res: Response) {
         const { email } = req.body;
         try {
 
-            await UserRepository.fogotPassword(email);
+            await UserRepository.sendPasswordResetEmail(email);
 
             res.status(200).send({
+                data: null,
                 success: true,
                 message: "an email has been sent to the user's email",
             });
         } catch (err) {
             console.log(err);
             res.status(500).json({
+                data: null,
                 success: false,
                 message:"something went wrong on the server",
             });
