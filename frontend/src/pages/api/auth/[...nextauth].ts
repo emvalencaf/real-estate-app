@@ -1,30 +1,80 @@
 // next auth
 import NextAuth from "next-auth/next";
+
+// providers
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 
 // UserController
 import UserController from "../../../api/controllers/user";
 
+// types
+import { UserDataFromServer } from "../../../shared-types/user";
+
+// utils
+import TokenHandler from "../../../utils/setToken";
+
 export default NextAuth({
-	secret: process.env.NEXTAUTH_SECRET,
+	secret: process.env.NEXT_AUTH_SECRET,
 	session: {
 		maxAge: 7 * 24 * 60 * 60,
 		strategy: "jwt",
 	},
 	callbacks: {
-		async signIn({ account }) {
-			if (account.provider === "google") {
-				/*
-				const auth = getAuth();
-				const credential = GoogleAuthProvider.credential(
-					account.id_token
-				);
-				await signInWithCredential(auth, credential);*/
-				await UserController.signInWithGoogle(account.id_token);
-			}
+		jwt: async ({ user, token, account }) => {
+			const isSignIn = !!user;
 
-			return true;
+			if (!isSignIn) return Promise.resolve({});
+
+			const data: UserDataFromServer =
+				account && account?.provider === "google"
+					? await (
+							await UserController.signInWithGoogle(
+								account?.id_token
+							)
+					  ).data
+					: user;
+			// will set a token with a token object or a null value
+			TokenHandler.setToken({
+				data,
+				token,
+			});
+			if (!token || (token && !token?.expiration))
+				return Promise.resolve({});
+
+			if (TokenHandler.isTokenExpirated(token.expiration as number))
+				return Promise.resolve({});
+
+			return Promise.resolve(token);
+		},
+		session: async ({ session, token }) => {
+			if (
+				!token ||
+				(token && !token?.email) ||
+				(token && !token?.name) ||
+				(token && !token?.id) ||
+				(token && !token?.jwt) ||
+				(token &&
+					TokenHandler.isTokenExpirated(token.expiration as number))
+			)
+				return null;
+
+			session.accessToken = token.jwt;
+
+			session.user = {
+				id: token.id,
+				name: token.name,
+				email: token.email,
+			};
+
+			return session;
+		},
+		redirect: async ({ url, baseUrl }) => {
+			if (url.startsWith(baseUrl)) return url;
+
+			if (url.startsWith("/")) return baseUrl + url;
+
+			return baseUrl;
 		},
 	},
 	providers: [
@@ -54,7 +104,21 @@ export default NextAuth({
 
 					const login = await UserController.signIn(body);
 
-					if (!login.success) throw new Error("No login");
+					if (!login.success) return null;
+
+					const { data } = login;
+
+					const { name, email, accessToken, id } = data;
+
+					if (!accessToken || !name || !accessToken || !id)
+						return null;
+
+					return {
+						id,
+						name,
+						email,
+						accessToken,
+					};
 				} catch (err) {
 					console.log(err);
 					return null;

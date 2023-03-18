@@ -20,7 +20,7 @@ const FogotPasswordTemplate = () => {
 	const [email, setEmail] = useState<string>("");
 
 	const handleSubmit = async () => {
-		const response = await UserController.fogotPassword(email);
+		const response = await UserController.sendPasswordResetEmail(email);
 
 		toast("An email was sent to the user's email ");
 		return response;

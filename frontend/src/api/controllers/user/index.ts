@@ -3,6 +3,7 @@ import {
 	UserFogotPasswordResponse,
 	UserFormData,
 	UserSignInResponse,
+	UserSignInWithGoogleResponse,
 	UserSignUpResponse,
 } from "../../../shared-types/user";
 import UserService from "../../services/user";
@@ -33,10 +34,10 @@ export default class UserController {
 	}
 
 	// fogot password
-	static async fogotPassword(
+	static async sendPasswordResetEmail(
 		email: string
 	): Promise<UserFogotPasswordResponse> {
-		return await UserService.fogotPassword(email);
+		return await UserService.sendPasswordResetEmail(email);
 	}
 	// sign up an user with email and password
 	static async signUp({
@@ -87,7 +88,9 @@ export default class UserController {
 		}
 	}
 	// sign up an user with google auth
-	static async signInWithGoogle(id_token: string) {
+	static async signInWithGoogle(
+		id_token: string
+	): Promise<UserSignInWithGoogleResponse> {
 		try {
 			return await UserService.signInWithGoogle(id_token);
 		} catch (err) {

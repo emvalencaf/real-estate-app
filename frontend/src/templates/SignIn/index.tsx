@@ -1,6 +1,6 @@
 // hooks
 import { useState } from "react";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 
 // components
 import TextInput from "../../components/TextInput";
@@ -32,7 +32,7 @@ const SignInTemplate = () => {
 	// onSubmit handle
 	const handleSubmit = async () => {
 		await signIn("credentials", {
-			email,
+			username: email,
 			password,
 		});
 	};

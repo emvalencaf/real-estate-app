@@ -3,6 +3,7 @@ import {
 	UserFogotPasswordResponse,
 	UserFormData,
 	UserSignInResponse,
+	UserSignInWithGoogleResponse,
 	UserSignUpData,
 	UserSignUpResponse,
 } from "../../../shared-types/user";
@@ -19,6 +20,7 @@ export default class UserService {
 			email,
 			password,
 		};
+		console.log("in sign in service");
 		return await CreateFetch.dispatch<UserSignInResponse>(
 			`${process.env.NEXT_PUBLIC_API_URL}/api/users/sign-in`,
 			{
@@ -56,7 +58,9 @@ export default class UserService {
 		);
 	}
 	// sign up an user with google auth
-	static async signInWithGoogle(id_token: string) {
+	static async signInWithGoogle(
+		id_token: string
+	): Promise<UserSignInWithGoogleResponse> {
 		return await CreateFetch.dispatch(
 			`${process.env.NEXT_PUBLIC_API_URL}/api/users/sign-in-with-google`,
 			{
@@ -71,7 +75,7 @@ export default class UserService {
 		);
 	}
 	// fogot password
-	static async fogotPassword(
+	static async sendPasswordResetEmail(
 		email: string
 	): Promise<UserFogotPasswordResponse> {
 		return await CreateFetch.dispatch(

@@ -2,10 +2,10 @@ import { ServerResponse } from "./server-response";
 
 // user data
 export type UserDataFromServer = {
-	name: string;
-	email: string;
-	id: string;
-	accessToken: string;
+	name?: string;
+	email?: string;
+	id?: string;
+	accessToken?: string;
 };
 
 // request body
