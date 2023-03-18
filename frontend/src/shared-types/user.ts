@@ -1,8 +1,11 @@
 import { ServerResponse } from "./server-response";
 
 // user data
-export type User = {
+export type UserDataFromServer = {
 	name: string;
+	email: string;
+	id: string;
+	accessToken: string;
 };
 
 // request body
@@ -28,7 +31,10 @@ export type UserSignInFn = <
 	UserSignInResponse
 >() => Promise<UserSignInResponse>;
 
-export type UserSignInResponse = ServerResponse<User>;
+export type UserSignInResponse = ServerResponse<UserDataFromServer>;
+
+// sign in with google method
+export type UserSignInWithGoogleResponse = UserSignInResponse;
 
 // fogotPassword method
 export type UserFogotPasswordFn = <
