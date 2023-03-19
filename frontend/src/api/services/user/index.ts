@@ -20,7 +20,6 @@ export default class UserService {
 			email,
 			password,
 		};
-		console.log("in sign in service");
 		return await CreateFetch.dispatch<UserSignInResponse>(
 			`${process.env.NEXT_PUBLIC_API_URL}/api/users/sign-in`,
 			{

@@ -1,4 +1,5 @@
 // next auth
+import { Session } from "next-auth";
 import NextAuth from "next-auth/next";
 
 // providers
@@ -7,12 +8,13 @@ import GoogleProvider from "next-auth/providers/google";
 
 // UserController
 import UserController from "../../../api/controllers/user";
+import { CallbackSession } from "../../../shared-types/auth";
 
 // types
 import { UserDataFromServer } from "../../../shared-types/user";
 
 // utils
-import TokenHandler from "../../../utils/setToken";
+import TokenHandler, { Token } from "../../../utils/setToken";
 
 export default NextAuth({
 	secret: process.env.NEXT_AUTH_SECRET,
@@ -21,60 +23,28 @@ export default NextAuth({
 		strategy: "jwt",
 	},
 	callbacks: {
-		jwt: async ({ user, token, account }) => {
+		jwt: async ({ token, user, account }) => {
 			const isSignIn = !!user;
-
-			if (!isSignIn) return Promise.resolve({});
-
-			const data: UserDataFromServer =
-				account && account?.provider === "google"
-					? await (
-							await UserController.signInWithGoogle(
-								account?.id_token
-							)
-					  ).data
-					: user;
-			// will set a token with a token object or a null value
-			TokenHandler.setToken({
-				data,
-				token,
-			});
-			if (!token || (token && !token?.expiration))
-				return Promise.resolve({});
-
-			if (TokenHandler.isTokenExpirated(token.expiration as number))
-				return Promise.resolve({});
-
-			return Promise.resolve(token);
+			if (isSignIn) {
+				if (account && account.provider === "google") {
+					const { data } = await UserController.signInWithGoogle(
+						account.id_token
+					);
+					token.accessToken = data.accessToken;
+				} else {
+					token.accessToken = user.accessToken;
+				}
+			}
+			return token;
 		},
-		session: async ({ session, token }) => {
-			if (
-				!token ||
-				(token && !token?.email) ||
-				(token && !token?.name) ||
-				(token && !token?.id) ||
-				(token && !token?.jwt) ||
-				(token &&
-					TokenHandler.isTokenExpirated(token.expiration as number))
-			)
-				return null;
+		session: async ({ session, token }: CallbackSession) => {
+			if (!token) return null;
 
-			session.accessToken = token.jwt;
-
-			session.user = {
-				id: token.id,
-				name: token.name,
-				email: token.email,
-			};
-
+			session.user.name = token.name;
+			session.user.email = token.email;
+			session.accessToken = token.accessToken;
+			console.log("session in callback", session);
 			return session;
-		},
-		redirect: async ({ url, baseUrl }) => {
-			if (url.startsWith(baseUrl)) return url;
-
-			if (url.startsWith("/")) return baseUrl + url;
-
-			return baseUrl;
 		},
 	},
 	providers: [

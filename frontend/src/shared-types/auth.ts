@@ -1,5 +1,4 @@
 import { Account } from "next-auth";
-import { Token } from "../utils/setToken";
 import { UserDataFromServer } from "./user";
 
 export type CustomSession = {
@@ -20,4 +19,15 @@ export type CallbackJWT = {
 export type CallbackSession = {
 	token: Token;
 	session: CustomSession;
+};
+
+export type Token = {
+	id: string;
+	name: string;
+	email: string;
+	sub: string;
+	picture: string;
+	iat: number;
+	exp: number;
+	accessToken: string;
 };

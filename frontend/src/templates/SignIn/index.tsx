@@ -1,6 +1,6 @@
 // hooks
 import { useState } from "react";
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 
 // components
 import TextInput from "../../components/TextInput";
@@ -18,6 +18,7 @@ import { UserFormData, UserSignInFn } from "../../shared-types/user";
 
 // mock
 import mock from "./mock";
+import { toast } from "react-toastify";
 
 const SignInTemplate = () => {
 	// states
@@ -31,10 +32,11 @@ const SignInTemplate = () => {
 	const { email, password } = formData;
 	// onSubmit handle
 	const handleSubmit = async () => {
-		await signIn("credentials", {
+		const response = await signIn("credentials", {
 			username: email,
 			password,
 		});
+		if (!response) toast.error("password or email are wrong");
 	};
 	return (
 		<Styled.Wrapper>
