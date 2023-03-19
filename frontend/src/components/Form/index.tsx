@@ -19,6 +19,7 @@ export type FormProps = {
 	reference?: HTMLFormElement;
 	redirect?: boolean;
 	redirectUrl?: string;
+	disabled?: boolean;
 };
 
 // icon
@@ -37,6 +38,7 @@ const Form = ({
 	asyncOnSubmit = false,
 	redirect = false,
 	redirectUrl = "",
+	disabled = false,
 }: FormProps) => {
 	// ref
 	const formRef = useRef<HTMLFormElement | null>(reference);
@@ -80,7 +82,7 @@ const Form = ({
 		>
 			{children}
 			<Button
-				disabled={loading}
+				disabled={loading || disabled}
 				icon={!!btnIcon && loading ? <Timer /> : btnIcon}
 			>
 				{loading ? "carregando..." : btnText}

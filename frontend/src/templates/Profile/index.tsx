@@ -1,11 +1,16 @@
 // hooks
 import { useState } from "react";
+import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+
+// controller
+import UserController from "../../api/controllers/user";
 
 // components
 import Header from "../../components/Header";
 import Heading from "../../components/Heading";
 import TextInput from "../../components/TextInput";
+import ProfileForm from "../../components/ProfileForm";
 
 // styles
 import * as Styled from "./styles";
@@ -17,8 +22,7 @@ export type ProfileTemplateProps = {
 
 // mock
 import mock from "../Home/mock";
-import ProfileForm from "../../components/ProfileForm";
-import { useRouter } from "next/router";
+
 const ProfileTemplate = () => {
 	// session
 	const { data } = useSession();
@@ -31,8 +35,16 @@ const ProfileTemplate = () => {
 		name: data.user.name,
 		email: data.user.email,
 	});
+	const [changeDetails, setChangeDetails] = useState<boolean>(false);
 
 	const { name, email } = formData;
+
+	// handleSubmit
+	const handleSubmit = async () => {
+		if (!changeDetails) return;
+		const currentUserName = data.user.name;
+		return await UserController.updateProfile(name, currentUserName);
+	};
 
 	return (
 		<Styled.Wrapper>
@@ -41,25 +53,29 @@ const ProfileTemplate = () => {
 				<Heading size="big" weight="bold">
 					My Profile
 				</Heading>
-				<ProfileForm>
+				<ProfileForm
+					handleClick={() => setChangeDetails((state) => !state)}
+					handleSubmit={handleSubmit}
+					changeDetails={changeDetails}
+				>
 					<TextInput
 						name="name"
 						type="text"
 						value={name}
-						label="change user's name"
+						label={changeDetails ? "change name" : "name"}
 						onInputChange={(v: string) =>
 							setFormData((state) => ({
 								...state,
 								name: v,
 							}))
 						}
-						disabled
+						disabled={!changeDetails}
 					/>
 					<TextInput
 						name="email"
 						type="email"
 						value={email}
-						label="change user's email"
+						label="email"
 						onInputChange={(v: string) =>
 							setFormData((state) => ({
 								...state,

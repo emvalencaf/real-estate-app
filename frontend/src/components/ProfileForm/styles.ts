@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import { Achor } from "../Achor/styles";
+import { Button } from "../Button/styles";
 import { Form } from "../Form/styles";
 
 export const Wrapper = styled.div`
@@ -26,10 +27,17 @@ export const LinksContainer = styled.div`
 			display: flex;
 			gap: ${theme.spacings.tiny};
 
-			& span {
+			& ${Button} {
+				@media ${theme.media.lteOrEqMedium} {
+					font-size: ${theme.fonts.sizes.xsmall};
+				}
 				color: rgba(255, 0, 0);
 				transition: ${theme.transitions.normal};
-				cursor: pointer;
+				background-color: transparent;
+				padding: 0;
+				margin: 0;
+				border: none;
+				box-shadow: none;
 				&:hover {
 					color: rgb(200, 0, 0);
 				}

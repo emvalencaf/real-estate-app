@@ -33,7 +33,7 @@ export default class UserController {
 		}
 	}
 
-	// fogot password
+	// send an email for user's email to reset its password
 	static async sendPasswordResetEmail(
 		email: string
 	): Promise<UserFogotPasswordResponse> {
@@ -93,6 +93,21 @@ export default class UserController {
 	): Promise<UserSignInWithGoogleResponse> {
 		try {
 			return await UserService.signInWithGoogle(id_token);
+		} catch (err) {
+			console.log(err);
+			throw new Error(err.message);
+		}
+	}
+	// update an user profile details
+	static async updateProfile(name: string, currentUserName: string) {
+		try {
+			if (!name)
+				throw new Error(
+					"you must fill name field to update user's profile name"
+				);
+			if (name === currentUserName)
+				throw new Error("the new name is the same as the current one");
+			return await UserService.updateProfile(name);
 		} catch (err) {
 			console.log(err);
 			throw new Error(err.message);

@@ -12,6 +12,7 @@ import {
 import CreateFetch from "../../../utils/createFetch";
 
 export default class UserService {
+	// sign in an user with email and password
 	static async signIn({
 		email,
 		password,
@@ -56,7 +57,7 @@ export default class UserService {
 			}
 		);
 	}
-	// sign up an user with google auth
+	// sign in an user with google auth
 	static async signInWithGoogle(
 		id_token: string
 	): Promise<UserSignInWithGoogleResponse> {
@@ -73,7 +74,7 @@ export default class UserService {
 			}
 		);
 	}
-	// fogot password
+	// send an email for user's email to reset its password
 	static async sendPasswordResetEmail(
 		email: string
 	): Promise<UserFogotPasswordResponse> {
@@ -86,6 +87,21 @@ export default class UserService {
 				},
 				body: JSON.stringify({
 					email,
+				}),
+			}
+		);
+	}
+	// update an user's profile details
+	static async updateProfile(name: string) {
+		return await CreateFetch.dispatch(
+			`${process.env.NEXT_PUBLIC_API_URL}/api/users/update-profile`,
+			{
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					name,
 				}),
 			}
 		);
