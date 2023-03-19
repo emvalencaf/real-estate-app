@@ -20,6 +20,8 @@ export type FormProps = {
 	redirect?: boolean;
 	redirectUrl?: string;
 	disabled?: boolean;
+	toastSuccess?: boolean;
+	toastSuccessMessage?: string;
 };
 
 // icon
@@ -39,6 +41,8 @@ const Form = ({
 	redirect = false,
 	redirectUrl = "",
 	disabled = false,
+	toastSuccess = false,
+	toastSuccessMessage = "",
 }: FormProps) => {
 	// ref
 	const formRef = useRef<HTMLFormElement | null>(reference);
@@ -60,6 +64,7 @@ const Form = ({
 					try {
 						await onSubmit(formRef);
 						if (redirect) router.push(redirectUrl);
+						if (toastSuccess) toast.success(toastSuccessMessage);
 					} catch (err) {
 						console.log(err);
 						toast.error(err.message);

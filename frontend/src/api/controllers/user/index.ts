@@ -5,6 +5,7 @@ import {
 	UserSignInResponse,
 	UserSignInWithGoogleResponse,
 	UserSignUpResponse,
+	UserUpdateProfileRespose,
 } from "../../../shared-types/user";
 import UserService from "../../services/user";
 
@@ -104,7 +105,7 @@ export default class UserController {
 		currentUserName: string,
 		userId: string,
 		token: string
-	) {
+	): Promise<UserUpdateProfileRespose> {
 		try {
 			if (!name)
 				throw new Error(

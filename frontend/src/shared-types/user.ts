@@ -47,4 +47,4 @@ export type UserFogotPasswordResponse = ServerResponse<string>;
 export type UserUpdateProfileFn = <
 	UserUpdateProfileRespose
 >() => Promise<UserUpdateProfileRespose>;
-export type UserUpdateProfileRespose = ServerResponse<string>;
+export type UserUpdateProfileRespose = ServerResponse<null>;

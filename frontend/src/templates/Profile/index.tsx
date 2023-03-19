@@ -1,8 +1,7 @@
 // hooks
 import { useState } from "react";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-
+import { useFetch } from "../../hooks/useFetch";
 // controller
 import UserController from "../../api/controllers/user";
 
@@ -16,20 +15,17 @@ import ProfileForm from "../../components/ProfileForm";
 import * as Styled from "./styles";
 
 // types
+import { UserUpdateProfileFn } from "../../shared-types/user";
 export type ProfileTemplateProps = {
 	title: "";
 };
 
 // mock
 import mock from "../Home/mock";
-import { UserUpdateProfileFn } from "../../shared-types/user";
 
 const ProfileTemplate = () => {
 	// session
 	const { data } = useSession();
-
-	// router
-	const router = useRouter();
 
 	// states
 	const [formData, setFormData] = useState({
@@ -63,6 +59,8 @@ const ProfileTemplate = () => {
 					handleClick={() => setChangeDetails((state) => !state)}
 					handleSubmit={handleSubmit as UserUpdateProfileFn}
 					changeDetails={changeDetails}
+					toastSuccess
+					toastSuccessMessage="Profile was successfully updated"
 				>
 					<TextInput
 						name="name"

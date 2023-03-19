@@ -6,6 +6,7 @@ import {
 	UserSignInWithGoogleResponse,
 	UserSignUpData,
 	UserSignUpResponse,
+	UserUpdateProfileRespose,
 } from "../../../shared-types/user";
 
 // utils
@@ -92,7 +93,11 @@ export default class UserService {
 		);
 	}
 	// update an user's profile details
-	static async updateProfile(name: string, userId: string, token: string) {
+	static async updateProfile(
+		name: string,
+		userId: string,
+		token: string
+	): Promise<UserUpdateProfileRespose> {
 		return await CreateFetch.dispatch(
 			`${process.env.NEXT_PUBLIC_API_URL}/api/users/update-profile/${userId}`,
 			{

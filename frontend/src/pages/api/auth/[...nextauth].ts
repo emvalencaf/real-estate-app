@@ -1,5 +1,4 @@
 // next auth
-import { Session } from "next-auth";
 import NextAuth from "next-auth/next";
 
 // providers
@@ -8,9 +7,6 @@ import GoogleProvider from "next-auth/providers/google";
 
 // UserController
 import UserController from "../../../api/controllers/user";
-
-// types
-import { CallbackSession } from "../../../shared-types/auth";
 
 export default NextAuth({
 	secret: process.env.NEXT_AUTH_SECRET,
@@ -26,21 +22,22 @@ export default NextAuth({
 					const { data } = await UserController.signInWithGoogle(
 						account.id_token
 					);
-					token.id = data.user.id;
+					token.id = data.id;
 					token.accessToken = data.accessToken;
 				} else {
 					token.accessToken = user.accessToken;
+					token.id = user.id;
 				}
 			}
 			return token;
 		},
-		session: async ({ session, token }: CallbackSession) => {
+		session: async ({ session, user, token }) => {
 			if (!token) return null;
 
-			session.user.id = token.id;
-			session.user.name = token.name;
-			session.user.email = token.email;
-			session.accessToken = token.accessToken;
+			user.id = token.id as string;
+			user.name = token.name;
+			user.email = token.email;
+			session.accessToken = token.accessToken as string;
 			console.log("session in callback", session);
 			return session;
 		},

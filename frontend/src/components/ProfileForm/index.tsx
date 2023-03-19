@@ -12,6 +12,8 @@ export type ProfileFormProps = {
 	handleClick: () => void;
 	handleSubmit?: <T>() => Promise<T>;
 	changeDetails: boolean;
+	toastSuccess?: boolean;
+	toastSuccessMessage?: string;
 };
 
 const ProfileForm = ({
@@ -19,10 +21,14 @@ const ProfileForm = ({
 	handleClick,
 	changeDetails = false,
 	handleSubmit,
+	toastSuccess = false,
+	toastSuccessMessage = "",
 }: ProfileFormProps) => {
 	return (
 		<Styled.Wrapper>
 			<Form
+				toastSuccess={toastSuccess}
+				toastSuccessMessage={toastSuccessMessage}
 				asyncOnSubmit
 				onSubmit={handleSubmit}
 				btnText="Change profile details"
