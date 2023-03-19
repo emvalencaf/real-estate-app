@@ -8,13 +8,9 @@ import GoogleProvider from "next-auth/providers/google";
 
 // UserController
 import UserController from "../../../api/controllers/user";
-import { CallbackSession } from "../../../shared-types/auth";
 
 // types
-import { UserDataFromServer } from "../../../shared-types/user";
-
-// utils
-import TokenHandler, { Token } from "../../../utils/setToken";
+import { CallbackSession } from "../../../shared-types/auth";
 
 export default NextAuth({
 	secret: process.env.NEXT_AUTH_SECRET,
@@ -46,6 +42,13 @@ export default NextAuth({
 			console.log("session in callback", session);
 			return session;
 		},
+		redirect: async ({ url, baseUrl }) => {
+			if (url.startsWith(baseUrl)) return url;
+
+			if (url.startsWith("/")) return baseUrl + url;
+
+			return baseUrl;
+		}
 	},
 	providers: [
 		CredentialsProvider({

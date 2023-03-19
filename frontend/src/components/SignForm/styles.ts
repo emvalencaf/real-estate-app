@@ -3,7 +3,7 @@ import { Achor } from "../Achor/styles";
 import { Button } from "../Button/styles";
 import { Form } from "../Form/styles";
 
-export const Wrapper = styled.main`
+export const Wrapper = styled.div`
 	${({ theme }) => css`
 		min-height: 100vh;
 		display: flex;
