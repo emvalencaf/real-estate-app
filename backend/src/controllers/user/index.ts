@@ -1,11 +1,6 @@
 // interface
 import { Request, Response } from "express";
 import UserRepository from "../../repository/user";
-import {
-	IUserController,
-	IUserControllerDeps,
-	IUserServerResponse,
-} from "../../shared-type/user";
 
 export default class UserController {
 	// log in an user
@@ -50,10 +45,7 @@ export default class UserController {
 				password,
 			});
 
-			const response = await UserRepository.signUp(
-				{ name, email },
-				responseAuth.uid
-			);
+			await UserRepository.signUp({ name, email }, responseAuth.uid);
 
 			res.status(201).json({
 				data: null,
@@ -120,14 +112,48 @@ export default class UserController {
 	static async updateUserProfile(req: Request, res: Response) {
 		const { id } = req.params;
 		try {
+			console.log(req.user);
+			console.log(id);
 			if (id !== req.user?.uid)
 				throw new Error("you cannot try update another user's details");
+
 			const { name } = req.body;
-			await UserRepository.update(name);
+			await UserRepository.updateUserProfile(id, name);
+
+			res.status(200).send({
+				data: null,
+				success: true,
+				message: "you successfully update your profile details",
+			});
 		} catch (err) {
 			console.log(err);
 			res.status(500).send({
 				success: false,
+				message: "something went wrong on the server",
+			});
+		}
+	}
+
+	// get an user details
+	static async getUserDetails(req: Request, res: Response) {
+		if (!req.user)
+			return res.status(403).send({
+				success: false,
+				message: "forbiden access",
+			});
+
+		const { uid } = req.user;
+
+		try {
+			const user = await UserRepository.getUserById(uid);
+			res.status(200).send({
+				data: user,
+				success: true,
+				message: "succefully fetched user data",
+			});
+		} catch (err) {
+			console.log(err);
+			res.status(501).send({
 				message: "something went wrong on the server",
 			});
 		}

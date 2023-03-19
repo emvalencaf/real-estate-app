@@ -23,6 +23,8 @@ import { Router } from "express";
 const router: Router = express.Router();
 
 // routes
+router.get("/currentUser", authGuard, UserController.getUserDetails);
+
 router.post(
 	"/sign-up",
 	userCreateValidation(),

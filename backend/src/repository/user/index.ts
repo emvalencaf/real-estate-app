@@ -18,9 +18,9 @@ import {
 	getDocs,
 	query,
 	QueryDocumentSnapshot,
-	QuerySnapshot,
 	serverTimestamp,
 	setDoc,
+	updateDoc,
 	where,
 } from "firebase/firestore";
 import auth from "../../auth";
@@ -77,7 +77,7 @@ export default class UserRepository {
 			password
 		);
 		UserRepository;
-		await UserRepository.update(name);
+		await UserRepository.updateWhileSignUp(name);
 		const { user } = userCredentials;
 		return user;
 	}
@@ -103,8 +103,8 @@ export default class UserRepository {
 		await sendPasswordResetEmail(auth, email);
 	}
 
-	// update a user name
-	static async update(name: string): Promise<void> {
+	// update a user name while in sign up using auth
+	static async updateWhileSignUp(name: string): Promise<void> {
 		if (!auth || !auth.currentUser) throw new Error("server error");
 		await updateProfile(auth.currentUser, {
 			displayName: name,
@@ -149,6 +149,7 @@ export default class UserRepository {
 		return docSnap.exists();
 	}
 
+	// get an user by its email
 	static async getUserByEmail(
 		email: string
 	): Promise<QueryDocumentSnapshot<DocumentData>> {
@@ -159,5 +160,21 @@ export default class UserRepository {
 		const querySnap = await getDocs(q);
 
 		return querySnap.docs[0];
+	}
+
+	// update an user profile
+	static async updateUserProfile(id: string, name: string) {
+		const docRef = doc(db, "users", id);
+		await updateDoc(docRef, {
+			name,
+		});
+		const data = (await getDoc(docRef)).data();
+		console.log(data);
+	}
+
+	// get an user by id
+	static async getUserById(uid: string) {
+		const docRef = doc(db, "users", uid);
+		return (await getDoc(docRef)).data();
 	}
 }
