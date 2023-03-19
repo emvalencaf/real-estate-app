@@ -92,13 +92,14 @@ export default class UserService {
 		);
 	}
 	// update an user's profile details
-	static async updateProfile(name: string) {
+	static async updateProfile(name: string, userId: string, token: string) {
 		return await CreateFetch.dispatch(
-			`${process.env.NEXT_PUBLIC_API_URL}/api/users/update-profile`,
+			`${process.env.NEXT_PUBLIC_API_URL}/api/users/update-profile/${userId}`,
 			{
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
 				},
 				body: JSON.stringify({
 					name,

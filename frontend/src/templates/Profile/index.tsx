@@ -44,7 +44,12 @@ const ProfileTemplate = () => {
 	const handleSubmit = async () => {
 		if (!changeDetails) return;
 		const currentUserName = data.user.name;
-		return await UserController.updateProfile(name, currentUserName);
+		return await UserController.updateProfile(
+			name,
+			currentUserName,
+			data.user.id,
+			data.accessToken
+		);
 	};
 
 	return (

@@ -26,6 +26,7 @@ export default NextAuth({
 					const { data } = await UserController.signInWithGoogle(
 						account.id_token
 					);
+					token.id = data.user.id;
 					token.accessToken = data.accessToken;
 				} else {
 					token.accessToken = user.accessToken;
@@ -36,6 +37,7 @@ export default NextAuth({
 		session: async ({ session, token }: CallbackSession) => {
 			if (!token) return null;
 
+			session.user.id = token.id;
 			session.user.name = token.name;
 			session.user.email = token.email;
 			session.accessToken = token.accessToken;
@@ -48,7 +50,7 @@ export default NextAuth({
 			if (url.startsWith("/")) return baseUrl + url;
 
 			return baseUrl;
-		}
+		},
 	},
 	providers: [
 		CredentialsProvider({

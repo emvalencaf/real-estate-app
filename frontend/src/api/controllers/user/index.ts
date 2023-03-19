@@ -99,7 +99,12 @@ export default class UserController {
 		}
 	}
 	// update an user profile details
-	static async updateProfile(name: string, currentUserName: string) {
+	static async updateProfile(
+		name: string,
+		currentUserName: string,
+		userId: string,
+		token: string
+	) {
 		try {
 			if (!name)
 				throw new Error(
@@ -107,7 +112,7 @@ export default class UserController {
 				);
 			if (name === currentUserName)
 				throw new Error("the new name is the same as the current one");
-			return await UserService.updateProfile(name);
+			return await UserService.updateProfile(name, userId, token);
 		} catch (err) {
 			console.log(err);
 			throw new Error(err.message);

@@ -9,8 +9,8 @@ import { userRouter } from "./user";
 router.use("/api/users", userRouter);
 
 // test routes
-router.get("/api", (req:Request, res:Response) => {
-    res.send("API is working!!");
+router.get("/api", (req: Request, res: Response) => {
+	res.send("API is working!!");
 });
 
 export { router as Router };

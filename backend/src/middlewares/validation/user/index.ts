@@ -2,39 +2,62 @@ import { body } from "express-validator";
 
 // Users validation
 export const userCreateValidation = () => {
-    return [
-        body("name")
-            .isString().withMessage("user's name is required")
-            .isLength({ min: 3 }).withMessage("user's name must have at least 3 caracters"),
-        body("email")
-            .isString().withMessage("user's email is required")
-            .isEmail().withMessage("user's email must be a valid email"),
-        body("password")
-            .isString().withMessage("user's password is required")
-            .isLength({ min: 5 }).withMessage("user's password must have at least 5 caracters"),
-        body("confirmPassword")
-            .isString().withMessage("user's password must be confirmed")
-            .custom((value: string, { req }) => {
-                if (value !== req.body.password) throw new Error("the confirm password is not equal to the password");
-                return true;
-            })
-    ];
-}
+	return [
+		body("name")
+			.isString()
+			.withMessage("user's name is required")
+			.isLength({ min: 3 })
+			.withMessage("user's name must have at least 3 caracters"),
+		body("email")
+			.isString()
+			.withMessage("user's email is required")
+			.isEmail()
+			.withMessage("user's email must be a valid email"),
+		body("password")
+			.isString()
+			.withMessage("user's password is required")
+			.isLength({ min: 5 })
+			.withMessage("user's password must have at least 5 caracters"),
+		body("confirmPassword")
+			.isString()
+			.withMessage("user's password must be confirmed")
+			.custom((value: string, { req }) => {
+				if (value !== req.body.password)
+					throw new Error(
+						"the confirm password is not equal to the password"
+					);
+				return true;
+			}),
+	];
+};
 
 export const userLoginValidation = () => {
-    return [
-        body("email")
-            .isString().withMessage("user's email is required")
-            .isEmail().withMessage("user's email must be a valid email"),
-        body("password")
-            .isString().withMessage("user's password is required")
-    ]
-}
+	return [
+		body("email")
+			.isString()
+			.withMessage("user's email is required")
+			.isEmail()
+			.withMessage("user's email must be a valid email"),
+		body("password").isString().withMessage("user's password is required"),
+	];
+};
 
 export const userSendPasswordResetEmailValidation = () => {
-    return [
-        body("email")
-        .isString().withMessage("user's email is required")
-        .isEmail().withMessage("user's email must be a valid email"),
-    ];
-}
+	return [
+		body("email")
+			.isString()
+			.withMessage("user's email is required")
+			.isEmail()
+			.withMessage("user's email must be a valid email"),
+	];
+};
+
+export const userUpdateProfileValidation = () => {
+	return [
+		body("name")
+			.isString()
+			.withMessage("user's name is required")
+			.isLength({ min: 3 })
+			.withMessage("user's name must have at least 3 caracters"),
+	];
+};

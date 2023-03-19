@@ -1,6 +1,4 @@
 // interface
 import { IUserModel } from "../../shared-type/user";
 
-export default class UserModel{
-
-}
+export default class UserModel {}
