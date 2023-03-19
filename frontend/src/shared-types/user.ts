@@ -42,3 +42,9 @@ export type UserFogotPasswordFn = <
 >() => Promise<UserFogotPasswordResponse>;
 
 export type UserFogotPasswordResponse = ServerResponse<string>;
+
+// updateProfile method
+export type UserUpdateProfileFn = <
+	UserUpdateProfileRespose
+>() => Promise<UserUpdateProfileRespose>;
+export type UserUpdateProfileRespose = ServerResponse<string>;

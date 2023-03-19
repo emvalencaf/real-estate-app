@@ -22,6 +22,7 @@ export type ProfileTemplateProps = {
 
 // mock
 import mock from "../Home/mock";
+import { UserUpdateProfileFn } from "../../shared-types/user";
 
 const ProfileTemplate = () => {
 	// session
@@ -55,7 +56,7 @@ const ProfileTemplate = () => {
 				</Heading>
 				<ProfileForm
 					handleClick={() => setChangeDetails((state) => !state)}
-					handleSubmit={handleSubmit}
+					handleSubmit={handleSubmit as UserUpdateProfileFn}
 					changeDetails={changeDetails}
 				>
 					<TextInput
