@@ -56,7 +56,6 @@ const SignInTemplate = () => {
 	};
 	return (
 		<Styled.Wrapper>
-			<Header logo={mock.settings.logo} menu={mock.settings.menu} />
 			<SignForm
 				btnSubmitText="sign in"
 				srcImg={mock.srcImg}

@@ -18,11 +18,6 @@ export default {
 					link: "/offers",
 					newTab: false,
 				},
-				{
-					children: "Sign in",
-					link: "/sign-in",
-					newTab: false,
-				},
 			],
 		},
 	},

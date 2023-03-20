@@ -1,8 +1,10 @@
 // hooks
 import { useSession } from "next-auth/react";
 
+// components
+import Spinner from "../Spinner";
+
 // types
-import { Session } from "../../shared-types/session-nextauth";
 export type PrivateComponentProps = {
 	children: React.ReactNode;
 };
@@ -13,12 +15,12 @@ import { clientSideRedirect } from "../../utils/frontend-redirect";
 const PrivateComponent = ({ children }: PrivateComponentProps) => {
 	// states
 	const { data, status } = useSession();
-	const session: Session = data;
 
 	// check session state
-	if (typeof window !== "undefined" && status === "loading") return null;
+	if (typeof window !== "undefined" && status === "loading")
+		return <Spinner />;
 
-	if (!session && (!status || status === "unauthenticated"))
+	if (!data && (!status || status === "unauthenticated"))
 		return clientSideRedirect();
 
 	return children;

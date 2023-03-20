@@ -5,7 +5,6 @@ import { useSession } from "next-auth/react";
 import UserController from "../../api/controllers/user";
 
 // components
-import Header from "../../components/Header";
 import Heading from "../../components/Heading";
 import TextInput from "../../components/TextInput";
 import ProfileForm from "../../components/ProfileForm";
@@ -18,9 +17,6 @@ import { UserUpdateProfileFn } from "../../shared-types/user";
 export type ProfileTemplateProps = {
 	title: "";
 };
-
-// mock
-import mock from "../Home/mock";
 
 const ProfileTemplate = () => {
 	// session
@@ -50,7 +46,6 @@ const ProfileTemplate = () => {
 
 	return (
 		<Styled.Wrapper>
-			<Header logo={mock.settings.logo} menu={mock.settings.menu} />
 			<Styled.Section>
 				<Heading size="big" weight="bold">
 					My Profile

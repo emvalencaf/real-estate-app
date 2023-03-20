@@ -2,9 +2,10 @@ import styled, { css } from "styled-components";
 
 export const Header = styled.header`
 	${({ theme }) => css`
+		position: fixed;
 		display: flex;
 		width: 100%;
-		justify-content: space-between;
+		justify-content: space-around;
 		align-items: center;
 		padding: 0px ${theme.spacings.xsmall};
 		margin: auto;

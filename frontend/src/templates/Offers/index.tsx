@@ -16,11 +16,7 @@ export type OffersTemplateProps = {
 import mock from "../Home/mock";
 
 const OffersTemplate = ({ settings }: OffersTemplateProps) => {
-	return (
-		<Styled.Wrapper>
-			<Header logo={mock.settings.logo} menu={mock.settings.menu} />
-		</Styled.Wrapper>
-	);
+	return <Styled.Wrapper></Styled.Wrapper>;
 };
 
 export default OffersTemplate;

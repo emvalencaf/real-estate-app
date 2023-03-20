@@ -4,7 +4,7 @@ import { Button } from "../Button/styles";
 import { Form } from "../Form/styles";
 
 export const Wrapper = styled.div`
-	${({ theme }) => css`
+	${() => css`
 		& ${Form} {
 			width: 100%;
 			background-color: transparent;
