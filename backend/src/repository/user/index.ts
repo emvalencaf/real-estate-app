@@ -24,6 +24,7 @@ import {
 	where,
 } from "firebase/firestore";
 import auth from "../../auth";
+import { auth as authAdmin } from "../../middlewares/authGuard";
 import { db } from "../../db";
 
 // interfaces
@@ -54,7 +55,6 @@ export default class UserRepository {
 		const { displayName, email: userEmail, uid: id } = userCredentials.user;
 
 		const token = await userCredentials.user.getIdToken();
-
 		return {
 			user: {
 				name: displayName || "",
@@ -167,6 +167,9 @@ export default class UserRepository {
 		const docRef = doc(db, "users", id);
 		await updateDoc(docRef, {
 			name,
+		});
+		const userAuth = await authAdmin.updateUser(id, {
+			displayName: name,
 		});
 		const data = (await getDoc(docRef)).data();
 		console.log(data);

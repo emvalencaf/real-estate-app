@@ -136,6 +136,7 @@ export default class UserController {
 
 	// get an user details
 	static async getUserDetails(req: Request, res: Response) {
+		console.log(req.user);
 		if (!req.user)
 			return res.status(403).send({
 				success: false,

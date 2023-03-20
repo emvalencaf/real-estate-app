@@ -1,7 +1,6 @@
 // hooks
 import { useState } from "react";
 import { useSession } from "next-auth/react";
-import { useFetch } from "../../hooks/useFetch";
 // controller
 import UserController from "../../api/controllers/user";
 
@@ -26,7 +25,6 @@ import mock from "../Home/mock";
 const ProfileTemplate = () => {
 	// session
 	const { data } = useSession();
-
 	// states
 	const [formData, setFormData] = useState({
 		name: data.user.name,
@@ -40,12 +38,14 @@ const ProfileTemplate = () => {
 	const handleSubmit = async () => {
 		if (!changeDetails) return;
 		const currentUserName = data.user.name;
-		return await UserController.updateProfile(
+		const response = await UserController.updateProfile(
 			name,
 			currentUserName,
 			data.user.id,
 			data.accessToken
 		);
+
+		if (response.success) data.user.name = name;
 	};
 
 	return (

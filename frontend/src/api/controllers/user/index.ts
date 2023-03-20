@@ -119,4 +119,12 @@ export default class UserController {
 			throw new Error(err.message);
 		}
 	}
+	// get user's details
+	static async getUserDetails(token: string) {
+		try {
+			return await UserService.getUserDetails(token);
+		} catch (err) {
+			console.log(err);
+		}
+	}
 }

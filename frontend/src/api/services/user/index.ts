@@ -2,6 +2,7 @@
 import {
 	UserFogotPasswordResponse,
 	UserFormData,
+	UserGetUserDetailsResponse,
 	UserSignInResponse,
 	UserSignInWithGoogleResponse,
 	UserSignUpData,
@@ -109,6 +110,21 @@ export default class UserService {
 				body: JSON.stringify({
 					name,
 				}),
+			}
+		);
+	}
+	// get user's details
+	static async getUserDetails(
+		token: string
+	): Promise<UserGetUserDetailsResponse> {
+		return await CreateFetch.dispatch(
+			`${process.env.NEXT_PUBLIC_API_URL}/api/users/currentUser`,
+			{
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
 			}
 		);
 	}

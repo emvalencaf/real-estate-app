@@ -48,3 +48,12 @@ export type UserUpdateProfileFn = <
 	UserUpdateProfileRespose
 >() => Promise<UserUpdateProfileRespose>;
 export type UserUpdateProfileRespose = ServerResponse<null>;
+
+// getUserDetails method
+export type UserGetUserDetailsFn = <
+	UserGetUserDetailsResponse
+>() => Promise<UserGetUserDetailsResponse>;
+
+export type UserGetUserDetailsResponse = ServerResponse<
+	Pick<UserDataFromServer, "name" | "email">
+>;

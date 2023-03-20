@@ -31,12 +31,20 @@ export default NextAuth({
 			}
 			return token;
 		},
-		session: async ({ session, user, token }) => {
+		session: async ({ session, token }) => {
 			if (!token) return null;
 
-			user.id = token.id as string;
-			user.name = token.name;
-			user.email = token.email;
+			const response = await UserController.getUserDetails(
+				token.accessToken as string
+			);
+
+			console.log(response);
+			if (response && token.name !== response?.data?.name)
+				token.name = response.data.name;
+
+			session.user.id = token.id as string;
+			session.user.name = token.name;
+			session.user.email = token.email;
 			session.accessToken = token.accessToken as string;
 			console.log("session in callback", session);
 			return session;
@@ -79,7 +87,6 @@ export default NextAuth({
 					if (!login.success) return null;
 
 					const { data } = login;
-
 					const { name, email, accessToken, id } = data;
 
 					if (!accessToken || !name || !accessToken || !id)

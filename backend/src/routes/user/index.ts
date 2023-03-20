@@ -5,7 +5,7 @@ import express from "express";
 import UserController from "../../controllers/user";
 
 // middlewares
-import authGuard from "../../middlewares/validation/authGuard";
+import authGuard from "../../middlewares/authGuard";
 
 // validation
 import validate from "../../middlewares/validation";
