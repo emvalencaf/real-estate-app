@@ -3,6 +3,6 @@ import FogotPasswordTemplate from "../../templates/FogotPassword";
 
 // types
 
-export default function FogotPassword() {
+export default function FogotPasswordPage() {
 	return <FogotPasswordTemplate />;
 }

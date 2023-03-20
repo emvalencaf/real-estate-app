@@ -3,6 +3,6 @@ import SignUpTemplate from "../../templates/SignUp";
 
 // types
 
-export default function SignUp() {
+export default function SignUpPage() {
 	return <SignUpTemplate />;
 }

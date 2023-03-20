@@ -6,9 +6,13 @@ import { Form } from "../Form/styles";
 export const Wrapper = styled.div`
 	${() => css`
 		& ${Form} {
-			width: 100%;
+			width: 80%;
 			background-color: transparent;
 		}
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
 		width: 100%;
 	`}
 `;
@@ -48,6 +52,34 @@ export const LinksContainer = styled.div`
 			color: blue;
 			&:hover {
 				color: darkblue;
+			}
+		}
+	`}
+`;
+
+export const ButtonContainer = styled.div`
+	${({ theme }) => css`
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 80%;
+
+		& ${Button} {
+			background-color: darkblue;
+			color: ${theme.colors.deepWhite};
+			& ${Achor} {
+				color: inherit;
+				gap: ${theme.spacings.small};
+				width: 100%;
+			}
+			> span {
+				width: 100%;
+			}
+			width: 100%;
+			&:hover {
+				& ${Achor} > svg {
+					transform: scale(1.3);
+				}
 			}
 		}
 	`}

@@ -1,8 +1,24 @@
-import styled, { css } from "styled-components";
+import styled, { css, DefaultTheme } from "styled-components";
 import { ButtonProps } from ".";
 
-export const Button = styled.button<Pick<ButtonProps, "color">>`
-	${({ theme, color }) => css`
+const setStyleTypeListing = (
+	typeListing: "rent" | "sale",
+	theme: DefaultTheme
+) => css`
+	${typeListing === "rent"
+		? `
+		background-color: rbg(20, 10, 200) !important;
+		color: ${theme.colors.deepWhite} !important;
+	`
+		: `
+		background-color: ${theme.colors.deepWhite} !important;
+		color: ${theme.colors.deepBlack} !important;
+	`}
+`;
+
+export const Button = styled.button<Pick<ButtonProps, "color" | "typeListing">>`
+	${({ theme, color, typeListing }) => css`
+		${typeListing && setStyleTypeListing(typeListing, theme)}
 		background: ${theme.colors[color]};
 		border: none;
 		color: ${theme.colors.deepWhite};

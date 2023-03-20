@@ -16,6 +16,9 @@ export type ProfileFormProps = {
 	toastSuccessMessage?: string;
 };
 
+// icons
+import { HouseAdd } from "@styled-icons/bootstrap";
+
 const ProfileForm = ({
 	children,
 	handleClick,
@@ -45,6 +48,17 @@ const ProfileForm = ({
 					<Achor link="">Sign out</Achor>
 				</Styled.LinksContainer>
 			</Form>
+			<Styled.ButtonContainer>
+				<Button>
+					<Achor
+						link="/create-listing"
+						icon={<HouseAdd />}
+						target="_self"
+					>
+						Sell or Rent your home
+					</Achor>
+				</Button>
+			</Styled.ButtonContainer>
 		</Styled.Wrapper>
 	);
 };

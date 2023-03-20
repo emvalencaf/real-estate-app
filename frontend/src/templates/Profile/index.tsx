@@ -46,10 +46,10 @@ const ProfileTemplate = () => {
 
 	return (
 		<Styled.Wrapper>
+			<Heading size="big" weight="bold">
+				My Profile
+			</Heading>
 			<Styled.Section>
-				<Heading size="big" weight="bold">
-					My Profile
-				</Heading>
 				<ProfileForm
 					handleClick={() => setChangeDetails((state) => !state)}
 					handleSubmit={handleSubmit as UserUpdateProfileFn}
