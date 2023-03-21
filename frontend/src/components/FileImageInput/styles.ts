@@ -1,5 +1,5 @@
 import styled, { css, DefaultTheme } from "styled-components";
-import { NumberInputProps } from ".";
+import { FileImageInputProps } from ".";
 
 const onInputError = (theme: DefaultTheme, errorMessage: string) => css`
 	border: ${theme.spacings.xxtiny} solid ${theme.colors.warning};
@@ -24,7 +24,9 @@ export const Wrapper = styled.div`
 	`}
 `;
 
-export const InputWrapper = styled.div<Pick<NumberInputProps, "errorMessage">>`
+export const InputWrapper = styled.div<
+	Pick<FileImageInputProps, "errorMessage">
+>`
 	${({ theme, errorMessage }) => css`
 		position: relative;
 		span > svg {
@@ -55,7 +57,7 @@ export const InputWrapper = styled.div<Pick<NumberInputProps, "errorMessage">>`
 	`}
 `;
 
-export const Input = styled.input<Pick<NumberInputProps, "errorMessage">>`
+export const Input = styled.input<Pick<FileImageInputProps, "errorMessage">>`
 	${({ theme, errorMessage }) => css`
 		border: 1px solid ${theme.colors.gray3};
 		width: 100%;

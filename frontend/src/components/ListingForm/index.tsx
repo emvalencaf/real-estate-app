@@ -1,6 +1,7 @@
 // styles
 import { useState } from "react";
 import Button from "../Button";
+import FileImageInput from "../FileImageInput";
 import Form from "../Form";
 import NumberInput from "../NumberInput";
 import TextInput from "../TextInput";
@@ -14,13 +15,30 @@ export type ListingFormProps = {
 const ListingForm = ({ title = "" }: ListingFormProps) => {
 	// states
 	const [formData, setFormData] = useState({
-		type: "rent",
+		isSale: false,
 		name: "",
 		beds: 0,
 		bathrooms: 0,
+		parking: false,
+		furnished: false,
+		address: "",
+		description: "",
+		offer: false,
+		price: 0,
 	});
 
-	const { name, beds, bathrooms } = formData;
+	const {
+		isSale,
+		name,
+		beds,
+		bathrooms,
+		parking,
+		furnished,
+		address,
+		description,
+		offer,
+		price,
+	} = formData;
 
 	// handleClick
 	const onChange = () => {
@@ -29,14 +47,14 @@ const ListingForm = ({ title = "" }: ListingFormProps) => {
 
 	return (
 		<Styled.Wrapper>
-			<Form>
+			<Form btnText="CREATE LISTING">
 				<p>Sell/Rent</p>
 				<Styled.ButtonContainer>
 					<Button
 						type="button"
 						value="sale"
 						onClick={onChange}
-						typeListing={formData.type as "rent" | "sale"}
+						darkMode={!isSale}
 					>
 						Sell
 					</Button>
@@ -44,14 +62,14 @@ const ListingForm = ({ title = "" }: ListingFormProps) => {
 						type="button"
 						value="rent"
 						onChange={onChange}
-						typeListing={formData.type as "rent" | "sale"}
+						darkMode={isSale}
 					>
 						Rent
 					</Button>
 				</Styled.ButtonContainer>
 				<TextInput
 					name="name"
-					label="name"
+					label="Name"
 					onInputChange={(v: string) =>
 						setFormData((s) => ({
 							...s,
@@ -63,35 +81,169 @@ const ListingForm = ({ title = "" }: ListingFormProps) => {
 					maxLength={32}
 					required
 				/>
-				<NumberInput
-					name="beds"
-					type="number"
-					label="beds"
-					value={beds}
-					onInputChange={(v: number) =>
+				<Styled.InputContainer>
+					<NumberInput
+						name="beds"
+						type="number"
+						label="beds"
+						value={beds}
+						onInputChange={(v: number) =>
+							setFormData((s) => ({
+								...s,
+								beds: v,
+							}))
+						}
+						min="1"
+						max="50"
+						required
+					/>
+					<NumberInput
+						name="bathrooms"
+						type="number"
+						label="bathrooms"
+						value={bathrooms}
+						onInputChange={(v: number) =>
+							setFormData((s) => ({
+								...s,
+								bathrooms: v,
+							}))
+						}
+						min="1"
+						max="50"
+						required
+					/>
+				</Styled.InputContainer>
+				<p>Parking spot</p>
+				<Styled.ButtonContainer>
+					<Button
+						type="button"
+						name="parking"
+						value="true"
+						onClick={onChange}
+						darkMode={!parking}
+					>
+						YES
+					</Button>
+					<Button
+						type="button"
+						name="parking"
+						value="false"
+						onChange={onChange}
+						darkMode={parking}
+					>
+						NO
+					</Button>
+				</Styled.ButtonContainer>
+				<p>Furnished</p>
+				<Styled.ButtonContainer>
+					<Button
+						type="button"
+						name="furnished"
+						value="true"
+						onClick={onChange}
+						darkMode={!furnished}
+					>
+						YES
+					</Button>
+					<Button
+						type="button"
+						name="furnished"
+						value="false"
+						onChange={onChange}
+						darkMode={furnished}
+					>
+						NO
+					</Button>
+				</Styled.ButtonContainer>
+				<TextInput
+					name="address"
+					label="Address"
+					onInputChange={(v: string) =>
 						setFormData((s) => ({
 							...s,
-							beds: v,
+							address: v,
 						}))
 					}
-					min="1"
-					max="50"
+					value={address}
 					required
+					as={"textarea"}
 				/>
-				<NumberInput
-					name="beds"
-					type="number"
-					label="bathrooms"
-					value={bathrooms}
-					onInputChange={(v: number) =>
+				<TextInput
+					name="description"
+					label="Description"
+					onInputChange={(v: string) =>
 						setFormData((s) => ({
 							...s,
-							bathrooms: v,
+							description: v,
 						}))
 					}
-					min="1"
-					max="50"
+					value={description}
 					required
+					as={"textarea"}
+				/>
+				<p>Offer</p>
+				<Styled.ButtonContainer>
+					<Button
+						type="button"
+						name="offer"
+						value="true"
+						onClick={onChange}
+						darkMode={!offer}
+					>
+						YES
+					</Button>
+					<Button
+						type="button"
+						name="offer"
+						value="false"
+						onChange={onChange}
+						darkMode={offer}
+					>
+						NO
+					</Button>
+				</Styled.ButtonContainer>
+				<Styled.InputContainer>
+					<NumberInput
+						name="price"
+						type="number"
+						label="price"
+						value={price}
+						onInputChange={(v: number) =>
+							setFormData((s) => ({
+								...s,
+								price: v,
+							}))
+						}
+						min="1"
+						required
+					/>
+					{!isSale && <p> $/ Month</p>}
+				</Styled.InputContainer>
+				{offer && (
+					<Styled.InputContainer>
+						<NumberInput
+							name="discount"
+							type="number"
+							label="discount"
+							value={price}
+							onInputChange={(v: number) =>
+								setFormData((s) => ({
+									...s,
+									price: v,
+								}))
+							}
+							min="1"
+							max="100"
+						/>
+						{!isSale && <p> $/ Month</p>}
+					</Styled.InputContainer>
+				)}
+				<FileImageInput
+					name="images"
+					label={`the first image will be the cover (max: 6)`}
+					onInputChange={onChange}
+					required
+					multiple
 				/>
 			</Form>
 		</Styled.Wrapper>

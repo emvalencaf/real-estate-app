@@ -8,7 +8,7 @@ export type ButtonProps = {
 	children?: React.ReactNode;
 	disabled?: boolean;
 	onClick?: () => void;
-	typeListing?: "rent" | "sale";
+	darkMode?: boolean;
 	color?:
 		| "primary"
 		| "secondary"
@@ -24,7 +24,7 @@ const Button = ({
 	color = "quaternary",
 	onClick,
 	icon,
-	typeListing = undefined,
+	darkMode = undefined,
 	type = "submit",
 }: ButtonProps) => {
 	const handleClick = () => {
@@ -37,7 +37,7 @@ const Button = ({
 			color={color}
 			onClick={handleClick}
 			type={type}
-			typeListing={typeListing}
+			darkMode={typeof darkMode !== "undefined" && darkMode}
 		>
 			{icon}
 			{!!children && <Styled.ButtonLabel>{children}</Styled.ButtonLabel>}

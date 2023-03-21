@@ -1,24 +1,21 @@
 import styled, { css, DefaultTheme } from "styled-components";
 import { ButtonProps } from ".";
 
-const setStyleTypeListing = (
-	typeListing: "rent" | "sale",
-	theme: DefaultTheme
-) => css`
-	${typeListing === "rent"
+const toggleMode = (darkmode: boolean, theme: DefaultTheme) => css`
+	${darkmode
 		? `
-		background-color: rbg(20, 10, 200) !important;
-		color: ${theme.colors.deepWhite} !important;
-	`
-		: `
 		background-color: ${theme.colors.deepWhite} !important;
 		color: ${theme.colors.deepBlack} !important;
+		`
+		: `
+		background-color: rbg(20, 10, 200) !important;
+		color: ${theme.colors.deepWhite} !important;
 	`}
 `;
 
-export const Button = styled.button<Pick<ButtonProps, "color" | "typeListing">>`
-	${({ theme, color, typeListing }) => css`
-		${typeListing && setStyleTypeListing(typeListing, theme)}
+export const Button = styled.button<Pick<ButtonProps, "color" | "darkMode">>`
+	${({ theme, color, darkMode }) => css`
+		${typeof darkMode !== "undefined" && toggleMode(darkMode, theme)}
 		background: ${theme.colors[color]};
 		border: none;
 		color: ${theme.colors.deepWhite};
