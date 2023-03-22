@@ -26,6 +26,7 @@ const Button = ({
 	icon,
 	darkMode = undefined,
 	type = "submit",
+	value = "",
 }: ButtonProps) => {
 	const handleClick = () => {
 		if (onClick) onClick();
@@ -37,6 +38,7 @@ const Button = ({
 			color={color}
 			onClick={handleClick}
 			type={type}
+			value={value}
 			darkMode={typeof darkMode !== "undefined" && darkMode}
 		>
 			{icon}

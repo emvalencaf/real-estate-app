@@ -7,7 +7,7 @@ export type FileImageInputProps = {
 	label: string;
 	name: string;
 	type?: string;
-	onInputChange?: () => void;
+	onInputChange?: (value: FileList) => void;
 	onIconClick?: () => void;
 	disabled?: boolean;
 	errorMessage?: string;
@@ -25,7 +25,7 @@ const FileImageInput = ({
 	onIconClick,
 	disabled,
 	errorMessage = "",
-	value = null,
+	value = undefined,
 	reference = null,
 	max = 1,
 	multiple = false,
@@ -35,10 +35,10 @@ const FileImageInput = ({
 
 	// synthetic event handler
 	const handleChange = () => {
-		const value = inputRef.current.value;
+		const value = inputRef.current.files;
 
 		if (onInputChange) {
-			onInputChange();
+			onInputChange(value);
 		}
 	};
 	return (
