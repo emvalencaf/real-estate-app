@@ -1,6 +1,7 @@
 {
-  "name": "08_next",
+  "name": "real-estate-app",
   "version": "0.1.0",
+  "author":"Edosn Mota Valença Filho",
   "private": true,
   "scripts": {
     "dev": "next dev",
