@@ -10,6 +10,7 @@ declare global {
 			DB_API_APP_ID: string;
 			DB_URL: string;
 			FRONTEND_URL: string;
+			GOOGLE_GEOCODE_API_KEY: string;
 		}
 	}
 }

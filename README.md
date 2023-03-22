@@ -1,4 +1,4 @@
-# Real State WEB App
+# Real Estate WEB App
 
 Esse é um projeto fullstack desenvolvido em JavaScript, usando o superset TypeScript, e o banco de dados Firestore do Firebase.
 
@@ -19,3 +19,4 @@ A organização do projeto foi feita em camadas. Isto é, o programa foi dividid
 ## Features
 - [x] Sistema de Login: criação de novos usuários, resgate de senha (através de e-mail) e login (com email/senha ou conta Google); 
 - [x] Sistema de autenticação de usuários e rotas privada acessadas apenas por usuários autenticados (logados);
+- [x] Achar longitude e latitude pelo endereço usando o Geocode API;
