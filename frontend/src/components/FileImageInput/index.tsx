@@ -7,11 +7,11 @@ export type FileImageInputProps = {
 	label: string;
 	name: string;
 	type?: string;
-	onInputChange?: (value: FileList) => void;
+	onInputChange?: (value: FileList | File) => void;
 	onIconClick?: () => void;
 	disabled?: boolean;
 	errorMessage?: string;
-	value?: File;
+	value?: File | FileList;
 	icon?: React.ReactNode;
 	reference?: HTMLInputElement;
 } & InputHTMLAttributes<HTMLInputElement>;

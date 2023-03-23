@@ -1,5 +1,9 @@
 // hooks
 import { useState } from "react";
+import { useSession } from "next-auth/react";
+
+// controller
+import RealEstateController from "../../api/controllers/realestate";
 
 // components
 import Button from "../Button";
@@ -13,32 +17,21 @@ import TextInput from "../TextInput";
 import * as Styled from "./styles";
 
 // types
-type FormDataProps = {
-	isSale: boolean;
-	name: string;
-	beds: number;
-	bathrooms: number;
-	furnished: boolean;
-	parking: boolean;
-	address: string;
-	description: string;
-	price: number;
-	discount: number;
-	offer: boolean;
-	latitude: number;
-	longitude: number;
-};
+import { FormDataRealEstateProps, RealEstateCreateFn } from "../../shared-types/realestate";
 
 export type ListingFormProps = {
 	title?: string;
 };
 
 const ListingForm = ({ title = "" }: ListingFormProps) => {
+	// auth
+	const { data } = useSession();
+
 	// states
 	const [geoLocationEnabled, setGeoLocationEnabled] =
 		useState<boolean>(false);
 	const [loading, setLoading] = useState<boolean>(false);
-	const [formData, setFormData] = useState<FormDataProps>({
+	const [formData, setFormData] = useState<FormDataRealEstateProps>({
 		isSale: false,
 		name: "",
 		beds: 0,
@@ -52,6 +45,7 @@ const ListingForm = ({ title = "" }: ListingFormProps) => {
 		discount: 0,
 		latitude: 0,
 		longitude: 0,
+		images: undefined,
 	});
 
 	const {
@@ -71,8 +65,15 @@ const ListingForm = ({ title = "" }: ListingFormProps) => {
 	} = formData;
 
 	// handleSubmit
-	const handleSubmit = () => {
+	const handleSubmit = async () => {
 		setLoading(true);
+		const response = RealEstateController.create(
+			formData,
+			geoLocationEnabled,
+			data.accessToken
+		);
+		setLoading(false);
+		return response;
 	};
 
 	if (loading) return <Spinner />;
@@ -82,7 +83,9 @@ const ListingForm = ({ title = "" }: ListingFormProps) => {
 			<Form
 				btnText="CREATE LISTING"
 				asyncOnSubmit
-				onSubmit={handleSubmit}
+				onSubmit={handleSubmit as RealEstateCreateFn}
+				toastSuccess
+				toastSuccessMessage={`Real estate ${name} was successfully add to your list`}
 			>
 				<p>Sell/Rent</p>
 				<Styled.ButtonContainer>
