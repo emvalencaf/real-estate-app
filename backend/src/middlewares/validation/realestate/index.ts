@@ -56,13 +56,11 @@ export const realEstateCreateValidation = () => {
 			.withMessage(
 				"real estate parking field  must be fill with a boolean value"
 			),
-
 		body("furnished")
 			.isBoolean()
 			.withMessage(
 				"real estate furnished field must be fill with a boolean value"
 			),
-
 		body("address")
 			.isString()
 			.withMessage("real estate address field is required")
@@ -70,14 +68,45 @@ export const realEstateCreateValidation = () => {
 			.withMessage(
 				"user's name must have at least 10 caracters and at maximum 20"
 			),
-		body("confirmPassword")
-			.isString()
-			.withMessage("user's password must be confirmed")
-			.custom((value: string, { req }) => {
-				if (value !== req.body.password)
+		body("offer")
+			.isBoolean()
+			.withMessage(
+				"real estate offer field must be fill with a boolean value"
+			)
+			.custom((value, { req }) => {
+				if (value === true && !req.body.discount)
+					throw new Error(`you must fill a discount`);
+
+				return true;
+			}),
+		body("price")
+			.isNumeric()
+			.withMessage("the real estate price field must be a number")
+			.custom((value: number, { req }) => {
+				if (value <= 0)
 					throw new Error(
-						"the confirm password is not equal to the password"
+						"the real estate price field cannot be less than 1"
 					);
+
+				if (req.body.offer && req.body.discount >= value)
+					throw new Error(
+						"the real estate price cannot be less than the discount"
+					);
+				return true;
+			}),
+		body("discount")
+			.if(body("offer").exists)
+			.isNumeric()
+			.withMessage("the real estate discount field must be a number")
+			.custom((value: number, { req }) => {
+				if (value <= 0)
+					throw new Error("the discount cannot be less than 0");
+
+				if (value <= req.body.price)
+					throw new Error(
+						"the discount cannot be more or the same as price"
+					);
+
 				return true;
 			}),
 	];

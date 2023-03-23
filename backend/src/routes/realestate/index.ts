@@ -13,6 +13,7 @@ import { realEstateCreateValidation } from "../../middlewares/validation/realest
 
 // types
 import { Router } from "express";
+import { uploadFilesMiddleware } from "../../middlewares/uploadImages";
 
 // router
 const router: Router = express.Router();
@@ -23,6 +24,7 @@ router.post(
 	authGuard,
 	realEstateCreateValidation(),
 	validate,
+	uploadFilesMiddleware,
 	RealEstateController.create
 );
 
