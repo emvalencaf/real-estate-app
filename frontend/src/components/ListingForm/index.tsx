@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 
 // controller
-import RealEstateController from "../../api/controllers/realestate";
+import RealEstateController from "../../api/controllers/realEstate";
 
 // components
 import Button from "../Button";
@@ -17,7 +17,10 @@ import TextInput from "../TextInput";
 import * as Styled from "./styles";
 
 // types
-import { FormDataRealEstateProps, RealEstateCreateFn } from "../../shared-types/realestate";
+import {
+	FormDataRealEstateProps,
+	RealEstateCreateFn,
+} from "../../shared-types/realestate";
 
 export type ListingFormProps = {
 	title?: string;

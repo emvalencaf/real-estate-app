@@ -46,7 +46,6 @@ export default NextAuth({
 			session.user.name = token.name;
 			session.user.email = token.email;
 			session.accessToken = token.accessToken as string;
-			console.log("session in callback", session);
 			return session;
 		},
 		redirect: async ({ url, baseUrl }) => {
