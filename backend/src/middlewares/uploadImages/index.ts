@@ -22,7 +22,7 @@ const fileFilter = (
 };
 
 // Create a multer instance
-const upload = multer({
+export const uploader = multer({
 	storage: multerStorage,
 	fileFilter: fileFilter,
 });
@@ -82,7 +82,6 @@ export const uploadFilesMiddleware = async (
 
 		// wait for all files to be uploaded and generate URLs
 		const urls = await Promise.all(promises);
-
 		req.body.images = urls;
 
 		next();

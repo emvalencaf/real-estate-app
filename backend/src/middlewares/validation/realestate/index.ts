@@ -1,4 +1,5 @@
 import { body } from "express-validator";
+import { IGeolocation } from "../../../shared-type/geocode";
 
 // real estate validation
 export const realEstateCreateValidation = () => {
@@ -11,7 +12,7 @@ export const realEstateCreateValidation = () => {
 			.withMessage("real estate name's name is required")
 			.isLength({ min: 10, max: 20 })
 			.withMessage(
-				"user's name must have at least 10 caracters and at maximum 20"
+				"real-estate's name must have at least 10 caracters and at maximum 20"
 			),
 		body("beds")
 			.isNumeric()
@@ -102,12 +103,20 @@ export const realEstateCreateValidation = () => {
 				if (value <= 0)
 					throw new Error("the discount cannot be less than 0");
 
-				if (value <= req.body.price)
+				if (value >= req.body.price)
 					throw new Error(
 						"the discount cannot be more or the same as price"
 					);
 
 				return true;
 			}),
+		body("geolocation").custom((value: string) => {
+			const obj: IGeolocation = JSON.parse(value);
+			if (!obj.lat) throw new Error("you must inform a latitude");
+
+			if (!obj.lng) throw new Error("you must inform a longitude");
+
+			return true;
+		}),
 	];
 };

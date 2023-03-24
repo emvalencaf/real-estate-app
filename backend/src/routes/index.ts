@@ -5,7 +5,7 @@ import express, { Request, Response } from "express";
 const router = express();
 import { userRouter } from "./user";
 import { geocodeRouter } from "./geocode";
-import { realEstateRouter } from "./realestate";
+import { realEstateRouter } from "./realEstate";
 
 // user routes
 router.use("/api/users", userRouter);
@@ -14,7 +14,7 @@ router.use("/api/users", userRouter);
 router.use("/api/geocode", geocodeRouter);
 
 // realestate routes
-router.use("/api/realestate", realEstateRouter);
+router.use("/api/real-estate", realEstateRouter);
 
 // test routes
 router.get("/api", (req: Request, res: Response) => {

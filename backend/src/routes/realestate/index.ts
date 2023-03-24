@@ -2,10 +2,14 @@
 import express from "express";
 
 // controller
-import RealEstateController from "../../controllers/realestate";
+import RealEstateController from "../../controllers/realEstate";
 
 // middlewares
 import authGuard from "../../middlewares/authGuard";
+import {
+	uploader,
+	uploadFilesMiddleware,
+} from "../../middlewares/uploadImages";
 
 // validation
 import validate from "../../middlewares/validation";
@@ -13,18 +17,18 @@ import { realEstateCreateValidation } from "../../middlewares/validation/realest
 
 // types
 import { Router } from "express";
-import { uploadFilesMiddleware } from "../../middlewares/uploadImages";
 
 // router
 const router: Router = express.Router();
 
 // routes
 router.post(
-	"/create",
+	"/",
 	authGuard,
+	uploader.array("images", 6),
+	uploadFilesMiddleware,
 	realEstateCreateValidation(),
 	validate,
-	uploadFilesMiddleware,
 	RealEstateController.create
 );
 

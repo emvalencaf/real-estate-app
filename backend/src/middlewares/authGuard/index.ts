@@ -1,16 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-// firebase auth
-import * as admin from "firebase-admin";
+import { adminFirebase } from "../../firebase/admin";
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const serviceAccount = require("../../../serviceAccountKey.json");
-
-admin.initializeApp({
-	credential: admin.credential.cert(serviceAccount),
-	databaseURL: process.env.DB_URL,
-});
-
-export const auth = admin.auth();
+export const auth = adminFirebase.auth();
 
 const authGuard = async (req: Request, res: Response, next: NextFunction) => {
 	// get token from the headers request
