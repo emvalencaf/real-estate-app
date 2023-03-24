@@ -5,6 +5,7 @@ import {
 	DocumentReference,
 	QueryDocumentSnapshot,
 } from "firebase/firestore";
+import { IRealEstateModel } from "./real-estate";
 import { IServerResponse } from "./server-response";
 
 // request body
@@ -25,6 +26,7 @@ export interface IUserModel {
 	name: string;
 	email: string;
 	accessToken: string;
+	listings?: IRealEstateModel[];
 }
 
 // user repository deps

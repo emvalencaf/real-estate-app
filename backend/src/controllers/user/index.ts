@@ -146,7 +146,7 @@ export default class UserController {
 		const { uid } = req.user;
 
 		try {
-			const user = await UserRepository.getUserById(uid);
+			const user = await UserController.getUserById(uid);
 			res.status(200).send({
 				data: user,
 				success: true,
@@ -158,5 +158,10 @@ export default class UserController {
 				message: "something went wrong on the server",
 			});
 		}
+	}
+
+	// get an user by it's id
+	static async getUserById(uid: string) {
+		return await UserRepository.getUserById(uid);
 	}
 }
