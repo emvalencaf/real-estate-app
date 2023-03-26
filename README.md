@@ -20,3 +20,4 @@ A organização do projeto foi feita em camadas. Isto é, o programa foi dividid
 - [x] Sistema de Login: criação de novos usuários, resgate de senha (através de e-mail) e login (com email/senha ou conta Google); 
 - [x] Sistema de autenticação de usuários e rotas privada acessadas apenas por usuários autenticados (logados);
 - [x] Achar longitude e latitude pelo endereço usando o Geocode API;
+- [x] Sistema para criar e busccar real estate para vender/alugar;
