@@ -22,6 +22,7 @@ export default class RealEstateRepository {
 		isSale,
 		name,
 		description,
+		address,
 		furnished,
 		beds,
 		bathrooms,
@@ -34,6 +35,7 @@ export default class RealEstateRepository {
 		const data = {
 			isSale,
 			name,
+			address,
 			description,
 			furnished,
 			beds,

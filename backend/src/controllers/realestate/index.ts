@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
+import { Timestamp } from "firebase/firestore";
 import RealEstateRepository from "../../repository/realEstate";
+import { IRealEstateModel } from "../../shared-type/real-estate";
 import UserController from "../user";
 
 export default class RealEstateController {
@@ -14,18 +16,20 @@ export default class RealEstateController {
 			// request body data
 			const data = req.body;
 
+			// boolean convert
 			data.furnished = data.furnished === "true" ? true : false;
 			data.isSale = data.isSale === "true" ? true : false;
 			data.offer = data.offer === "true" ? true : false;
 			data.parking = data.parking === "true" ? true : false;
 
+			// number convert
 			data.beds = Number(data.beds);
+			data.bathrooms = Number(data.bathrooms);
 			data.price = Number(data.price);
-
-			data.geolocation = JSON.stringify(data.geolocation);
-
 			if (data?.discount) data.discount = Number(data.discount);
-			data.bathrooms = Number(data.bathhrooms);
+
+			// object convert
+			data.geolocation = JSON.parse(data.geolocation);
 
 			// create a real estate's register and fetched it's data
 			const realEstateUid = await RealEstateRepository.create({
@@ -68,8 +72,24 @@ export default class RealEstateController {
 					message: "no data was fetched",
 				});
 
+			const list: IRealEstateModel[] = [];
+
+			// convert timestamp to JS Date
+			realEstates.forEach((realEstate) =>
+				list.push(
+					Object.assign(
+						{},
+						{
+							...realEstate,
+							timestamp: (
+								realEstate.timestamp as Timestamp
+							).toDate(),
+						}
+					)
+				)
+			);
 			return res.status(200).send({
-				data: realEstates,
+				data: list,
 				success: true,
 				message:
 					"successfully fetched real estates data realted to an user",

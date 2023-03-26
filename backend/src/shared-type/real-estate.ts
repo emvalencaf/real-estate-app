@@ -1,3 +1,4 @@
+import { Timestamp } from "firebase/firestore";
 import { IGeolocation } from "./geocode";
 
 // user model interface
@@ -17,4 +18,5 @@ export interface IRealEstateModel {
 	address: string;
 	geolocation: IGeolocation;
 	owner: string;
+	timestamp: Timestamp | Date;
 }
