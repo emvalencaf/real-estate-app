@@ -1,15 +1,15 @@
 // styles
 import Heading from "../../components/Heading";
-import ListingForm from "../../components/ListingForm";
+import RealEstateForm from "../../components/RealEstateForm";
 import * as Styled from "./styles";
 
-const CreateListingTemplate = () => {
+const CreateRealEstateTemplate = () => {
 	return (
 		<Styled.Wrapper>
 			<Heading size="big">Create a Listing</Heading>
-			<ListingForm />
+			<RealEstateForm />
 		</Styled.Wrapper>
 	);
 };
 
-export default CreateListingTemplate;
+export default CreateRealEstateTemplate;

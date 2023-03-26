@@ -22,11 +22,7 @@ import {
 	RealEstateCreateFn,
 } from "../../shared-types/realestate";
 
-export type ListingFormProps = {
-	title?: string;
-};
-
-const ListingForm = ({ title = "" }: ListingFormProps) => {
+const RealEstateForm = () => {
 	// auth
 	const { data: sessionData } = useSession();
 
@@ -75,7 +71,7 @@ const ListingForm = ({ title = "" }: ListingFormProps) => {
 		setLoading(true);
 		const formData: FormData = new FormData(ref.current);
 		console.log(formData);
-		const response = RealEstateController.create(
+		const response = await RealEstateController.create(
 			data,
 			formData,
 			geoLocationEnabled,
@@ -369,4 +365,4 @@ const ListingForm = ({ title = "" }: ListingFormProps) => {
 	);
 };
 
-export default ListingForm;
+export default RealEstateForm;

@@ -6,7 +6,6 @@ import {
 
 // utils
 import CreateFetch from "../../../utils/createFetch";
-import { createFormData } from "../../../utils/createFormData";
 
 export default class RealEstateService {
 	static async create(
@@ -21,6 +20,16 @@ export default class RealEstateService {
 					Authorization: `Bearer ${token}`,
 				},
 				body: formData,
+			}
+		);
+	}
+
+	// get all realestate realted to an user id
+	static async getAllFromUser(userId: string) {
+		return await CreateFetch.dispatch(
+			`${process.env.NEXT_PUBLIC_API_URL}/api/real-estates/${userId}`,
+			{
+				method: "GET",
 			}
 		);
 	}

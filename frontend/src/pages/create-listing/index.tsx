@@ -1,5 +1,5 @@
 // template
-import CreateListingTemplate from "../../templates/CreateListing";
+import CreateRealEstateTemplate from "../../templates/CreateRealEstate";
 
 // components
 import PrivateComponent from "../../components/PrivateComponent";
@@ -10,10 +10,10 @@ import { GetServerSideProps } from "next";
 // utils
 import { privateServerSideProps } from "../../utils/private-serverside-props";
 
-export default function CreateListingPage() {
+export default function CreateRealEstatePage() {
 	return (
 		<PrivateComponent>
-			<CreateListingTemplate />
+			<CreateRealEstateTemplate />
 		</PrivateComponent>
 	);
 }

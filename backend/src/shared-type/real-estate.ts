@@ -2,6 +2,7 @@ import { IGeolocation } from "./geocode";
 
 // user model interface
 export interface IRealEstateModel {
+	id?: string;
 	isSale: boolean;
 	name: string;
 	description: string;

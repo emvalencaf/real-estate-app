@@ -6,9 +6,9 @@ import RealEstateService from "../../services/realEstate";
 
 // types
 import { FormDataRealEstateProps } from "../../../shared-types/realestate";
-import { createFormData } from "../../../utils/createFormData";
 
 export default class RealEstateController {
+	// create a realestate related to an user
 	static async create(
 		data: FormDataRealEstateProps,
 		formData: FormData,
@@ -102,5 +102,10 @@ export default class RealEstateController {
 			console.log(err);
 			throw new Error(err.message);
 		}
+	}
+
+	// get all realestate realted to an user id
+	static async getAllFromUser(userId: string) {
+		return await RealEstateService.getAllFromUser(userId);
 	}
 }

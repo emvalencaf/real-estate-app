@@ -19,5 +19,7 @@ export default function ProfilePage() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-	return privateServerSideProps(ctx);
+	return privateServerSideProps(ctx, () => {
+		
+	});
 };
