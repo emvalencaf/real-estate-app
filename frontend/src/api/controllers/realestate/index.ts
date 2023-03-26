@@ -105,7 +105,7 @@ export default class RealEstateController {
 	}
 
 	// get all realestate realted to an user id
-	static async getAllFromUser(userId: string) {
-		return await RealEstateService.getAllFromUser(userId);
+	static async getAllFromUser(userId: string, options: RequestInit = null) {
+		return await RealEstateService.getAllFromUser(userId, options);
 	}
 }

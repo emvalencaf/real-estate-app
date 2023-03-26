@@ -10,7 +10,7 @@ export type PictureProps = {
 const Picture = ({ srcImg = "", altText = "" }: PictureProps) => {
 	return (
 		<Styled.Picture>
-			<img src={srcImg} alt={altText} />
+			<img src={srcImg} alt={altText} loading="lazy" />
 		</Styled.Picture>
 	);
 };

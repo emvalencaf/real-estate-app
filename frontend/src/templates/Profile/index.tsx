@@ -1,10 +1,14 @@
 // hooks
-import { useEffect, useState } from "react";
+import { useFetch } from "../../hooks/useFetch";
+import { useState } from "react";
 import { useSession } from "next-auth/react";
+
 // controller
 import UserController from "../../api/controllers/user";
+import RealEstateController from "../../api/controllers/realEstate";
 
 // components
+import ListingRealEstate from "../../components/ListingRealEstate";
 import Heading from "../../components/Heading";
 import TextInput from "../../components/TextInput";
 import ProfileForm from "../../components/ProfileForm";
@@ -14,11 +18,11 @@ import * as Styled from "./styles";
 
 // types
 import { UserUpdateProfileFn } from "../../shared-types/user";
-import RealEstateController from "../../api/controllers/realEstate";
-import { RealEstateModel } from "../../shared-types/realestate";
-export type ProfileTemplateProps = {
-	title: "";
-};
+import {
+	RealEstateGetResponse,
+	RealEstateModel,
+} from "../../shared-types/realestate";
+import Spinner from "../../components/Spinner";
 
 const ProfileTemplate = () => {
 	// session
@@ -29,22 +33,19 @@ const ProfileTemplate = () => {
 		email: data.user.email,
 	});
 	const [changeDetails, setChangeDetails] = useState<boolean>(false);
-	const [realEstateList, setRealEstateList] = useState<RealEstateModel[]>([]);
+	const {
+		data: dataRealEstateList,
+		isLoading: isFetchLoading,
+		error: errorFetch,
+	} = useFetch<RealEstateGetResponse<RealEstateModel[]>>({
+		url: data.user.id,
+		cb: RealEstateController.getAllFromUser,
+	});
 
+	// destructured formData state
 	const { name, email } = formData;
 
-	useEffect(() => {
-		if (!data) return;
-
-		const getRealEstateList = async () => {
-			const response = await RealEstateController.getAllFromUser(
-				data.user.id
-			);
-			const { data: realEstateList } = response;
-			setRealEstateList(() => [...realEstateList]);
-			console.log(realEstateList);
-		};
-	}, []);
+	if (isFetchLoading) return <Spinner />;
 
 	// handleSubmit
 	const handleSubmit = async () => {
@@ -100,6 +101,15 @@ const ProfileTemplate = () => {
 						disabled
 					/>
 				</ProfileForm>
+			</Styled.Section>
+			<Styled.Section>
+				{!isFetchLoading &&
+					dataRealEstateList?.data &&
+					dataRealEstateList.data.length > 0 && (
+						<ListingRealEstate
+							realEstateList={dataRealEstateList.data}
+						/>
+					)}
 			</Styled.Section>
 		</Styled.Wrapper>
 	);

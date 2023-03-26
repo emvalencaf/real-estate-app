@@ -11,6 +11,7 @@ export const Picture = styled.picture`
 		& img {
 			width: 100%;
 			border-radius: ${theme.spacings.small};
+			object-fit: cover;
 		}
 	`}
 `;

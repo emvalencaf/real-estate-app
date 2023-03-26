@@ -15,6 +15,7 @@ export type FormDataRealEstateProps = {
 	latitude: number;
 	longitude: number;
 	images?: FileList | File;
+	timestamp?: Date;
 };
 
 // real estate model

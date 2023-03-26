@@ -28,13 +28,21 @@ export default class RealEstateService {
 
 	// get all realestate realted to an user id
 	static async getAllFromUser(
-		userId: string
+		userId: string,
+		options: RequestInit
 	): Promise<RealEstateGetResponse<RealEstateModel[]>> {
+		const fetchOptions: ResponseInit = options
+			? {
+					method: "GET",
+					...options,
+			  }
+			: {
+					method: "GET",
+			  };
+
 		return await CreateFetch.dispatch(
 			`${process.env.NEXT_PUBLIC_API_URL}/api/real-estates/${userId}`,
-			{
-				method: "GET",
-			}
+			fetchOptions
 		);
 	}
 }
