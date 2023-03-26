@@ -17,12 +17,24 @@ export type FormDataRealEstateProps = {
 	images?: FileList | File;
 };
 
-// reponse data
+// real estate model
+export type RealEstateModel = FormDataRealEstateProps & {
+	id: string;
+};
+
+// reponse data from create method
 export type RealEstateCreateResponse = ServerResponse<undefined>;
 
+// respones data from get method
+export type RealEstateGetResponse<T> = ServerResponse<T>;
 // create real estate method
 export type RealEstateCreateFn = <RealEstateCreateResponse>(
 	formData: FormDataRealEstateProps,
 	geolocationEnabled: boolean,
 	token: string
 ) => Promise<RealEstateCreateResponse>;
+
+// get all real estate from an user method
+export type RealEstateGetAllFromUser = (
+	userId: string
+) => Promise<RealEstateGetResponse<RealEstateModel[]>>;

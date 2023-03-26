@@ -1,5 +1,5 @@
 // hooks
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 // controller
 import UserController from "../../api/controllers/user";
@@ -14,6 +14,8 @@ import * as Styled from "./styles";
 
 // types
 import { UserUpdateProfileFn } from "../../shared-types/user";
+import RealEstateController from "../../api/controllers/realEstate";
+import { RealEstateModel } from "../../shared-types/realestate";
 export type ProfileTemplateProps = {
 	title: "";
 };
@@ -27,8 +29,22 @@ const ProfileTemplate = () => {
 		email: data.user.email,
 	});
 	const [changeDetails, setChangeDetails] = useState<boolean>(false);
+	const [realEstateList, setRealEstateList] = useState<RealEstateModel[]>([]);
 
 	const { name, email } = formData;
+
+	useEffect(() => {
+		if (!data) return;
+
+		const getRealEstateList = async () => {
+			const response = await RealEstateController.getAllFromUser(
+				data.user.id
+			);
+			const { data: realEstateList } = response;
+			setRealEstateList(() => [...realEstateList]);
+			console.log(realEstateList);
+		};
+	}, []);
 
 	// handleSubmit
 	const handleSubmit = async () => {

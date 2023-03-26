@@ -2,6 +2,8 @@
 import {
 	FormDataRealEstateProps,
 	RealEstateCreateResponse,
+	RealEstateGetResponse,
+	RealEstateModel,
 } from "../../../shared-types/realestate";
 
 // utils
@@ -25,7 +27,9 @@ export default class RealEstateService {
 	}
 
 	// get all realestate realted to an user id
-	static async getAllFromUser(userId: string) {
+	static async getAllFromUser(
+		userId: string
+	): Promise<RealEstateGetResponse<RealEstateModel[]>> {
 		return await CreateFetch.dispatch(
 			`${process.env.NEXT_PUBLIC_API_URL}/api/real-estates/${userId}`,
 			{

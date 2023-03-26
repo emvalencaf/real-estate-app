@@ -79,7 +79,7 @@ export default class RealEstateRepository {
 				...data,
 			});
 		});
-
+		console.log(realEstates);
 		return realEstates;
 	}
 }
