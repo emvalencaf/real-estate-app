@@ -28,7 +28,12 @@ import { auth as authAdmin } from "../../middlewares/authGuard";
 import { db } from "../../db";
 
 // interfaces
-import { IUserFormData, IUserSignInResponse } from "../../shared-type/user";
+import {
+	IUserFormData,
+	IUserModel,
+	IUserSignInResponse,
+} from "../../shared-type/user";
+import { generateAccessToken } from "../../utils/generateAccessToken";
 
 export default class UserRepository {
 	static async signIn({
@@ -54,7 +59,10 @@ export default class UserRepository {
 
 		const { displayName, email: userEmail, uid: id } = userCredentials.user;
 
-		const token = await userCredentials.user.getIdToken();
+		const token = await userCredentials.user.getIdToken(true);
+
+		const accessToken = await generateAccessToken(token);
+
 		return {
 			user: {
 				name: displayName || "",
@@ -76,9 +84,11 @@ export default class UserRepository {
 			email,
 			password
 		);
-		UserRepository;
+
 		await UserRepository.updateWhileSignUp(name);
+
 		const { user } = userCredentials;
+
 		return user;
 	}
 
@@ -116,7 +126,7 @@ export default class UserRepository {
 		const credential = GoogleAuthProvider.credential(id_token);
 
 		const response = await signInWithCredential(auth, credential);
-		console.log("response firebase auth: ", response.user);
+
 		const { user } = response;
 
 		const docRef = doc(db, "users", user.uid);
@@ -172,12 +182,29 @@ export default class UserRepository {
 			displayName: name,
 		});
 		const data = (await getDoc(docRef)).data();
-		console.log(data);
 	}
 
 	// get an user by id
 	static async getUserById(uid: string) {
 		const docRef = doc(db, "users", uid);
 		return (await getDoc(docRef)).data();
+	}
+
+	//
+	static async updateUserRealEstate(realEstateUid: string, userUid: string) {
+		// get user ref by user's uid
+		const docRef = await doc(db, "users", userUid);
+
+		const user = (await getDoc(docRef)).data() as IUserModel;
+
+		const realEstates = user?.realEstates ? user.realEstates : [];
+
+		realEstates.push(realEstateUid);
+
+		const update = await updateDoc(docRef, {
+			realEstates: realEstates,
+		});
+
+		return update;
 	}
 }

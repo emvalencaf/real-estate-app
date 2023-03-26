@@ -14,7 +14,7 @@ router.use("/api/users", userRouter);
 router.use("/api/geocode", geocodeRouter);
 
 // realestate routes
-router.use("/api/real-estate", realEstateRouter);
+router.use("/api/real-estates", realEstateRouter);
 
 // test routes
 router.get("/api", (req: Request, res: Response) => {

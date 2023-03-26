@@ -112,8 +112,6 @@ export default class UserController {
 	static async updateUserProfile(req: Request, res: Response) {
 		const { id } = req.params;
 		try {
-			console.log(req.user);
-			console.log(id);
 			if (id !== req.user?.uid)
 				throw new Error("you cannot try update another user's details");
 
@@ -136,7 +134,6 @@ export default class UserController {
 
 	// get an user details
 	static async getUserDetails(req: Request, res: Response) {
-		console.log(req.user);
 		if (!req.user)
 			return res.status(403).send({
 				success: false,
@@ -163,5 +160,14 @@ export default class UserController {
 	// get an user by it's id
 	static async getUserById(uid: string) {
 		return await UserRepository.getUserById(uid);
+	}
+
+	// update real-estates at user profile
+
+	static async updateUserRealEstate(realEstateUid: string, userUid: string) {
+		if (!realEstateUid || !userUid)
+			throw new Error("you must inform real estate uid and user uid");
+
+		return UserRepository.updateUserRealEstate(realEstateUid, userUid);
 	}
 }

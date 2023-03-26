@@ -39,7 +39,7 @@ export const uploadFilesMiddleware = async (
 				success: false,
 				message: "you must be authenticated",
 			});
-
+		console.log("uploading image handler", req.body);
 		if (!req.files || Object.keys(req.files).length === 0)
 			return res.status(400).send({
 				success: false,

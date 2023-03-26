@@ -16,7 +16,8 @@ const authGuard = async (req: Request, res: Response, next: NextFunction) => {
 
 	// check if token is valid
 	try {
-		const decodedToken = await auth.verifyIdToken(token);
+		const decodedToken = await auth.verifyIdToken(token, true);
+
 		req.user = {
 			uid: decodedToken.uid,
 			email: decodedToken.email || "",

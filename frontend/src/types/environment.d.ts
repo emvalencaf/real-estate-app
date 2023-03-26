@@ -7,6 +7,7 @@ declare global {
 			NEXT_AUTH_SECRET: string;
 			GOOGLE_CLIENT_ID: string;
 			GOOGLE_CLIENT_SECRET: string;
+			GOOGLE_GEOCODE_API_KEY: string;
 		}
 	}
 }

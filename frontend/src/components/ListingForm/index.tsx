@@ -1,5 +1,5 @@
 // hooks
-import { useState } from "react";
+import { MutableRefObject, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 
 // controller
@@ -28,13 +28,16 @@ export type ListingFormProps = {
 
 const ListingForm = ({ title = "" }: ListingFormProps) => {
 	// auth
-	const { data } = useSession();
+	const { data: sessionData } = useSession();
+
+	// refs
+	const formRef = useRef(null);
 
 	// states
 	const [geoLocationEnabled, setGeoLocationEnabled] =
 		useState<boolean>(false);
 	const [loading, setLoading] = useState<boolean>(false);
-	const [formData, setFormData] = useState<FormDataRealEstateProps>({
+	const [data, setData] = useState<FormDataRealEstateProps>({
 		isSale: false,
 		name: "",
 		beds: 0,
@@ -65,15 +68,18 @@ const ListingForm = ({ title = "" }: ListingFormProps) => {
 		discount,
 		latitude,
 		longitude,
-	} = formData;
+	} = data;
 
 	// handleSubmit
-	const handleSubmit = async () => {
+	const handleSubmit = async (ref: MutableRefObject<HTMLFormElement>) => {
 		setLoading(true);
+		const formData: FormData = new FormData(ref.current);
+		console.log(formData);
 		const response = RealEstateController.create(
+			data,
 			formData,
 			geoLocationEnabled,
-			data.accessToken
+			sessionData.accessToken
 		);
 		setLoading(false);
 		return response;
@@ -86,7 +92,11 @@ const ListingForm = ({ title = "" }: ListingFormProps) => {
 			<Form
 				btnText="CREATE LISTING"
 				asyncOnSubmit
-				onSubmit={handleSubmit as RealEstateCreateFn}
+				onSubmit={
+					handleSubmit as <
+						RealEstateCreateResponse
+					>() => Promise<RealEstateCreateResponse>
+				}
 				toastSuccess
 				toastSuccessMessage={`Real estate ${name} was successfully add to your list`}
 			>
@@ -96,7 +106,7 @@ const ListingForm = ({ title = "" }: ListingFormProps) => {
 						type="button"
 						name="isSale"
 						onClick={() =>
-							setFormData((prevState) => ({
+							setData((prevState) => ({
 								...prevState,
 								isSale: true,
 							}))
@@ -109,7 +119,7 @@ const ListingForm = ({ title = "" }: ListingFormProps) => {
 						type="button"
 						name="isSale"
 						onClick={() =>
-							setFormData((prevState) => ({
+							setData((prevState) => ({
 								...prevState,
 								isSale: false,
 							}))
@@ -123,7 +133,7 @@ const ListingForm = ({ title = "" }: ListingFormProps) => {
 					name="name"
 					label="Name"
 					onInputChange={(v: string) =>
-						setFormData((s) => ({
+						setData((s) => ({
 							...s,
 							name: v,
 						}))
@@ -140,7 +150,7 @@ const ListingForm = ({ title = "" }: ListingFormProps) => {
 						label="beds"
 						value={beds}
 						onInputChange={(v: number) =>
-							setFormData((s) => ({
+							setData((s) => ({
 								...s,
 								beds: v,
 							}))
@@ -155,7 +165,7 @@ const ListingForm = ({ title = "" }: ListingFormProps) => {
 						label="bathrooms"
 						value={bathrooms}
 						onInputChange={(v: number) =>
-							setFormData((s) => ({
+							setData((s) => ({
 								...s,
 								bathrooms: v,
 							}))
@@ -171,7 +181,7 @@ const ListingForm = ({ title = "" }: ListingFormProps) => {
 						type="button"
 						name="parking"
 						onClick={() =>
-							setFormData((prevState) => ({
+							setData((prevState) => ({
 								...prevState,
 								parking: true,
 							}))
@@ -184,7 +194,7 @@ const ListingForm = ({ title = "" }: ListingFormProps) => {
 						type="button"
 						name="parking"
 						onClick={() =>
-							setFormData((prevState) => ({
+							setData((prevState) => ({
 								...prevState,
 								parking: false,
 							}))
@@ -200,7 +210,7 @@ const ListingForm = ({ title = "" }: ListingFormProps) => {
 						type="button"
 						name="furnished"
 						onClick={() =>
-							setFormData((prevState) => ({
+							setData((prevState) => ({
 								...prevState,
 								furnished: true,
 							}))
@@ -213,7 +223,7 @@ const ListingForm = ({ title = "" }: ListingFormProps) => {
 						type="button"
 						name="furnished"
 						onClick={() =>
-							setFormData((prevState) => ({
+							setData((prevState) => ({
 								...prevState,
 								furnished: false,
 							}))
@@ -227,7 +237,7 @@ const ListingForm = ({ title = "" }: ListingFormProps) => {
 					name="address"
 					label="Address"
 					onInputChange={(v: string) =>
-						setFormData((s) => ({
+						setData((s) => ({
 							...s,
 							address: v,
 						}))
@@ -244,7 +254,7 @@ const ListingForm = ({ title = "" }: ListingFormProps) => {
 							label="latitude"
 							value={latitude}
 							onInputChange={(v: number) =>
-								setFormData((s) => ({
+								setData((s) => ({
 									...s,
 									latitude: v,
 								}))
@@ -257,7 +267,7 @@ const ListingForm = ({ title = "" }: ListingFormProps) => {
 							label="longitude"
 							value={longitude}
 							onInputChange={(v: number) =>
-								setFormData((s) => ({
+								setData((s) => ({
 									...s,
 									longitude: v,
 								}))
@@ -270,7 +280,7 @@ const ListingForm = ({ title = "" }: ListingFormProps) => {
 					name="description"
 					label="Description"
 					onInputChange={(v: string) =>
-						setFormData((s) => ({
+						setData((s) => ({
 							...s,
 							description: v,
 						}))
@@ -285,7 +295,7 @@ const ListingForm = ({ title = "" }: ListingFormProps) => {
 						type="button"
 						name="offer"
 						onClick={() =>
-							setFormData((prevState) => ({
+							setData((prevState) => ({
 								...prevState,
 								offer: true,
 							}))
@@ -298,7 +308,7 @@ const ListingForm = ({ title = "" }: ListingFormProps) => {
 						type="button"
 						name="offer"
 						onClick={() =>
-							setFormData((prevState) => ({
+							setData((prevState) => ({
 								...prevState,
 								offer: false,
 							}))
@@ -315,7 +325,7 @@ const ListingForm = ({ title = "" }: ListingFormProps) => {
 						label="price"
 						value={price}
 						onInputChange={(v: number) =>
-							setFormData((s) => ({
+							setData((s) => ({
 								...s,
 								price: v,
 							}))
@@ -333,7 +343,7 @@ const ListingForm = ({ title = "" }: ListingFormProps) => {
 							label="discount"
 							value={discount}
 							onInputChange={(v: number) =>
-								setFormData((s) => ({
+								setData((s) => ({
 									...s,
 									discount: v,
 								}))
@@ -346,7 +356,7 @@ const ListingForm = ({ title = "" }: ListingFormProps) => {
 					name="images"
 					label={`the first image will be the cover (max: 6)`}
 					onInputChange={(fileList) =>
-						setFormData((prevS) => ({
+						setData((prevS) => ({
 							...prevS,
 							images: fileList,
 						}))

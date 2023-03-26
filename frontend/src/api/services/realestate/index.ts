@@ -6,20 +6,21 @@ import {
 
 // utils
 import CreateFetch from "../../../utils/createFetch";
+import { createFormData } from "../../../utils/createFormData";
 
 export default class RealEstateService {
 	static async create(
-		formData: FormDataRealEstateProps,
+		formData: FormData,
 		token: string
 	): Promise<RealEstateCreateResponse> {
 		return await CreateFetch.dispatch<RealEstateCreateResponse>(
-			`${process.env.NEXT_PUBLIC_API_URL}/real-estate`,
+			`${process.env.NEXT_PUBLIC_API_URL}/api/real-estates`,
 			{
 				method: "POST",
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},
-				body: null,
+				body: formData,
 			}
 		);
 	}

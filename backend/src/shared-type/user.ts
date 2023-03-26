@@ -26,7 +26,7 @@ export interface IUserModel {
 	name: string;
 	email: string;
 	accessToken: string;
-	listings?: IRealEstateModel[];
+	realEstates?: string[];
 }
 
 // user repository deps

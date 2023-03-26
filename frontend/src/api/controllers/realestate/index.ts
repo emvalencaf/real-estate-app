@@ -1,11 +1,17 @@
+// controller
+import GeocodeController from "../geocode";
+
+// service
+import RealEstateService from "../../services/realEstate";
+
 // types
 import { FormDataRealEstateProps } from "../../../shared-types/realestate";
-import RealEstateService from "../../services/realEstate";
-import GeocodeController from "../geocode";
+import { createFormData } from "../../../utils/createFormData";
 
 export default class RealEstateController {
 	static async create(
-		formData: FormDataRealEstateProps,
+		data: FormDataRealEstateProps,
+		formData: FormData,
 		geolocationEnabled: boolean,
 		token: string
 	) {
@@ -22,9 +28,9 @@ export default class RealEstateController {
 			price,
 			discount,
 			images,
-		} = formData;
+		} = data;
 
-		let { longitude, latitude } = formData;
+		let { longitude, latitude } = data;
 
 		// form validation
 		if (!name) throw new Error("name field must be fill");
@@ -79,10 +85,17 @@ export default class RealEstateController {
 			if (!longitude) throw new Error("You must inform a longitude");
 		}
 
-		const geolocation = {
+		const geolocation = JSON.stringify({
 			lat: latitude,
 			lng: longitude,
-		};
+		});
+
+		formData.set("geolocation", geolocation);
+		formData.set("isSale", isSale.toString());
+		formData.set("furnished", furnished.toString());
+		formData.set("parking", parking.toString());
+		formData.set("offer", offer.toString());
+
 		try {
 			return await RealEstateService.create(formData, token);
 		} catch (err) {

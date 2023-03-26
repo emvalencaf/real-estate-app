@@ -1,6 +1,15 @@
-import { addDoc, collection, getDoc, serverTimestamp } from "firebase/firestore";
-import UserController from "../../controllers/user";
+// firebase firestore functions
+import {
+	addDoc,
+	collection,
+	getDoc,
+	serverTimestamp,
+} from "firebase/firestore";
+
+// database reference
 import { db } from "../../db";
+
+// types
 import { IRealEstateModel } from "../../shared-type/real-estate";
 
 export default class RealEstateRepository {
@@ -25,9 +34,9 @@ export default class RealEstateRepository {
 			beds,
 			bathrooms,
 			offer,
-			discount,
 			geolocation,
 			images,
+			discount: offer ? discount : null,
 			owner,
 			timestamp: serverTimestamp(),
 		};

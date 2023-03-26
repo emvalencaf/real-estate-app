@@ -69,17 +69,6 @@ export const realEstateCreateValidation = () => {
 			.withMessage(
 				"user's name must have at least 10 caracters and at maximum 20"
 			),
-		body("offer")
-			.isBoolean()
-			.withMessage(
-				"real estate offer field must be fill with a boolean value"
-			)
-			.custom((value, { req }) => {
-				if (value === true && !req.body.discount)
-					throw new Error(`you must fill a discount`);
-
-				return true;
-			}),
 		body("price")
 			.isNumeric()
 			.withMessage("the real estate price field must be a number")
@@ -95,18 +84,17 @@ export const realEstateCreateValidation = () => {
 					);
 				return true;
 			}),
-		body("discount")
-			.if(body("offer").exists)
-			.isNumeric()
-			.withMessage("the real estate discount field must be a number")
-			.custom((value: number, { req }) => {
-				if (value <= 0)
-					throw new Error("the discount cannot be less than 0");
+		body("offer")
+			.isBoolean()
+			.withMessage(
+				"real estate offer field must be fill with a boolean value"
+			)
+			.custom((value, { req }) => {
+				if (value === true && !req.body.discount)
+					throw new Error(`you must fill a discount`);
 
-				if (value >= req.body.price)
-					throw new Error(
-						"the discount cannot be more or the same as price"
-					);
+				if (value === true && req.body.discount > req.body.price)
+					throw new Error("discount cannot be higher than the price");
 
 				return true;
 			}),
