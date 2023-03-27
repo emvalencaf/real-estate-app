@@ -143,7 +143,7 @@ export default class UserController {
 		const { uid } = req.user;
 
 		try {
-			const user = await UserController.getUserById(uid);
+			const user = await UserController.getById(uid);
 			res.status(200).send({
 				data: user,
 				success: true,
@@ -158,16 +158,22 @@ export default class UserController {
 	}
 
 	// get an user by it's id
-	static async getUserById(uid: string) {
+	static async getById(uid: string) {
 		return await UserRepository.getUserById(uid);
 	}
 
 	// update real-estates at user profile
-
-	static async updateUserRealEstate(realEstateUid: string, userUid: string) {
+	static async updateUserRealEstate(
+		realEstateUid: string,
+		userUid: string,
+		action: "push" | "remove" = "push"
+	) {
 		if (!realEstateUid || !userUid)
 			throw new Error("you must inform real estate uid and user uid");
 
-		return UserRepository.updateUserRealEstate(realEstateUid, userUid);
+		// will return according to action
+		return action === "push"
+			? UserRepository.pushRealEstate(userUid, realEstateUid)
+			: UserRepository.removeRealEstate(userUid, realEstateUid);
 	}
 }

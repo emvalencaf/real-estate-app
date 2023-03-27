@@ -34,4 +34,6 @@ router.post(
 	RealEstateController.create
 );
 
+router.delete("/:id", authGuard, RealEstateController.delete);
+
 export { router as realEstateRouter };

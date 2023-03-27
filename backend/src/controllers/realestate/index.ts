@@ -57,6 +57,7 @@ export default class RealEstateController {
 			});
 		}
 	}
+
 	// get all realestate realted to an user id
 	static async getAllFromUser(req: Request, res: Response) {
 		const { userId } = req.params;
@@ -93,6 +94,42 @@ export default class RealEstateController {
 				success: true,
 				message:
 					"successfully fetched real estates data realted to an user",
+			});
+		} catch (err) {
+			console.log(err);
+			res.status(500).send({
+				data: null,
+				success: false,
+				message: "something went wrong on the server",
+			});
+		}
+	}
+
+	// delete a realestate related to an user
+	static async delete(req: Request, res: Response) {
+		// check if user is authenticated
+		if (!req.user)
+			return res.status(403).json({
+				success: false,
+				message: "you must be authenticated",
+			});
+		try {
+			const { id: realEstateUid } = req.params;
+
+			// delete doc by id
+			await RealEstateRepository.delete(realEstateUid);
+
+			// will update the user doc removing the real estate uid at the real estates list
+			await UserController.updateUserRealEstate(
+				realEstateUid,
+				req.user?.uid,
+				"remove"
+			);
+
+			return res.status(200).send({
+				data: null,
+				success: true,
+				message: "successfully delete real estate",
 			});
 		} catch (err) {
 			console.log(err);

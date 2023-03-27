@@ -2,6 +2,8 @@
 import {
 	addDoc,
 	collection,
+	deleteDoc,
+	doc,
 	getDoc,
 	getDocs,
 	orderBy,
@@ -83,5 +85,14 @@ export default class RealEstateRepository {
 		});
 		console.log(realEstates);
 		return realEstates;
+	}
+
+	// delete a realestate related to an user
+	static async delete(id: string) {
+		// get real estate doc ref
+		const docRef = doc(db, "realEstates", id);
+
+		// delete real estate doc
+		await deleteDoc(docRef);
 	}
 }

@@ -190,11 +190,12 @@ export default class UserRepository {
 		return (await getDoc(docRef)).data();
 	}
 
-	//
-	static async updateUserRealEstate(realEstateUid: string, userUid: string) {
+	// push a new real estate into real estates list at user
+	static async pushRealEstate(userUid: string, realEstateUid: string) {
 		// get user ref by user's uid
 		const docRef = await doc(db, "users", userUid);
 
+		// get user doc
 		const user = (await getDoc(docRef)).data() as IUserModel;
 
 		const realEstates = user?.realEstates ? user.realEstates : [];
@@ -202,7 +203,33 @@ export default class UserRepository {
 		realEstates.push(realEstateUid);
 
 		const update = await updateDoc(docRef, {
-			realEstates: realEstates,
+			realEstates,
+		});
+
+		return update;
+	}
+
+	// remove a real estate of real estates list of user
+	static async removeRealEstate(userUid: string, realEstateUid: string) {
+		// get user ref by user's uid
+		const docRef = await doc(db, "users", userUid);
+
+		// get user doc
+		const user = (await getDoc(docRef)).data() as IUserModel;
+
+		// check if there is a list of real estate
+		if (!user.realEstates)
+			throw new Error(
+				"there's no real estate list attached to that user"
+			);
+
+		// filter user's real estate to remove the realEstateUid from the list
+		const realEstates = user.realEstates.filter(
+			(realEstate) => realEstate !== realEstateUid
+		);
+
+		const update = await updateDoc(docRef, {
+			realEstates,
 		});
 
 		return update;
