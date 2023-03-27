@@ -108,4 +108,9 @@ export default class RealEstateController {
 	static async getAllFromUser(userId: string, options: RequestInit = null) {
 		return await RealEstateService.getAllFromUser(userId, options);
 	}
+
+	// delete a realestate related to an user
+	static async delete(id: string, token: string) {
+		return await RealEstateService.delete(id, token);
+	}
 }

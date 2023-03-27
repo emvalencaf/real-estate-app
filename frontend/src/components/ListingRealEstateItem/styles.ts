@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { Button } from "../Button/styles";
 import { Picture } from "../Picture/styles";
 
 export const Item = styled.li`
@@ -96,6 +97,8 @@ export const CardBar = styled.div`
 	${({ theme }) => css`
 		display: flex;
 		align-items: center;
+		align-items: center;
+		justify-content: space-between;
 		gap: ${theme.spacings.tiny};
 	`}
 `;
@@ -105,5 +108,21 @@ export const CardBarDetails = styled.div`
 		display: flex;
 		align-items: center;
 		font-weight: 800;
+	`}
+`;
+
+export const CardBarButtonContainer = styled.div`
+	${({ theme }) => css`
+		display: flex;
+		align-items: center;
+		font-weight: 800;
+		gap: ${theme.spacings.tiny};
+		& ${Button} {
+			padding: ${theme.spacings.xtiny};
+			border-radius: 40px;
+			& svg {
+				margin: ${theme.spacings.xxtiny};
+			}
+		}
 	`}
 `;

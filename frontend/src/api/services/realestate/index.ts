@@ -1,6 +1,5 @@
 // types
 import {
-	FormDataRealEstateProps,
 	RealEstateCreateResponse,
 	RealEstateGetResponse,
 	RealEstateModel,
@@ -10,6 +9,7 @@ import {
 import CreateFetch from "../../../utils/createFetch";
 
 export default class RealEstateService {
+	// create a realestate related to an user
 	static async create(
 		formData: FormData,
 		token: string
@@ -43,6 +43,19 @@ export default class RealEstateService {
 		return await CreateFetch.dispatch(
 			`${process.env.NEXT_PUBLIC_API_URL}/api/real-estates/${userId}`,
 			fetchOptions
+		);
+	}
+
+	// delete a realestate related to an user
+	static async delete(id: string, token: string) {
+		return await CreateFetch.dispatch(
+			`${process.env.NEXT_PUBLIC_API_URL}/api/real-estates/${id}`,
+			{
+				method: "DELETE",
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}
 		);
 	}
 }

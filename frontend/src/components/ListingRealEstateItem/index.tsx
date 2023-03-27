@@ -1,3 +1,7 @@
+// hooks
+import { useSession } from "next-auth/react";
+import { Dispatch, SetStateAction, useState } from "react";
+
 // components
 import Moment from "react-moment";
 import Picture from "../Picture";
@@ -7,11 +11,18 @@ import Link from "next/link";
 import * as Styled from "./styles";
 
 // icons
-import { LocationOn } from "@styled-icons/material-outlined";
+import { LocationOn, Delete, Edit } from "@styled-icons/material-outlined";
+
 // types
 import { RealEstateModel } from "../../shared-types/realestate";
+import Button from "../Button";
 export type ListingRealEstateItemProps = RealEstateModel & {
 	type: string;
+	handleDelete: (
+		id: string,
+		isLoadingDelete: boolean,
+		setIsLoadingDelete: Dispatch<SetStateAction<boolean>>
+	) => Promise<void>;
 };
 
 const ListingRealEstateItem = ({
@@ -27,7 +38,15 @@ const ListingRealEstateItem = ({
 	images,
 	type,
 	timestamp,
+	handleDelete,
 }: ListingRealEstateItemProps) => {
+	// session data
+	const { data } = useSession();
+
+	// states
+	const [isLoadingEdit, setIsLoadingEdit] = useState<boolean>(false);
+	const [isLoadingDelete, setIsLoadingDelete] = useState<boolean>(false);
+
 	return (
 		<Styled.Item>
 			<Link href={`/category/${type}/${id}`} passHref legacyBehavior>
@@ -36,42 +55,58 @@ const ListingRealEstateItem = ({
 						srcImg={images[0]}
 						altText={`cover picture of ${name}`}
 					/>
-					<Styled.MomentContainer>
-						<Moment fromNow>{timestamp}</Moment>
-					</Styled.MomentContainer>
-					<Styled.CardDetails>
-						<Styled.CardLocation>
-							<LocationOn /> <p>{address}</p>
-						</Styled.CardLocation>
-						<Styled.Name>{name}</Styled.Name>
-						<Styled.Price>
-							{offer
-								? discount.toLocaleString("en-US", {
-										style: "currency",
-										currency: "USD",
-								  })
-								: price.toLocaleString("en-US", {
-										style: "currency",
-										currency: "USD",
-								  })}
-							{!isSale && " / month"}
-						</Styled.Price>
-						<Styled.CardBar>
-							<Styled.CardBarDetails>
-								<p>
-									{beds} {beds > 1 ? "Beds" : "Bed"}
-								</p>
-							</Styled.CardBarDetails>
-							<Styled.CardBarDetails>
-								<p>
-									{bathrooms}{" "}
-									{bathrooms > 1 ? "Bathrooms" : "Bathroom"}
-								</p>
-							</Styled.CardBarDetails>
-						</Styled.CardBar>
-					</Styled.CardDetails>
 				</a>
 			</Link>
+			<Styled.MomentContainer>
+				<Moment fromNow>{timestamp}</Moment>
+			</Styled.MomentContainer>
+			<Styled.CardDetails>
+				<Styled.CardLocation>
+					<LocationOn /> <p>{address}</p>
+				</Styled.CardLocation>
+				<Styled.Name>{name}</Styled.Name>
+				<Styled.Price>
+					{offer
+						? discount.toLocaleString("en-US", {
+								style: "currency",
+								currency: "USD",
+						  })
+						: price.toLocaleString("en-US", {
+								style: "currency",
+								currency: "USD",
+						  })}
+					{!isSale && " / month"}
+				</Styled.Price>
+				<Styled.CardBar>
+					<Styled.CardBarDetails>
+						<p>
+							{beds} {beds > 1 ? "Beds" : "Bed"}
+						</p>
+					</Styled.CardBarDetails>
+					<Styled.CardBarDetails>
+						<p>
+							{bathrooms}{" "}
+							{bathrooms > 1 ? "Bathrooms" : "Bathroom"}
+						</p>
+					</Styled.CardBarDetails>
+					{data?.user && (
+						<Styled.CardBarButtonContainer>
+							<Button icon={<Edit />} disabled={isLoadingEdit} />
+							<Button
+								icon={<Delete />}
+								onClick={() =>
+									handleDelete(
+										id,
+										isLoadingDelete,
+										setIsLoadingDelete
+									)
+								}
+								disabled={isLoadingDelete}
+							/>
+						</Styled.CardBarButtonContainer>
+					)}
+				</Styled.CardBar>
+			</Styled.CardDetails>
 		</Styled.Item>
 	);
 };

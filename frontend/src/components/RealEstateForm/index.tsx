@@ -1,5 +1,5 @@
 // hooks
-import { MutableRefObject, useRef, useState } from "react";
+import { MutableRefObject, useState } from "react";
 import { useSession } from "next-auth/react";
 
 // controller
@@ -17,21 +17,14 @@ import TextInput from "../TextInput";
 import * as Styled from "./styles";
 
 // types
-import {
-	FormDataRealEstateProps,
-	RealEstateCreateFn,
-} from "../../shared-types/realestate";
+import { FormDataRealEstateProps } from "../../shared-types/realestate";
 
 const RealEstateForm = () => {
 	// auth
 	const { data: sessionData } = useSession();
 
-	// refs
-	const formRef = useRef(null);
-
 	// states
-	const [geoLocationEnabled, setGeoLocationEnabled] =
-		useState<boolean>(false);
+	const [geoLocationEnabled] = useState<boolean>(false);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [data, setData] = useState<FormDataRealEstateProps>({
 		isSale: false,

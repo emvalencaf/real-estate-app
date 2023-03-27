@@ -1,6 +1,6 @@
 // hooks
 import { useFetch } from "../../hooks/useFetch";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 
 // controller
@@ -23,6 +23,7 @@ import {
 	RealEstateModel,
 } from "../../shared-types/realestate";
 import Spinner from "../../components/Spinner";
+import { toast } from "react-toastify";
 
 const ProfileTemplate = () => {
 	// session
@@ -33,6 +34,7 @@ const ProfileTemplate = () => {
 		email: data.user.email,
 	});
 	const [changeDetails, setChangeDetails] = useState<boolean>(false);
+	// fetch real estate data
 	const {
 		data: dataRealEstateList,
 		isLoading: isFetchLoading,
@@ -41,11 +43,49 @@ const ProfileTemplate = () => {
 		url: data.user.id,
 		cb: RealEstateController.getAllFromUser,
 	});
+	const [realEstateList, setRealEstateList] = useState<RealEstateModel[]>([]);
+
+	useEffect(() => {
+		if (dataRealEstateList?.data)
+			setRealEstateList(dataRealEstateList.data);
+	}, [dataRealEstateList]);
 
 	// destructured formData state
 	const { name, email } = formData;
 
 	if (isFetchLoading) return <Spinner />;
+
+	// onDelete
+	const handleDelete = async (
+		id: string,
+		isLoadingDelete: boolean,
+		setIsLoadingDelete: Dispatch<SetStateAction<boolean>>
+	) => {
+		// if operation is loading function will not be call
+		if (isLoadingDelete) return;
+		const realEstateClickedName = realEstateList.filter(
+			(realEstate) => realEstate.id === id
+		)[0].name;
+		setIsLoadingDelete(true);
+		try {
+			// will request at server to delete the real estate
+			await RealEstateController.delete(id, data.accessToken);
+
+			// feedback to client
+			toast.success(`${realEstateClickedName} was succefully deleted`);
+
+			// will update the view
+			setRealEstateList((state) => [
+				...state.filter((realEstate) => realEstate.id !== id),
+			]);
+		} catch (err) {
+			// feedback to client
+			toast.error(
+				`${realEstateClickedName} couldn't be delete try again later`
+			);
+		}
+		setIsLoadingDelete(false);
+	};
 
 	// handleSubmit
 	const handleSubmit = async () => {
@@ -107,7 +147,8 @@ const ProfileTemplate = () => {
 					dataRealEstateList?.data &&
 					dataRealEstateList.data.length > 0 && (
 						<ListingRealEstate
-							realEstateList={dataRealEstateList.data}
+							realEstateList={realEstateList}
+							handleDelete={handleDelete}
 						/>
 					)}
 			</Styled.Section>
