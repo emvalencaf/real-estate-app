@@ -4,6 +4,7 @@ import {
 	RealEstateGetResponse,
 	RealEstateModel,
 } from "../../../shared-types/realestate";
+import { ServerResponse } from "../../../shared-types/server-response";
 
 // utils
 import CreateFetch from "../../../utils/createFetch";
@@ -41,13 +42,16 @@ export default class RealEstateService {
 			  };
 
 		return await CreateFetch.dispatch(
-			`${process.env.NEXT_PUBLIC_API_URL}/api/real-estates/${userId}`,
+			`${process.env.NEXT_PUBLIC_API_URL}/api/users/${userId}/real-estates`,
 			fetchOptions
 		);
 	}
 
 	// delete a realestate related to an user
-	static async delete(id: string, token: string) {
+	static async delete(
+		id: string,
+		token: string
+	): Promise<ServerResponse<RealEstateModel>> {
 		return await CreateFetch.dispatch(
 			`${process.env.NEXT_PUBLIC_API_URL}/api/real-estates/${id}`,
 			{
@@ -56,6 +60,26 @@ export default class RealEstateService {
 					Authorization: `Bearer ${token}`,
 				},
 			}
+		);
+	}
+
+	// get a real estate by an id
+	static async getById(
+		id: string,
+		options: RequestInit
+	): Promise<RealEstateGetResponse<RealEstateModel>> {
+		const fetchOptions: ResponseInit = options
+			? {
+					method: "GET",
+					...options,
+			  }
+			: {
+					method: "GET",
+			  };
+
+		return await CreateFetch.dispatch(
+			`${process.env.NEXT_PUBLIC_API_URL}/api/real-estates/${id}`,
+			fetchOptions
 		);
 	}
 }

@@ -6,7 +6,7 @@ import * as Styled from "./styles";
 const CreateRealEstateTemplate = () => {
 	return (
 		<Styled.Wrapper>
-			<Heading size="big">Create a Listing</Heading>
+			<Heading size="big">Create a real estate add</Heading>
 			<RealEstateForm />
 		</Styled.Wrapper>
 	);

@@ -1,7 +1,9 @@
 import styled, { css } from "styled-components";
 
 export const Wrapper = styled.div`
-	${() => css``}
+	${() => css`
+		width: 100%;
+	`}
 `;
 
 export const List = styled.ul`
@@ -16,7 +18,7 @@ export const List = styled.ul`
 		@media ${theme.media.lteOrEqMedium} {
 			grid-template-columns: 1fr;
 		}
-
 		gap: ${theme.spacings.medium};
+		width: 100%;
 	`}
 `;

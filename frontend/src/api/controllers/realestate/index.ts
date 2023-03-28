@@ -113,4 +113,9 @@ export default class RealEstateController {
 	static async delete(id: string, token: string) {
 		return await RealEstateService.delete(id, token);
 	}
+
+	// get a real estate by an id
+	static async getById(id: string, options: RequestInit) {
+		return await RealEstateService.getById(id, options);
+	}
 }

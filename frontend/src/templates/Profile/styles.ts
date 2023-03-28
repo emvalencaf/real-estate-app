@@ -25,3 +25,9 @@ export const Section = styled.section`
 		max-width: ${theme.frameSizes.large};
 	`}
 `;
+
+export const RealEstateListContainer = styled.section`
+	${({ theme }) => css`
+		width: 100%;
+	`}
+`;

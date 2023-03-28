@@ -51,7 +51,7 @@ const ProfileForm = ({
 			<Styled.ButtonContainer>
 				<Button>
 					<Achor
-						link="/create-listing"
+						link="/create-real-estate"
 						icon={<HouseAdd />}
 						target="_self"
 					>

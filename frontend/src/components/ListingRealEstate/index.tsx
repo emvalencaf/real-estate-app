@@ -15,11 +15,13 @@ export type ListingRealEstateProps = {
 		isLoadingDelete: boolean,
 		setIsLoadingDelete: Dispatch<SetStateAction<boolean>>
 	) => Promise<void>;
+	handleEdit: (id: string) => void;
 };
 
 const ListingRealEstate = ({
 	realEstateList = [],
 	handleDelete,
+	handleEdit,
 }: ListingRealEstateProps) => {
 	return (
 		<Styled.Wrapper>
@@ -31,6 +33,7 @@ const ListingRealEstate = ({
 						{...realEstate}
 						type="ok"
 						handleDelete={handleDelete}
+						handleEdit={handleEdit}
 					/>
 				))}
 			</Styled.List>

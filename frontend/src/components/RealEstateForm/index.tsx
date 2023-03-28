@@ -17,9 +17,13 @@ import TextInput from "../TextInput";
 import * as Styled from "./styles";
 
 // types
-import { FormDataRealEstateProps } from "../../shared-types/realestate";
+import {
+	FormDataRealEstateProps,
+	RealEstateModel,
+} from "../../shared-types/realestate";
+import { EditRealEstateTemplateProps } from "../../templates/EditRealEstate";
 
-const RealEstateForm = () => {
+const RealEstateForm = ({ realEstate }: EditRealEstateTemplateProps) => {
 	// auth
 	const { data: sessionData } = useSession();
 
@@ -27,19 +31,25 @@ const RealEstateForm = () => {
 	const [geoLocationEnabled] = useState<boolean>(false);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [data, setData] = useState<FormDataRealEstateProps>({
-		isSale: false,
-		name: "",
-		beds: 0,
-		bathrooms: 0,
-		parking: false,
-		furnished: false,
-		address: "",
-		description: "",
-		offer: false,
-		price: 0,
-		discount: 0,
-		latitude: 0,
-		longitude: 0,
+		isSale: realEstate ? realEstate.isSale : false,
+		name: realEstate ? realEstate.name : "",
+		beds: realEstate ? realEstate.beds : 0,
+		bathrooms: realEstate ? realEstate.bathrooms : 0,
+		parking: realEstate ? realEstate.parking : false,
+		furnished: realEstate ? realEstate.furnished : false,
+		address: realEstate ? realEstate.address : "",
+		description: realEstate ? realEstate.description : "",
+		offer: realEstate ? realEstate.offer : false,
+		price: realEstate ? realEstate.price : 0,
+		discount: realEstate && realEstate.offer ? realEstate.discount : 0,
+		latitude:
+			realEstate && realEstate.geolocation
+				? realEstate.geolocation.lat
+				: 0,
+		longitude:
+			realEstate && realEstate.geolocation
+				? realEstate.geolocation.lng
+				: 0,
 		images: undefined,
 	});
 
@@ -58,6 +68,8 @@ const RealEstateForm = () => {
 		latitude,
 		longitude,
 	} = data;
+
+	console.log("props: ", data);
 
 	// handleSubmit
 	const handleSubmit = async (ref: MutableRefObject<HTMLFormElement>) => {

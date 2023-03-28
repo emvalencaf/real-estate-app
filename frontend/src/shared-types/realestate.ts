@@ -1,3 +1,4 @@
+import { GeocodeGetLocationResponseData } from "./geocode";
 import { ServerResponse } from "./server-response";
 
 export type FormDataRealEstateProps = {
@@ -19,8 +20,24 @@ export type FormDataRealEstateProps = {
 };
 
 // real estate model
-export type RealEstateModel = FormDataRealEstateProps & {
+export type RealEstateModel = Pick<
+	FormDataRealEstateProps,
+	| "furnished"
+	| "discount"
+	| "address"
+	| "beds"
+	| "bathrooms"
+	| "description"
+	| "images"
+	| "isSale"
+	| "name"
+	| "offer"
+	| "parking"
+	| "price"
+	| "timestamp"
+> & {
 	id: string;
+	geolocation: GeocodeGetLocationResponseData;
 };
 
 // reponse data from create method
@@ -28,6 +45,7 @@ export type RealEstateCreateResponse = ServerResponse<undefined>;
 
 // respones data from get method
 export type RealEstateGetResponse<T> = ServerResponse<T>;
+
 // create real estate method
 export type RealEstateCreateFn = <RealEstateCreateResponse>(
 	formData: FormDataRealEstateProps,
@@ -37,5 +55,12 @@ export type RealEstateCreateFn = <RealEstateCreateResponse>(
 
 // get all real estate from an user method
 export type RealEstateGetAllFromUser = (
-	userId: string
+	userId: string,
+	options: RequestInit
+) => Promise<RealEstateGetResponse<RealEstateModel[]>>;
+
+// get a real estate from by an id
+export type RealEstateGetById = (
+	id: string,
+	options: RequestInit
 ) => Promise<RealEstateGetResponse<RealEstateModel[]>>;

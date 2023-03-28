@@ -1,6 +1,6 @@
 import { ServerResponse } from "./server-response";
 
-type GeocodeGetLocationResponseData = {
+export type GeocodeGetLocationResponseData = {
 	lat: number;
 	lng: number;
 };

@@ -5,7 +5,7 @@ import { Picture } from "../Picture/styles";
 export const Item = styled.li`
 	${({ theme }) => css`
 		list-style: none;
-
+		/*
 		& a {
 			text-decoration: none;
 			position: relative;
@@ -27,6 +27,42 @@ export const Item = styled.li`
 			width: 100%;
 			transition: all ${theme.transitions.slower} ease-in-out;
 			& img {
+				height: ${theme.frameSizes.small};
+				&:hover {
+					transform: scale(1.2);
+				}
+			}
+		}*/
+	`}
+`;
+
+export const ItemContainer = styled.div`
+	${({ theme }) => css`
+		text-decoration: none;
+		position: relative;
+		background-color: ${theme.colors.deepWhite};
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: space-between;
+		border-radius: ${theme.spacings.xsmall};
+		overflow: hidden;
+		transition: all ${theme.transitions.normal} ease-in-out;
+		width: 100%;
+		max-width: 380px;
+		& p {
+			margin: ${theme.spacings.tiny};
+		}
+		& a {
+			width: 100%;
+			margin: 0;
+			padding: 0;
+		}
+		& ${Picture} {
+			width: 100%;
+			transition: all ${theme.transitions.slower} ease-in-out;
+			& img {
+				width: 100%;
 				height: ${theme.frameSizes.small};
 				&:hover {
 					transform: scale(1.2);

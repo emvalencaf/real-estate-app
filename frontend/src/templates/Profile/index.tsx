@@ -24,10 +24,15 @@ import {
 } from "../../shared-types/realestate";
 import Spinner from "../../components/Spinner";
 import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 const ProfileTemplate = () => {
 	// session
 	const { data } = useSession();
+
+	// router
+	const router = useRouter();
+
 	// states
 	const [formData, setFormData] = useState({
 		name: data.user.name,
@@ -52,8 +57,6 @@ const ProfileTemplate = () => {
 
 	// destructured formData state
 	const { name, email } = formData;
-
-	if (isFetchLoading) return <Spinner />;
 
 	// onDelete
 	const handleDelete = async (
@@ -85,6 +88,11 @@ const ProfileTemplate = () => {
 			);
 		}
 		setIsLoadingDelete(false);
+	};
+
+	// onEdit
+	const handleEdit = (id: string) => {
+		router.push(`/edit-real-estate/${id}`);
 	};
 
 	// handleSubmit
@@ -142,16 +150,17 @@ const ProfileTemplate = () => {
 					/>
 				</ProfileForm>
 			</Styled.Section>
-			<Styled.Section>
+			<Styled.RealEstateListContainer>
 				{!isFetchLoading &&
 					dataRealEstateList?.data &&
 					dataRealEstateList.data.length > 0 && (
 						<ListingRealEstate
 							realEstateList={realEstateList}
 							handleDelete={handleDelete}
+							handleEdit={handleEdit}
 						/>
 					)}
-			</Styled.Section>
+			</Styled.RealEstateListContainer>
 		</Styled.Wrapper>
 	);
 };
