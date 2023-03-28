@@ -18,12 +18,15 @@ import {
 
 // types
 import { Router } from "express";
+import RealEstateController from "../../controllers/realEstate";
 
 // router
 const router: Router = express.Router();
 
 // routes
 router.get("/currentUser", authGuard, UserController.getUserDetails);
+
+router.get("/:userId/real-estates", RealEstateController.getAllFromUser);
 
 router.post(
 	"/sign-up",

@@ -59,7 +59,7 @@ export default class RealEstateRepository {
 		return doc.id;
 	}
 
-	// get all realestate realted to an user id
+	// get all realestate related to an user id
 	static async getAllFromUser(userId: string) {
 		// get collection ref
 		const realEstateCollectionRef = collection(db, "realEstates");
@@ -94,5 +94,14 @@ export default class RealEstateRepository {
 
 		// delete real estate doc
 		await deleteDoc(docRef);
+	}
+
+	// get a real estate by an id
+	static async getById(id: string) {
+		// get real estate doc ref
+		const docRef = doc(db, "realEstates", id);
+
+		// return doc data to controller
+		return await (await getDoc(docRef)).data();
 	}
 }

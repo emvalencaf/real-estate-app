@@ -22,8 +22,7 @@ import { Router } from "express";
 const router: Router = express.Router();
 
 // routes
-router.get("/:userId", RealEstateController.getAllFromUser);
-
+router.get("/:id", RealEstateController.getById);
 router.post(
 	"/",
 	authGuard,

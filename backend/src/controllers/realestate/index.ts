@@ -140,4 +140,33 @@ export default class RealEstateController {
 			});
 		}
 	}
+
+	// get a real estate by an id
+	static async getById(req: Request, res: Response) {
+		const { id } = req.params;
+		try {
+			const realEstate = await RealEstateRepository.getById(id);
+
+			if (!realEstate)
+				return res.status(404).send({
+					data: null,
+					success: false,
+					message: "couldn't find a real estate with that id",
+				});
+
+			return res.status(200).send({
+				data: realEstate,
+				success: true,
+				message:
+					"successfully fetched real estates data realted to an user",
+			});
+		} catch (err) {
+			console.log(err);
+			res.status(500).send({
+				data: null,
+				success: false,
+				message: "something went wrong on the server",
+			});
+		}
+	}
 }
