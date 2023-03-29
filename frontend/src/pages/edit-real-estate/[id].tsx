@@ -29,12 +29,11 @@ export default function EditRealEstatePage({
 		cb: RealEstateController.getById,
 	});
 
-	console.log(responseData?.data && responseData.data);
-
 	// while isn't fetch will render a loading page
 	if (isLoading) return <Spinner />;
 
-	return <EditRealEstateTemplate realEstate={responseData.data} />;
+	if (responseData?.data)
+		return <EditRealEstateTemplate realEstate={responseData.data} />;
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {

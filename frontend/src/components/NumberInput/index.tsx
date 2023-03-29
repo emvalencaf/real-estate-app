@@ -28,7 +28,7 @@ const NumberInput = ({
 	value = 0,
 	reference = null,
 	min = 0,
-	max = 100,
+	max = 9999999999,
 }: NumberInputProps) => {
 	const inputRef = useRef(reference);
 

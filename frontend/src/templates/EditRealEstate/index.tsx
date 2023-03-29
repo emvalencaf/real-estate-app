@@ -14,7 +14,13 @@ export type EditRealEstateTemplateProps = {
 const EditRealEstateTemplate = ({
 	realEstate,
 }: EditRealEstateTemplateProps) => {
-	return <RealEstateForm realEstate={realEstate ? realEstate : null} />;
+	console.log(realEstate?.images);
+	return (
+		<RealEstateForm
+			realEstateProps={realEstate ? realEstate : null}
+			action="update"
+		/>
+	);
 };
 
 export default EditRealEstateTemplate;

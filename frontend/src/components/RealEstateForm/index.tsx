@@ -1,5 +1,5 @@
 // hooks
-import { MutableRefObject, useState } from "react";
+import { MutableRefObject, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 
 // controller
@@ -21,15 +21,28 @@ import {
 	FormDataRealEstateProps,
 	RealEstateModel,
 } from "../../shared-types/realestate";
-import { EditRealEstateTemplateProps } from "../../templates/EditRealEstate";
+import FetchedImagesContainer from "../FetchedImagesContainer";
+import { useRouter } from "next/router";
+type RealEstateFormProps = {
+	realEstateProps?: RealEstateModel;
+	action: "update" | "create";
+};
 
-const RealEstateForm = ({ realEstate }: EditRealEstateTemplateProps) => {
+const RealEstateForm = ({
+	realEstateProps,
+	action = "create",
+}: RealEstateFormProps) => {
 	// auth
 	const { data: sessionData } = useSession();
+
+	// router
+	const router = useRouter();
+	const { id } = router.query;
 
 	// states
 	const [geoLocationEnabled] = useState<boolean>(false);
 	const [loading, setLoading] = useState<boolean>(false);
+	const [realEstate] = useState<RealEstateModel>(realEstateProps);
 	const [data, setData] = useState<FormDataRealEstateProps>({
 		isSale: realEstate ? realEstate.isSale : false,
 		name: realEstate ? realEstate.name : "",
@@ -52,6 +65,10 @@ const RealEstateForm = ({ realEstate }: EditRealEstateTemplateProps) => {
 				: 0,
 		images: undefined,
 	});
+	// fetched images from the backend
+	const [fetchedImages, setFetchedImages] = useState<string[]>(
+		realEstate ? realEstate.images : []
+	);
 
 	const {
 		isSale,
@@ -69,21 +86,36 @@ const RealEstateForm = ({ realEstate }: EditRealEstateTemplateProps) => {
 		longitude,
 	} = data;
 
-	console.log("props: ", data);
-
 	// handleSubmit
 	const handleSubmit = async (ref: MutableRefObject<HTMLFormElement>) => {
 		setLoading(true);
 		const formData: FormData = new FormData(ref.current);
-		console.log(formData);
-		const response = await RealEstateController.create(
-			data,
-			formData,
-			geoLocationEnabled,
-			sessionData.accessToken
-		);
-		setLoading(false);
-		return response;
+
+		try {
+			console.log(id);
+			const response =
+				action === "create"
+					? await RealEstateController.create(
+							data,
+							formData,
+							geoLocationEnabled,
+							sessionData?.accessToken
+					  )
+					: await RealEstateController.update(
+							id,
+							data,
+							formData,
+							geoLocationEnabled,
+							sessionData?.accessToken,
+							fetchedImages
+					  );
+			setLoading(false);
+
+			return response;
+		} catch (err) {
+			setLoading(false);
+			throw new Error(err.message);
+		}
 	};
 
 	if (loading) return <Spinner />;
@@ -91,7 +123,11 @@ const RealEstateForm = ({ realEstate }: EditRealEstateTemplateProps) => {
 	return (
 		<Styled.Wrapper>
 			<Form
-				btnText="CREATE LISTING"
+				btnText={
+					action === "create"
+						? "CREATE A NEW REAL ESTATE AD"
+						: "UPDATE A REAL ESTATE AD"
+				}
 				asyncOnSubmit
 				onSubmit={
 					handleSubmit as <
@@ -99,7 +135,9 @@ const RealEstateForm = ({ realEstate }: EditRealEstateTemplateProps) => {
 					>() => Promise<RealEstateCreateResponse>
 				}
 				toastSuccess
-				toastSuccessMessage={`Real estate ${name} was successfully add to your list`}
+				toastSuccessMessage={`Real estate ${name} was successfully ${
+					action === "create" ? "add" : "updated"
+				} to your list`}
 			>
 				<p>Sell/Rent</p>
 				<Styled.ButtonContainer>
@@ -352,6 +390,12 @@ const RealEstateForm = ({ realEstate }: EditRealEstateTemplateProps) => {
 						/>
 						{!isSale && <p> $/ Month</p>}
 					</Styled.InputContainer>
+				)}
+				{fetchedImages.length > 0 && (
+					<FetchedImagesContainer
+						urls={fetchedImages}
+						handleRemove={setFetchedImages}
+					/>
 				)}
 				<FileImageInput
 					name="images"

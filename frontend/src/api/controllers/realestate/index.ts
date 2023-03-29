@@ -111,11 +111,12 @@ export default class RealEstateController {
 
 	// edit a real estate related to an user
 	static async update(
-		id: string,
+		id: string | string[],
 		data: FormDataRealEstateProps,
 		formData: FormData,
 		geolocationEnabled: boolean,
-		token: string
+		token: string,
+		fetchedImages: string[]
 	) {
 		const {
 			isSale,
@@ -127,13 +128,13 @@ export default class RealEstateController {
 			address,
 			//			description,
 			offer = false,
-			//			images,
+			images,
 		} = data;
 
 		let { longitude, latitude } = data;
 
 		// form validation
-		RealEstateController.validation(data);
+		RealEstateController.validation(data, fetchedImages);
 
 		if (geolocationEnabled) {
 			const response = await GeocodeController.getGeoLocation(
@@ -166,6 +167,8 @@ export default class RealEstateController {
 		formData.set("furnished", furnished.toString());
 		formData.set("parking", parking.toString());
 		formData.set("offer", offer.toString());
+		if (fetchedImages)
+			formData.set("fetchedImages", JSON.stringify(fetchedImages));
 
 		try {
 			return await RealEstateService.update(id, formData, token);
@@ -191,7 +194,10 @@ export default class RealEstateController {
 	}
 
 	// real estate validation
-	static validation(data: FormDataRealEstateProps) {
+	static validation(
+		data: FormDataRealEstateProps,
+		fetchedImages: string[] = undefined
+	) {
 		if (!data.name) throw new Error("name field must be fill");
 
 		if (!data.description)
@@ -221,10 +227,18 @@ export default class RealEstateController {
 		if (data.bathrooms > 50)
 			throw new Error("the number of bathrooms cannot be higher than 50");
 
-		if (!data.images || data.images?.length === 0)
+		if (fetchedImages) {
+			// if was fetched images
+			if (data.images && fetchedImages.length + data.images.length > 6)
+				throw new Error(
+					`You cannot upload more than 6 images for each real estate, it was already upload at server: ${fetchedImages?.length}`
+				);
+		} else if (data.images?.length === 0) {
+			// minimum number of images
 			throw new Error("You must upload at least one image");
-
-		if (data.images.length > 6)
+		} else if (data.images?.length > 6) {
+			// maximum number of images
 			throw new Error("You cannot upload more than 6 images");
+		}
 	}
 }

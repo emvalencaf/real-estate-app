@@ -4,7 +4,7 @@ import * as Styled from "./styles";
 
 // types
 export type AchorProps = {
-	children: React.ReactNode;
+	children?: React.ReactNode;
 	icon?: React.ReactNode;
 	isImage?: boolean;
 	link: string;
@@ -26,7 +26,7 @@ const Achor = ({
 			<Link href={link} legacyBehavior passHref>
 				<Styled.Achor target={target} disabled={disabled}>
 					{!!icon && icon}
-					{isImage ? (
+					{children && isImage ? (
 						<picture>{children}</picture>
 					) : (
 						<span>{children}</span>
@@ -38,7 +38,11 @@ const Achor = ({
 	return (
 		<Styled.Achor href={link} target={target} disabled={disabled}>
 			{!!icon && icon}
-			{isImage ? <picture>{children}</picture> : <span>{children}</span>}
+			{children && isImage ? (
+				<picture>{children}</picture>
+			) : (
+				<span>{children}</span>
+			)}
 		</Styled.Achor>
 	);
 };

@@ -28,7 +28,14 @@ export default class RealEstateService {
 	}
 
 	// update a real estate related to an user
-	static async update(id: string, formData: FormData, token: string) {
+	static async update(
+		id: string | string[],
+		formData: FormData,
+		token: string
+	) {
+		console.log(
+			`${process.env.NEXT_PUBLIC_API_URL}/api/real-estates/${id}`
+		);
 		return await CreateFetch.dispatch(
 			`${process.env.NEXT_PUBLIC_API_URL}/api/real-estates/${id}`,
 			{
