@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { DocumentData, Timestamp } from "firebase/firestore";
+import { Timestamp } from "firebase/firestore";
 import RealEstateRepository from "../../repository/realEstate";
 import {
 	IRealEstateFormData,
@@ -81,8 +81,50 @@ export default class RealEstateController {
 			// request body data
 			let data = req.body;
 
+			const fetchedImages: string[] = req.body.fetchedImages as string[];
+
+			// get the real estate by an id
+			const realEstate = await RealEstateController.getById(id);
+
+			// check if there is a real estate register
+			if (!realEstate)
+				return res.status(404).send({
+					success: false,
+					data: null,
+					message: "couldn't found a realEstate",
+				});
+
+			if (fetchedImages.length > 0) {
+				// at frontend user can destach image from the register. So it'll delete the attached images from the storage
+				realEstate.images.map(async (image: string) => {
+					// will check if the image saved at storage was destached on frontend by the user
+					if (fetchedImages.indexOf(image) < 0) {
+						// get the image filename
+						const filename = image.substring(
+							image.lastIndexOf("/") + 1
+						);
+
+						/// set file path
+						const filePath = `${req.user?.uid}/images/${filename}`;
+
+						// delete from storage the file
+						await StorageController.deleteImage(filePath);
+
+						return null;
+					}
+					return image;
+				});
+			}
+
+			// update real estate image gallery
+			data.images = data.images
+				? [...fetchedImages, ...data.images]
+				: fetchedImages;
+
 			// format data
 			data = RealEstateController.formatValues(data);
+
+			console.log("controller: ", data);
 
 			// update a real estate's register
 			await RealEstateRepository.update(id, {

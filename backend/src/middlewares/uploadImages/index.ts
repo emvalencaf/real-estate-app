@@ -41,11 +41,36 @@ export const uploadFilesMiddleware = async (
 				message: "you must be authenticated",
 			});
 		console.log("uploading image handler", req.body);
+
+		// if there is already images related to a register and no files, let's skip that middleware here
+		req.body.fetchedImages = JSON.parse(req.body.fetchedImages);
+
+		if (req.body.fetchedImages && req.files?.length === 0) return next();
+
+		// validation
 		if (!req.files || Object.keys(req.files).length === 0)
 			return res.status(400).send({
 				success: false,
 				message: "No files were upload",
 			});
+
+		if (req.files.length > 6)
+			return res.status(400).send({
+				success: false,
+				message: "You cannot upload more than 6 files",
+			});
+
+		if (req.body.fetchedImages) {
+			// check the limit of image attached to a register
+			if (
+				req.body.fetchedImages &&
+				req.files.length + req.body?.fetchedImages.length > 6
+			)
+				return res.status(400).send({
+					success: false,
+					message: `You cannot upload that number of images. The max images attached to a register is 6, you've already upload: ${req.body.fetchedImages.length}`,
+				});
+		}
 
 		// upload files and collect their URLs
 		const files = req.files as Express.Multer.File[];
