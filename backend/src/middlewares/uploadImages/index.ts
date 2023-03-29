@@ -4,6 +4,7 @@ import { firebaseStorage } from "../../upload/storage";
 // types
 import { Request, Response, NextFunction } from "express";
 import multer, { FileFilterCallback } from "multer";
+import StorageController from "../../controllers/storage";
 
 // Configure Multer to store uploaded files in memory
 const multerStorage = multer.memoryStorage();
@@ -49,6 +50,8 @@ export const uploadFilesMiddleware = async (
 		// upload files and collect their URLs
 		const files = req.files as Express.Multer.File[];
 
+		const urls = await StorageController.uploadImages(req?.user, files);
+		/*
 		const promises: Promise<string>[] = files.map((file) => {
 			// organized the folder at the bucket
 			const path = `${req.user?.uid}/images`;
@@ -81,7 +84,7 @@ export const uploadFilesMiddleware = async (
 		});
 
 		// wait for all files to be uploaded and generate URLs
-		const urls = await Promise.all(promises);
+		const urls = await Promise.all(promises);*/
 		req.body.images = urls;
 
 		next();
