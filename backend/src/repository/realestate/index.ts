@@ -9,6 +9,7 @@ import {
 	orderBy,
 	query,
 	serverTimestamp,
+	updateDoc,
 	where,
 } from "firebase/firestore";
 
@@ -57,6 +58,48 @@ export default class RealEstateRepository {
 		const doc = await getDoc(docRef);
 
 		return doc.id;
+	}
+
+	// update a real estate realated to an user
+	static async update(
+		id: string,
+		{
+			isSale,
+			name,
+			description,
+			address,
+			furnished,
+			beds,
+			bathrooms,
+			offer,
+			discount,
+			geolocation,
+			images,
+			owner,
+		}: IRealEstateModel
+	) {
+		// create a data
+		const data = {
+			isSale,
+			name,
+			address,
+			description,
+			furnished,
+			beds,
+			bathrooms,
+			offer,
+			geolocation,
+			images,
+			discount: offer ? discount : null,
+			owner,
+			timestamp: serverTimestamp(),
+		};
+
+		// doc ref
+		const docRef = doc(db, "realEstates", id);
+
+		// update doc
+		await updateDoc(docRef, data);
 	}
 
 	// get all realestate related to an user id

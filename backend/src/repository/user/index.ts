@@ -61,7 +61,7 @@ export default class UserRepository {
 
 		const token = await userCredentials.user.getIdToken(true);
 
-		const accessToken = await generateAccessToken(token);
+		// const accessToken = await generateAccessToken(token);
 
 		return {
 			user: {

@@ -13,7 +13,7 @@ import {
 
 // validation
 import validate from "../../middlewares/validation";
-import { realEstateCreateValidation } from "../../middlewares/validation/realestate";
+import { realEstateFormValidation } from "../../middlewares/validation/realestate";
 
 // types
 import { Router } from "express";
@@ -23,12 +23,21 @@ const router: Router = express.Router();
 
 // routes
 router.get("/:id", RealEstateController.getById);
+router.put(
+	"/:id",
+	authGuard,
+	uploader.array("images", 6),
+	uploadFilesMiddleware,
+	realEstateFormValidation(),
+	validate,
+	RealEstateController.update
+);
 router.post(
 	"/",
 	authGuard,
 	uploader.array("images", 6),
 	uploadFilesMiddleware,
-	realEstateCreateValidation(),
+	realEstateFormValidation(),
 	validate,
 	RealEstateController.create
 );

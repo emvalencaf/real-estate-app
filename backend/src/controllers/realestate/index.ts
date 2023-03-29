@@ -1,7 +1,10 @@
 import { Request, Response } from "express";
 import { Timestamp } from "firebase/firestore";
 import RealEstateRepository from "../../repository/realEstate";
-import { IRealEstateModel } from "../../shared-type/real-estate";
+import {
+	IRealEstateFormData,
+	IRealEstateModel,
+} from "../../shared-type/real-estate";
 import UserController from "../user";
 
 export default class RealEstateController {
@@ -14,8 +17,8 @@ export default class RealEstateController {
 			});
 		try {
 			// request body data
-			const data = req.body;
-
+			let data = req.body;
+			/*
 			// boolean convert
 			data.furnished = data.furnished === "true" ? true : false;
 			data.isSale = data.isSale === "true" ? true : false;
@@ -30,6 +33,9 @@ export default class RealEstateController {
 
 			// object convert
 			data.geolocation = JSON.parse(data.geolocation);
+*/
+			// format values
+			data = RealEstateController.formatValues(data);
 
 			// create a real estate's register and fetched it's data
 			const realEstateUid = await RealEstateRepository.create({
@@ -47,6 +53,46 @@ export default class RealEstateController {
 				success: true,
 				data: null,
 				message: "successfully created a new real estate register",
+			});
+		} catch (err) {
+			console.log(err);
+			res.status(500).send({
+				data: null,
+				success: false,
+				message: "something went wrong on the server",
+			});
+		}
+	}
+
+	// update a real estate related to an user
+	static async update(req: Request, res: Response) {
+		// get id from url
+		const { id } = req.params;
+
+		// check authentication
+		if (!req.user)
+			return res.status(403).json({
+				success: false,
+				message: "you must be authenticated",
+			});
+
+		try {
+			// request body data
+			let data = req.body;
+
+			// format data
+			data = RealEstateController.formatValues(data);
+
+			// update a real estate's register
+			await RealEstateRepository.update(id, {
+				...data,
+				owner: req.user?.uid,
+			});
+
+			res.status(200).send({
+				success: true,
+				data: null,
+				message: "successfully updated a real estate register",
 			});
 		} catch (err) {
 			console.log(err);
@@ -168,5 +214,26 @@ export default class RealEstateController {
 				message: "something went wrong on the server",
 			});
 		}
+	}
+
+	// format form data into object
+	static formatValues(data: IRealEstateFormData) {
+		// boolean convert
+		data.furnished = data.furnished === "true" ? true : false;
+		data.isSale = data.isSale === "true" ? true : false;
+		data.offer = data.offer === "true" ? true : false;
+		data.parking = data.parking === "true" ? true : false;
+
+		// number convert
+		data.beds = Number(data.beds);
+		data.bathrooms = Number(data.bathrooms);
+		data.price = Number(data.price);
+		if (data?.discount) data.discount = Number(data.discount);
+
+		// object convert
+		data.geolocation = JSON.parse(data.geolocation as string);
+
+		// return formated data
+		return data;
 	}
 }

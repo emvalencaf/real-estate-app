@@ -1,8 +1,8 @@
 import { body } from "express-validator";
 import { IGeolocation } from "../../../shared-type/geocode";
 
-// real estate validation
-export const realEstateCreateValidation = () => {
+// real estate create validation
+export const realEstateFormValidation = () => {
 	return [
 		body("isSale")
 			.isBoolean()
