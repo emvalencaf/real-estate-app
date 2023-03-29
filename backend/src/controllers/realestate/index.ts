@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
-import { Timestamp } from "firebase/firestore";
+import { DocumentData, Timestamp } from "firebase/firestore";
 import RealEstateRepository from "../../repository/realEstate";
 import {
 	IRealEstateFormData,
 	IRealEstateModel,
 } from "../../shared-type/real-estate";
+import StorageController from "../storage";
 import UserController from "../user";
 
 export default class RealEstateController {
@@ -162,6 +163,17 @@ export default class RealEstateController {
 		try {
 			const { id: realEstateUid } = req.params;
 
+			const realEstate = await RealEstateController.getById(
+				realEstateUid
+			);
+
+			if (!realEstate)
+				return res.status(404).send({
+					success: false,
+					data: null,
+					message: "couldn't found the real estate",
+				});
+
 			// delete doc by id
 			await RealEstateRepository.delete(realEstateUid);
 
@@ -171,6 +183,18 @@ export default class RealEstateController {
 				req.user?.uid,
 				"remove"
 			);
+
+			// will delete the images from storage
+			realEstate.images.forEach(async (image: string) => {
+				// get the image filename
+				const filename = image.substring(image.lastIndexOf("/") + 1);
+
+				/// set file path
+				const filePath = `${req.user?.uid}/images/${filename}`;
+
+				// delete from storage the file
+				await StorageController.deleteImage(filePath);
+			});
 
 			return res.status(200).send({
 				data: null,
@@ -188,10 +212,10 @@ export default class RealEstateController {
 	}
 
 	// get a real estate by an id
-	static async getById(req: Request, res: Response) {
+	static async getByParams(req: Request, res: Response) {
 		const { id } = req.params;
 		try {
-			const realEstate = await RealEstateRepository.getById(id);
+			const realEstate = await RealEstateController.getById(id);
 
 			if (!realEstate)
 				return res.status(404).send({
@@ -216,6 +240,12 @@ export default class RealEstateController {
 		}
 	}
 
+	// get a real estate by an id
+	static async getById(id: string) {
+		if (!id) throw new Error("must request a real estate by an id");
+
+		return await RealEstateRepository.getById(id);
+	}
 	// format form data into object
 	static formatValues(data: IRealEstateFormData) {
 		// boolean convert

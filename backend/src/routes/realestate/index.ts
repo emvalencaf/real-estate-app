@@ -22,7 +22,7 @@ import { Router } from "express";
 const router: Router = express.Router();
 
 // routes
-router.get("/:id", RealEstateController.getById);
+router.get("/:id", RealEstateController.getByParams);
 router.put(
 	"/:id",
 	authGuard,
