@@ -28,7 +28,6 @@ export type RealEstateModel = Pick<
 	| "beds"
 	| "bathrooms"
 	| "description"
-	| "images"
 	| "isSale"
 	| "name"
 	| "offer"
@@ -36,6 +35,7 @@ export type RealEstateModel = Pick<
 	| "price"
 	| "timestamp"
 > & {
+	images: string[];
 	id: string;
 	geolocation: GeocodeGetLocationResponseData;
 };

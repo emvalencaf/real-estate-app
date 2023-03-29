@@ -27,6 +27,20 @@ export default class RealEstateService {
 		);
 	}
 
+	// update a real estate related to an user
+	static async update(id: string, formData: FormData, token: string) {
+		return await CreateFetch.dispatch(
+			`${process.env.NEXT_PUBLIC_API_URL}/api/real-estates/${id}`,
+			{
+				method: "PUT",
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+				body: formData,
+			}
+		);
+	}
+
 	// get all realestate realted to an user id
 	static async getAllFromUser(
 		userId: string,

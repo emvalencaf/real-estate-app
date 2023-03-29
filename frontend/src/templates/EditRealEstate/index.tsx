@@ -8,6 +8,7 @@ import * as Styled from "./styles";
 // type
 export type EditRealEstateTemplateProps = {
 	realEstate?: RealEstateModel;
+	fileList?: FileList;
 };
 
 const EditRealEstateTemplate = ({
