@@ -75,10 +75,13 @@ const ListingRealEstateItem = ({
 					<Styled.Name>{name}</Styled.Name>
 					<Styled.Price>
 						{offer
-							? discount.toLocaleString("en-US", {
-									style: "currency",
-									currency: "USD",
-							  })
+							? (Number(price) - Number(discount)).toLocaleString(
+									"en-US",
+									{
+										style: "currency",
+										currency: "USD",
+									}
+							  )
 							: price.toLocaleString("en-US", {
 									style: "currency",
 									currency: "USD",

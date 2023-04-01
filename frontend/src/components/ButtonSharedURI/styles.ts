@@ -4,7 +4,7 @@ import { Button } from "../Button/styles";
 export const Wrapper = styled.div`
 	${({ theme }) => css`
 		position: fixed;
-		top: 17%;
+		top: 21%;
 		right: 3%;
 		z-index: ${theme.layers.layer6};
 
@@ -23,7 +23,7 @@ export const Wrapper = styled.div`
 export const Feedback = styled.div`
 	${({ theme }) => css`
 		position: fixed;
-		top: 20%;
+		top: 23%;
 		right: 5%;
 		z-index: ${theme.layers.layer6};
 		& p {

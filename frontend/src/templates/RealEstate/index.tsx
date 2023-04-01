@@ -7,6 +7,7 @@ import RealEstateController from "../../api/controllers/realEstate";
 
 // components
 import Spinner from "../../components/Spinner";
+import ButtonSharedURI from "../../components/ButtonSharedURI";
 
 // styles
 import * as Styled from "./styles";
@@ -26,7 +27,7 @@ import SwiperCore, {
 	Pagination,
 } from "swiper";
 import "swiper/css/bundle";
-import ButtonSharedURI from "../../components/ButtonSharedURI";
+import RealEstateContent from "../../components/RealEstateContent";
 
 const RealEstateTemplate = () => {
 	// get page's uri params
@@ -66,6 +67,7 @@ const RealEstateTemplate = () => {
 				))}
 			</Swiper>
 			<ButtonSharedURI />
+			{data?.data && <RealEstateContent {...data?.data} />}
 		</Styled.Wrapper>
 	);
 };

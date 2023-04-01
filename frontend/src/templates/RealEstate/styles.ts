@@ -7,7 +7,7 @@ type ImageContainerProps = {
 };
 
 export const Wrapper = styled.main`
-	${() => css`
+	${({ theme }) => css`
 		& .swiper-button-next:after,
 		& .swiper-button-prev:after {
 			color: #a8dadc;
@@ -16,6 +16,8 @@ export const Wrapper = styled.main`
 		& .swiper-pagination-progressbar .swiper-pagination-progressbar-fill {
 			color: #a8dadc !important;
 		}
+		background-color: rgba(240, 253, 244);
+		padding-top: ${theme.spacings.hero};
 	`}
 `;
 

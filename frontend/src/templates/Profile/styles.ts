@@ -13,6 +13,7 @@ export const Wrapper = styled.main`
 			color: ${theme.colors.deepBlack};
 			padding-top: ${theme.spacings.xhuge};
 		}
+		padding-top: ${theme.spacings.hero};
 	`}
 `;
 export const Section = styled.section`
