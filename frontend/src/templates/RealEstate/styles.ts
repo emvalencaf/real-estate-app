@@ -7,7 +7,7 @@ type ImageContainerProps = {
 };
 
 export const Wrapper = styled.main`
-	${({ theme }) => css`
+	${() => css`
 		& .swiper-button-next:after,
 		& .swiper-button-prev:after {
 			color: #a8dadc;
@@ -20,7 +20,7 @@ export const Wrapper = styled.main`
 `;
 
 export const ImageContainer = styled.div<ImageContainerProps>`
-	${({ theme, url }) => css`
+	${({ url }) => css`
 		background: url(${url}) center no-repeat;
 		background-size: cover;
 		height: 300px;

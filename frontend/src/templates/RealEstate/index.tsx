@@ -26,6 +26,7 @@ import SwiperCore, {
 	Pagination,
 } from "swiper";
 import "swiper/css/bundle";
+import ButtonSharedURI from "../../components/ButtonSharedURI";
 
 const RealEstateTemplate = () => {
 	// get page's uri params
@@ -64,6 +65,7 @@ const RealEstateTemplate = () => {
 					</SwiperSlide>
 				))}
 			</Swiper>
+			<ButtonSharedURI />
 		</Styled.Wrapper>
 	);
 };
