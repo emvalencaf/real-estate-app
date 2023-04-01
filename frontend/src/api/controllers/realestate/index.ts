@@ -241,4 +241,9 @@ export default class RealEstateController {
 			throw new Error("You cannot upload more than 6 images");
 		}
 	}
+
+	// real estate query
+	static async query(query: string | string[], options: RequestInit) {
+		return RealEstateService.query(query, options);
+	}
 }

@@ -23,8 +23,7 @@ export const Achor = styled.a<AchorProps>`
 		}
 
 		&:hover {
-			color: ${theme.colors.tertiary};
-			filter: brightness(220%);
+			color: ${theme.colors.deepBlack};
 
 			> svg {
 				transform: scale(1.3);

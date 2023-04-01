@@ -103,4 +103,15 @@ export default class RealEstateService {
 			fetchOptions
 		);
 	}
+
+	// real estate query
+	static async query(
+		query: string | string[],
+		options: RequestInit
+	): Promise<RealEstateGetResponse<RealEstateModel>> {
+		return CreateFetch.dispatch(
+			`${process.env.NEXT_PUBLIC_API_URL}/api/real-estates/categories/${query}`,
+			options
+		);
+	}
 }

@@ -51,7 +51,13 @@ const ListingRealEstateItem = ({
 	return (
 		<Styled.Item>
 			<Styled.ItemContainer>
-				<Link href={`/category/${type}/${id}`} passHref legacyBehavior>
+				<Link
+					href={`/categories/${
+						isSale ? "sale" : "rent"
+					}/real-estates/${id}`}
+					passHref
+					legacyBehavior
+				>
 					<a>
 						<Picture
 							srcImg={images[0]}
