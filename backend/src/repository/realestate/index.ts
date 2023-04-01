@@ -1,5 +1,6 @@
 // firebase firestore functions
 import {
+	DocumentData,
 	addDoc,
 	collection,
 	deleteDoc,
@@ -146,5 +147,25 @@ export default class RealEstateRepository {
 
 		// return doc data to controller
 		return await (await getDoc(docRef)).data();
+	}
+
+	static async queryByCategoryAndRealEstate(
+		isSale: boolean,
+		realEstateId: string
+	) {
+		// get collection ref
+		const collectionRef = collection(db, "realEstates");
+		console.log(realEstateId);
+		// query
+		const q = query(collectionRef, where("isSale", "==", isSale));
+
+		const querySnap = await getDocs(q);
+
+		let data: null | IRealEstateModel = null;
+
+		querySnap.docs.forEach((doc) => {
+			if (doc.id === realEstateId) data = doc.data() as IRealEstateModel;
+		});
+		return data;
 	}
 }

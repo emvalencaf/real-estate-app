@@ -288,6 +288,7 @@ export default class RealEstateController {
 
 		return await RealEstateRepository.getById(id);
 	}
+
 	// format form data into object
 	static formatValues(data: IRealEstateFormData) {
 		// boolean convert
@@ -307,5 +308,42 @@ export default class RealEstateController {
 
 		// return formated data
 		return data;
+	}
+
+	// query real estate by category and id
+	static async queryByCategoryAndId(req: Request, res: Response) {
+		const { categoryName, realEstateId } = req.params;
+
+		try {
+			let isSale = true;
+
+			if (categoryName === "sale") isSale = true;
+			if (categoryName === "rent") isSale = false;
+
+			const realEstate =
+				await RealEstateRepository.queryByCategoryAndRealEstate(
+					isSale,
+					realEstateId
+				);
+			if (!realEstate)
+				return res.status(404).send({
+					data: null,
+					success: false,
+					message: `couldn't find a real estate with that id in ${categoryName}'s category`,
+				});
+
+			return res.status(200).send({
+				data: realEstate,
+				success: true,
+				message: `successfully fetched a real estate from ${categoryName}'s category`,
+			});
+		} catch (err) {
+			console.log(err);
+			res.status(500).send({
+				data: null,
+				success: false,
+				message: "something went wrong on the server",
+			});
+		}
 	}
 }

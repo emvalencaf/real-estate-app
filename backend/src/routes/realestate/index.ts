@@ -22,7 +22,13 @@ import { Router } from "express";
 const router: Router = express.Router();
 
 // routes
+router.get(
+	"/categories/:categoryName/:realEstateId",
+	RealEstateController.queryByCategoryAndId
+);
+
 router.get("/:id", RealEstateController.getByParams);
+
 router.put(
 	"/:id",
 	authGuard,
