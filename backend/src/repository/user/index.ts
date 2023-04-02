@@ -234,4 +234,23 @@ export default class UserRepository {
 
 		return update;
 	}
+
+	// update user messages
+	static async updateMessages(messageUid: string, userUid: string) {
+		// get user ref
+		const userRef = await doc(db, "users", userUid);
+
+		// get user doc
+		const user = (await getDoc(userRef)).data() as IUserModel;
+
+		const messages = user?.messages ? user?.messages : [];
+
+		messages.push(messageUid);
+
+		const update = await updateDoc(userRef, {
+			messages,
+		});
+
+		return update;
+	}
 }

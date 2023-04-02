@@ -176,4 +176,11 @@ export default class UserController {
 			? UserRepository.pushRealEstate(userUid, realEstateUid)
 			: UserRepository.removeRealEstate(userUid, realEstateUid);
 	}
+
+	// update user messages
+	static async updateMessages(messageUid: string, userUid: string) {
+		if (!userUid || !messageUid)
+			throw new Error("you must format message correctly");
+		return UserRepository.updateMessages(messageUid, userUid);
+	}
 }

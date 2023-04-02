@@ -34,7 +34,6 @@ router.post(
 	validate,
 	UserController.signUp
 );
-
 router.post("/sign-in", userLoginValidation(), validate, UserController.signIn);
 
 router.post(

@@ -27,6 +27,7 @@ export interface IUserModel {
 	email: string;
 	accessToken: string;
 	realEstates?: string[];
+	messages?: string[];
 }
 
 // user repository deps
