@@ -16,10 +16,12 @@ const EditRealEstateTemplate = ({
 }: EditRealEstateTemplateProps) => {
 	console.log(realEstate?.images);
 	return (
-		<RealEstateForm
-			realEstateProps={realEstate ? realEstate : null}
-			action="update"
-		/>
+		<Styled.Wrapper>
+			<RealEstateForm
+				realEstateProps={realEstate ? realEstate : null}
+				action="update"
+			/>
+		</Styled.Wrapper>
 	);
 };
 

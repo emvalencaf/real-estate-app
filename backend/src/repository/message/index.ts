@@ -1,5 +1,10 @@
 // firestore functions and database
-import { addDoc, collection, getDoc, serverTimestamp } from "firebase/firestore";
+import {
+	addDoc,
+	collection,
+	getDoc,
+	serverTimestamp,
+} from "firebase/firestore";
 import { db } from "../../db";
 
 export default class MessageRepository {

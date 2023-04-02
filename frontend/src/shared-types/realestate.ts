@@ -38,6 +38,7 @@ export type RealEstateModel = Pick<
 	images: string[];
 	id: string;
 	geolocation: GeocodeGetLocationResponseData;
+	owner: string;
 };
 
 // reponse data from create method

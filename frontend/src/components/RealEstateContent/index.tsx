@@ -1,5 +1,6 @@
 // components
 import { RealEstateModel } from "../../shared-types/realestate";
+import FormContactOwner from "../FormContactOwner";
 import Heading from "../Heading";
 
 // styles
@@ -30,6 +31,7 @@ export type RealEstateContentProps = Pick<
 	| "price"
 	| "discount"
 	| "furnished"
+	| "owner"
 >;
 
 const RealEstateContent = ({
@@ -44,6 +46,7 @@ const RealEstateContent = ({
 	offer = false,
 	discount,
 	price,
+	owner,
 }: RealEstateContentProps) => {
 	return (
 		<Styled.Wrapper>
@@ -103,6 +106,7 @@ const RealEstateContent = ({
 						{furnished ? "Furnished" : "No furnishd"}
 					</Styled.Item>
 				</Styled.DetailsList>
+				<FormContactOwner ownerId={owner} />
 			</Styled.Content>
 			<Styled.Map></Styled.Map>
 		</Styled.Wrapper>
